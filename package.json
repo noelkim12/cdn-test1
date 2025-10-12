@@ -1,0 +1,41 @@
+{
+  "name": "CdnTest1",
+  "version": "0.1.0",
+  "description": "Cdn Test1 for RISU AI",
+  "main": "src/index.js",
+  "browser": "dist/cdn_test1.js",
+  "unpkg": "dist/cdn_test1.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "risu-ai",
+    "cdn",
+    "plugin"
+  ],
+  "author": "Your Name <email@example.com>",
+  "license": "MIT",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "dev": "webpack --mode production --watch",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "sync-version": "node scripts/sync-version.js"
+  },
+  "devDependencies": {
+    "terser-webpack-plugin": "^5.3.9",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "idb": "^8.0.0",
+    "winbox": "^0.2.82"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
