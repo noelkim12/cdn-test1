@@ -1,8 +1,8 @@
 //@name cdn-test1
-//@display-name cdn-test1_v0.6.2
-//@version 0.6.2
+//@display-name cdn-test1_v0.6.3
+//@version 0.6.3
 //@description Cdn Test1 for RISU AI
-//@unpkg https://unpkg.com/cdn-test1@0.6.2/dist/cdn_test1.js
+//@unpkg https://unpkg.com/cdn-test1@0.6.3/dist/cdn_test1.js
 var cdnTest1;
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
@@ -318,7 +318,7 @@ const PLUGIN_NAME =
    true ? "cdn-test1" : 0;
 
 const PLUGIN_VERSION =
-   true ? "0.6.2" : 0;
+   true ? "0.6.3" : 0;
 
 const PLUGIN_DESCRIPTION =
   (/* unused pure expression or super */ null && ( true ? "Cdn Test1 for RISU AI" : 0));

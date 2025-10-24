@@ -62,5 +62,15 @@
         "text": "plugin api singleton으로 변경"
       }
     ]
+  },
+  "0.6.3": {
+    "released_at": "2025-10-24T17:52:40.191Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "fix",
+        "text": "update alert 개선 "
+      }
+    ]
   }
 }
