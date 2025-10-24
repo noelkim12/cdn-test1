@@ -42,5 +42,15 @@
         "text": "release note관련 버그 수정"
       }
     ]
+  },
+  "0.6.1": {
+    "released_at": "2025-10-24T17:15:15.634Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "fix",
+        "text": "script update 로직 추가"
+      }
+    ]
   }
 }
