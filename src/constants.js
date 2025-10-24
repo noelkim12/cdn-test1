@@ -1,5 +1,16 @@
-export const PLUGIN_NAME = "CDN TEST";
-export const PLUGIN_VERSION = "0.1";
+/**
+ * 빌드 타임 상수 (webpack DefinePlugin으로 주입)
+ * 개발 환경(webpack 없이 직접 실행)을 위한 fallback 제공
+ */
+export const PLUGIN_NAME =
+  typeof __PLUGIN_NAME__ !== 'undefined' ? __PLUGIN_NAME__ : "cdn-test1";
+
+export const PLUGIN_VERSION =
+  typeof __PLUGIN_VERSION__ !== 'undefined' ? __PLUGIN_VERSION__ : "0.0.0-dev";
+
+export const PLUGIN_DESCRIPTION =
+  typeof __PLUGIN_DESCRIPTION__ !== 'undefined' ? __PLUGIN_DESCRIPTION__ : "Cdn Test1 for RISU AI";
+
 export const RANDOM_HASH = "";
 
 /**

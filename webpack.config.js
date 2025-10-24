@@ -13,7 +13,7 @@
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
-const { PLUGIN_NAME, PLUGIN_VERSION } = require('./src/constants');
+const pkg = require('./package.json');
 
 module.exports = {
   // 진입점 파일 (일반적으로 src/index.js 또는 src/main.js 사용)
@@ -56,12 +56,22 @@ module.exports = {
   
   // 플러그인 설정 (순서대로 실행됨)
   plugins: [
+    // 빌드 타임 상수 주입
+    new webpack.DefinePlugin({
+      __PLUGIN_NAME__: JSON.stringify(pkg.name),
+      __PLUGIN_VERSION__: JSON.stringify(pkg.version),
+      __PLUGIN_DESCRIPTION__: JSON.stringify(pkg.description),
+    }),
+
+    // 배너 (package.json 기반)
     new webpack.BannerPlugin({
-      banner: `//@name ${PLUGIN_NAME}
-//@display-name ${PLUGIN_NAME}_v${PLUGIN_VERSION}
-//@version ${PLUGIN_VERSION}
-//@description ${PLUGIN_NAME} for RISU AI`,
+      banner: `//@name ${pkg.name}
+//@display-name ${pkg.name}_v${pkg.version}
+//@version ${pkg.version}
+//@description ${pkg.description}
+//@unpkg https://unpkg.com/${pkg.name}@${pkg.version}/dist/cdn_test1.js`,
       raw: true // 원시 문자열로 처리 (헤더 주석용)
     })
   ],
 };
+

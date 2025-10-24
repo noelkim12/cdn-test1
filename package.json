@@ -1,5 +1,5 @@
 {
-  "name": "CdnTest1",
+  "name": "cdn-test1",
   "version": "0.1.0",
   "description": "Cdn Test1 for RISU AI",
   "main": "src/index.js",
@@ -13,14 +13,19 @@
     "cdn",
     "plugin"
   ],
-  "author": "Your Name <email@example.com>",
+  "author": "NoelKim",
   "license": "MIT",
   "scripts": {
     "prepublishOnly": "npm run build",
     "dev": "webpack --mode production --watch",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
-    "sync-version": "node scripts/sync-version.js"
+    "minor": "npm version minor",
+    "minorForce": "npm version minor --force",
+    "patch": "npm version patch",
+    "patchForce": "npm version patch --force",
+    "major": "npm version major",
+    "majorForce": "npm version major --force"
   },
   "devDependencies": {
     "terser-webpack-plugin": "^5.3.9",
