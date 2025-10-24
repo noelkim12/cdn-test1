@@ -140,7 +140,7 @@ function confirmUpdate(opts) {
       <ul class="cu-list" aria-label="변경사항">
         ${(manifest.notes || []).slice(0,8).map(n =>
           `<li class="${(n.type||'').trim()}">${escapeHtml(n.text||'')}</li>`
-        ).join('') || '<li>세부 변경사항은 릴리스 노트를 참고해</li>'}
+        ).join('') || '<li>세부 변경사항은 릴리스 노트를 참고해주세요</li>'}
       </ul>
       <div class="cu-actions">
         ${!mandatory ? `<button class="cu-btn ghost js-later">${t.later}</button>` : ''}

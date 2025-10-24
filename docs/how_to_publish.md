@@ -232,6 +232,25 @@ git push && git push --tags
 npm publish
 ```
 
+### 릴리즈 노트 작성 방법
+
+#### npm version 명령어에 메시지 추가
+
+버전 업데이트 시 Git 커밋 메시지에 변경 사항을 포함할 수 있습니다:
+
+```bash
+# 패치 릴리즈 with 메시지
+npm version patch -m "v%s - 버그 수정: 로그인 에러 해결"
+
+# 마이너 릴리즈 with 메시지
+npm version minor -m "v%s - 새 기능: 다크모드 지원 추가"
+
+# 메이저 릴리즈 with 메시지
+npm version major -m "v%s - Breaking Change: API 구조 변경"
+```
+
+`%s`는 자동으로 새 버전 번호로 대체됩니다 (예: `v0.2.0`)
+
 ---
 
 ## 🛠️ 문제 해결

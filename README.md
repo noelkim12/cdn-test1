@@ -61,7 +61,6 @@ jsDelivr, unpkg 등 CDN에서 배포할 때는 **package.json의 `version` 필�
 #### CDN URL 예시:
 - **특정 버전**: `https://cdn.jsdelivr.net/npm/프로젝트명@0.1.0/dist/파일명.js`
 - **최신 버전**: `https://cdn.jsdelivr.net/npm/프로젝트명@latest/dist/파일명.js`
-- **버전 범위**: `https://cdn.jsdelivr.net/npm/프로젝트명@^0.1.0/dist/파일명.js`
 
 #### 버전 업데이트 방법:
 1. **package.json의 version 수정**
