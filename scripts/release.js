@@ -212,10 +212,33 @@ releaseNotes[newVersion] = {
 fs.writeFileSync(releaseNotesPath, JSON.stringify(releaseNotes, null, 2), 'utf8');
 console.log(`✅ Release notes updated for v${newVersion}`);
 
-// 3. Git commit & tag
-console.log('\n📝 Step 3: Creating Git commit and tag...');
+// 3. 빌드 (release-notes.json 생성 후 빌드)
+console.log('\n📝 Step 3: Building project...');
 try {
-  execSync('git add package.json package-lock.json dist/release-notes.json', {
+  execSync('npm run build', {
+    cwd: rootDir,
+    stdio: 'inherit'
+  });
+  console.log('✅ Build completed');
+} catch (error) {
+  console.error('❌ Build failed (빌드 실패)');
+  console.log('\n💡 일반적인 문제:');
+  console.log('  1. Webpack 설정 오류');
+  console.log('     → webpack.config.js 문법 오류 확인');
+  console.log('  2. 의존성 누락');
+  console.log('     → npm install');
+  console.log('  3. 소스 코드 문법 오류');
+  console.log('     → 위 콘솔 출력에서 구체적인 오류 확인');
+  console.log('  4. 메모리 부족');
+  console.log('     → Node 메모리 증가: NODE_OPTIONS=--max-old-space-size=4096');
+  console.log('\n오류 상세:', error.message);
+  process.exit(1);
+}
+
+// 4. Git commit & tag (빌드 결과물 포함)
+console.log('\n📝 Step 4: Creating Git commit and tag...');
+try {
+  execSync('git add package.json package-lock.json dist/', {
     cwd: rootDir,
     stdio: 'inherit'
   });
@@ -243,29 +266,6 @@ try {
   console.log('     → git tag -d v' + newVersion);
   console.log('  4. 커밋 메시지에 특수문자 포함');
   console.log('     → 릴리즈 노트에 따옴표나 특수문자 사용 금지');
-  console.log('\n오류 상세:', error.message);
-  process.exit(1);
-}
-
-// 4. 빌드
-console.log('\n📝 Step 4: Building project...');
-try {
-  execSync('npm run build', {
-    cwd: rootDir,
-    stdio: 'inherit'
-  });
-  console.log('✅ Build completed');
-} catch (error) {
-  console.error('❌ Build failed (빌드 실패)');
-  console.log('\n💡 일반적인 문제:');
-  console.log('  1. Webpack 설정 오류');
-  console.log('     → webpack.config.js 문법 오류 확인');
-  console.log('  2. 의존성 누락');
-  console.log('     → npm install');
-  console.log('  3. 소스 코드 문법 오류');
-  console.log('     → 위 콘솔 출력에서 구체적인 오류 확인');
-  console.log('  4. 메모리 부족');
-  console.log('     → Node 메모리 증가: NODE_OPTIONS=--max-old-space-size=4096');
   console.log('\n오류 상세:', error.message);
   process.exit(1);
 }

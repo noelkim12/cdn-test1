@@ -28,7 +28,9 @@ module.exports = {
       type: 'var', // 'var', 'this', 'window', 'global', 'commonjs2' 등
       name: 'cdnTest1' // 전역 변수명 (camelCase 권장)
     },
-    clean: true // webpack 5+ 에서는 clean-webpack-plugin 대신 clean 옵션 사용
+    clean: {
+      keep: /release-notes\.json$/ // release-notes.json은 삭제하지 않음
+    }
   },
   
   // 모드 설정 (development: 개발용, production: 배포용)

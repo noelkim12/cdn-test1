@@ -1,11 +1,35 @@
 {
   "0.5.0": {
-    "released_at": "2025-10-24T12:03:32.956Z",
+    "released_at": "2025-10-24T12:00:00.000Z",
     "mandatory": false,
     "notes": [
       {
         "type": "feat",
-        "text": "css 번들러 추가"
+        "text": "CSS 파일 분리 및 webpack 설정 개선"
+      },
+      {
+        "type": "feat",
+        "text": "릴리즈 자동화 스크립트 대화형 모드 추가"
+      }
+    ]
+  },
+  "0.4.0": {
+    "released_at": "2025-10-24T10:00:00.000Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "feat",
+        "text": "globalThis.printPackageVersion() 함수 추가"
+      }
+    ]
+  },
+  "0.3.0": {
+    "released_at": "2025-10-24T00:00:00.000Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "feat",
+        "text": "자동 업데이트 시스템 구축"
       }
     ]
   }
