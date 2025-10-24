@@ -3,6 +3,8 @@ import { RisuAPI } from "./core/risu-api.js";
 import { injectScripts } from "./utils/script-injector.js";
 import { App } from "./ui/components/main.js";
 import { checkForUpdates } from "./core/update-manager.js";
+import "./ui/styles/registry.js"; // Style Registry
+import "./ui/components/registry.js"; // Web Components 레지스트리
 
 function printPackageVersion() {
   console.log(`${PLUGIN_NAME} v${PLUGIN_VERSION} loaded`);

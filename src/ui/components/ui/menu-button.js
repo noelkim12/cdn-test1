@@ -3,7 +3,7 @@ import { PLUGIN_NAME, PLUGIN_VERSION } from "../../../constants.js";
  * 블랙마켓 메뉴 버튼 컴포넌트
  * RISU AI의 메뉴 영역에 표시되는 버튼
  */
-  export class MenuButton extends HTMLElement {
+export class MenuButton extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
       <div class="flex items-center cursor-pointer hover:text-green-500 transition-colors">
@@ -19,7 +19,7 @@ import { PLUGIN_NAME, PLUGIN_VERSION } from "../../../constants.js";
           <line x1="7" y1="10" x2="13" y2="10" stroke-width="2"></line>
           <circle cx="8.5" cy="10" r="1" fill="currentColor"></circle>
           <circle cx="11.5" cy="10" r="1" fill="currentColor"></circle>
-          
+           
           <!-- 정장 -->
           <path d="M6 15 L7 17 M14 15 L13 17"></path>
           <line x1="10" y1="15" x2="10" y2="18"></line>

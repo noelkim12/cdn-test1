@@ -8,6 +8,582 @@ var cdnTest1;
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 56:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+
+
+/* istanbul ignore next  */
+function setAttributesWithoutAttributes(styleElement) {
+  var nonce =  true ? __webpack_require__.nc : 0;
+  if (nonce) {
+    styleElement.setAttribute("nonce", nonce);
+  }
+}
+module.exports = setAttributesWithoutAttributes;
+
+/***/ }),
+
+/***/ 72:
+/***/ ((module) => {
+
+
+
+var stylesInDOM = [];
+function getIndexByIdentifier(identifier) {
+  var result = -1;
+  for (var i = 0; i < stylesInDOM.length; i++) {
+    if (stylesInDOM[i].identifier === identifier) {
+      result = i;
+      break;
+    }
+  }
+  return result;
+}
+function modulesToDom(list, options) {
+  var idCountMap = {};
+  var identifiers = [];
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var count = idCountMap[id] || 0;
+    var identifier = "".concat(id, " ").concat(count);
+    idCountMap[id] = count + 1;
+    var indexByIdentifier = getIndexByIdentifier(identifier);
+    var obj = {
+      css: item[1],
+      media: item[2],
+      sourceMap: item[3],
+      supports: item[4],
+      layer: item[5]
+    };
+    if (indexByIdentifier !== -1) {
+      stylesInDOM[indexByIdentifier].references++;
+      stylesInDOM[indexByIdentifier].updater(obj);
+    } else {
+      var updater = addElementStyle(obj, options);
+      options.byIndex = i;
+      stylesInDOM.splice(i, 0, {
+        identifier: identifier,
+        updater: updater,
+        references: 1
+      });
+    }
+    identifiers.push(identifier);
+  }
+  return identifiers;
+}
+function addElementStyle(obj, options) {
+  var api = options.domAPI(options);
+  api.update(obj);
+  var updater = function updater(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap && newObj.supports === obj.supports && newObj.layer === obj.layer) {
+        return;
+      }
+      api.update(obj = newObj);
+    } else {
+      api.remove();
+    }
+  };
+  return updater;
+}
+module.exports = function (list, options) {
+  options = options || {};
+  list = list || [];
+  var lastIdentifiers = modulesToDom(list, options);
+  return function update(newList) {
+    newList = newList || [];
+    for (var i = 0; i < lastIdentifiers.length; i++) {
+      var identifier = lastIdentifiers[i];
+      var index = getIndexByIdentifier(identifier);
+      stylesInDOM[index].references--;
+    }
+    var newLastIdentifiers = modulesToDom(newList, options);
+    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
+      var _identifier = lastIdentifiers[_i];
+      var _index = getIndexByIdentifier(_identifier);
+      if (stylesInDOM[_index].references === 0) {
+        stylesInDOM[_index].updater();
+        stylesInDOM.splice(_index, 1);
+      }
+    }
+    lastIdentifiers = newLastIdentifiers;
+  };
+};
+
+/***/ }),
+
+/***/ 113:
+/***/ ((module) => {
+
+
+
+/* istanbul ignore next  */
+function styleTagTransform(css, styleElement) {
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css;
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild);
+    }
+    styleElement.appendChild(document.createTextNode(css));
+  }
+}
+module.exports = styleTagTransform;
+
+/***/ }),
+
+/***/ 159:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   U: () => (/* binding */ checkForUpdates)
+/* harmony export */ });
+/* unused harmony export confirmUpdate */
+/* harmony import */ var _constants_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(521);
+
+
+/**
+ * unpkg에서 최신 버전의 메타데이터를 파싱
+ * @returns {Promise<Object|null>} manifest 객체 또는 null
+ */
+async function fetchLatestManifest() {
+  try {
+    const url = `https://unpkg.com/${_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF}@latest/dist/${_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF}.js`;
+
+    // HEAD 요청으로 redirect된 최종 URL 확인
+    const headResponse = await fetch(url, {
+      method: "HEAD",
+      redirect: "follow",
+    });
+
+    // 실제 resolved 버전 확인 (예: https://unpkg.com/cdn-test1@0.2.0/dist/cdn_test1.js)
+    const resolvedUrl = headResponse.url;
+    const versionMatch = resolvedUrl.match(/@([\d.]+)\//);
+
+    if (!versionMatch) {
+      throw new Error("Version not found in resolved URL");
+    }
+
+    const latestVersion = versionMatch[1];
+
+    // 실제 파일 내용에서 배너 메타데이터 추출 (옵션)
+    const content = await fetch(resolvedUrl).then((r) => r.text());
+    const bannerRegex =
+      /\/\/@name (.+?)\n\/\/@display-name (.+?)\n\/\/@version (.+?)\n\/\/@description (.+?)(?:\n|$)/;
+    const bannerMatch = content.match(bannerRegex);
+
+    // 릴리즈 노트 가져오기
+    const notesUrl = `https://unpkg.com/${_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF}@${latestVersion}/dist/release-notes.json`;
+    let releaseData = {};
+
+    try {
+      const notesResponse = await fetch(notesUrl);
+      if (notesResponse.ok) {
+        const allNotes = await notesResponse.json();
+        releaseData = allNotes[latestVersion] || {};
+      }
+    } catch (error) {
+      console.warn("[UpdateManager] Failed to fetch release notes:", error);
+    }
+
+    return {
+      version: latestVersion,
+      url: resolvedUrl,
+      name: bannerMatch?.[1]?.trim() || _constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF,
+      displayName:
+        bannerMatch?.[2]?.trim() || `${_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF}_v${latestVersion}`,
+      description: bannerMatch?.[4]?.trim() || "",
+      mandatory: releaseData.mandatory || false,
+      notes: releaseData.notes || [],
+      released_at: releaseData.released_at || new Date().toISOString(),
+    };
+  } catch (error) {
+    console.error("[UpdateManager] Failed to fetch manifest:", error);
+    return null;
+  }
+}
+
+/**
+ * 버전 비교 (semver 기반)
+ * @param {string} v1 - 비교할 버전 1
+ * @param {string} v2 - 비교할 버전 2
+ * @returns {number} v1 > v2: 1, v1 < v2: -1, v1 === v2: 0
+ */
+function compareVersions(v1, v2) {
+  const parts1 = v1.split(".").map(Number);
+  const parts2 = v2.split(".").map(Number);
+
+  for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
+    const p1 = parts1[i] || 0;
+    const p2 = parts2[i] || 0;
+    if (p1 > p2) return 1;
+    if (p1 < p2) return -1;
+  }
+  return 0;
+}
+
+/**
+ * 플러그인 스크립트 파싱 (script-updater.js 로직 재사용)
+ * @param {string} scriptContent - unpkg에서 fetch한 스크립트 내용
+ * @returns {Object} 파싱된 플러그인 데이터
+ */
+function parsePluginScript(scriptContent) {
+  const splitedJs = scriptContent.split("\n");
+
+  let name = "";
+  let displayName = undefined;
+  let arg = {};
+  let realArg = {};
+  let customLink = [];
+
+  for (const line of splitedJs) {
+    // V1 플러그인 체크 (지원하지 않음)
+    if (line.startsWith("//@risu-name") || line.startsWith("//@risu-display-name")) {
+      throw new Error("V1 plugin is not supported. Please use V2 plugin.");
+    }
+
+    // name 파싱
+    if (line.startsWith("//@name")) {
+      const provided = line.slice(7).trim();
+      if (provided === "") {
+        throw new Error("Plugin name must be longer than 0");
+      }
+      name = provided;
+    }
+
+    // display-name 파싱
+    if (line.startsWith("//@display-name")) {
+      const provided = line.slice("//@display-name".length + 1).trim();
+      if (provided === "") {
+        throw new Error("Plugin display name must be longer than 0");
+      }
+      displayName = provided;
+    }
+
+    // link 파싱
+    if (line.startsWith("//@link")) {
+      const link = line.split(" ")[1];
+      if (!link || link === "") {
+        throw new Error("Plugin link is empty");
+      }
+      if (!link.startsWith("https")) {
+        throw new Error("Plugin link must start with https");
+      }
+      const hoverText = line.split(" ").slice(2).join(" ").trim();
+      customLink.push({
+        link: link,
+        hoverText: hoverText || undefined,
+      });
+    }
+
+    // arg 파싱
+    if (line.startsWith("//@risu-arg") || line.startsWith("//@arg")) {
+      const provided = line.trim().split(" ");
+      if (provided.length < 3) {
+        throw new Error("Plugin argument is incorrect");
+      }
+      const provKey = provided[1];
+
+      if (provided[2] !== "int" && provided[2] !== "string") {
+        throw new Error(`Unknown argument type: ${provided[2]}`);
+      }
+
+      if (provided[2] === "int") {
+        arg[provKey] = "int";
+        realArg[provKey] = 0;
+      } else if (provided[2] === "string") {
+        arg[provKey] = "string";
+        realArg[provKey] = "";
+      }
+    }
+  }
+
+  if (name.length === 0) {
+    throw new Error("Plugin name not found");
+  }
+
+  return {
+    name: name,
+    script: scriptContent,
+    realArg: realArg,
+    arguments: arg,
+    displayName: displayName,
+    version: 2,
+    customLink: customLink,
+  };
+}
+
+/**
+ * realArg 병합 (기존 값 보존 + 새 key 추가)
+ * @param {Object} oldRealArg - 기존 플러그인의 realArg
+ * @param {Object} newArguments - 새 플러그인의 arguments
+ * @returns {Object} 병합된 realArg
+ */
+function mergeRealArgs(oldRealArg, newArguments) {
+  const merged = {};
+
+  // 새 arguments를 기준으로 순회
+  for (const [key, type] of Object.entries(newArguments)) {
+    // 기존 값이 있으면 보존, 없으면 기본값
+    if (oldRealArg && key in oldRealArg) {
+      merged[key] = oldRealArg[key]; // 기존 사용자 입력 값 보존
+    } else {
+      // 새로 추가된 arg는 기본값
+      merged[key] = type === "int" ? 0 : "";
+    }
+  }
+
+  return merged;
+}
+
+/**
+ * 플러그인 스크립트 업데이트
+ * @param {Object} manifest - fetchLatestManifest()로 가져온 매니페스트
+ * @returns {Promise<Object>} {success: boolean, error?: Error}
+ */
+async function updatePluginScript(manifest) {
+  try {
+    // 1. unpkg에서 최신 스크립트 fetch
+    console.log("[UpdateManager] Fetching latest script from unpkg:", manifest.url);
+    const scriptContent = await fetch(manifest.url).then((r) => r.text());
+
+    // 2. 스크립트 파싱
+    console.log("[UpdateManager] Parsing plugin script...");
+    const parsed = parsePluginScript(scriptContent);
+
+    // 3. getDatabase(), setDatabaseLite 가져오기
+    const getDatabase = globalThis.__pluginApis__?.getDatabase;
+    if (!getDatabase) {
+      throw new Error("getDatabase is not available");
+    }
+
+    let setDatabaseLite;
+    try {
+      setDatabaseLite = eval("setDatabaseLite");
+    } catch (e) {
+      throw new Error("setDatabaseLite is not available");
+    }
+
+    // 4. 기존 플러그인 찾기 및 백업
+    const db = getDatabase();
+    const oldPluginIndex = db.plugins.findIndex((p) => p.name === _constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF);
+    const backup = oldPluginIndex >= 0 ? { ...db.plugins[oldPluginIndex] } : null;
+
+    console.log("[UpdateManager] Old plugin found:", oldPluginIndex >= 0, backup?.name);
+
+    // 5. realArg 병합 (기존 값 보존 + 새 key 추가)
+    const mergedRealArg = mergeRealArgs(backup?.realArg, parsed.arguments);
+
+    // 6. 새 플러그인 데이터 생성
+    const newPlugin = {
+      ...parsed,
+      realArg: mergedRealArg,
+    };
+
+    console.log("[UpdateManager] New plugin data prepared:", newPlugin.name, newPlugin.displayName);
+
+    // 7. DB 업데이트
+    if (oldPluginIndex >= 0) {
+      db.plugins[oldPluginIndex] = newPlugin;
+      console.log("[UpdateManager] Replaced existing plugin at index", oldPluginIndex);
+    } else {
+      db.plugins.push(newPlugin);
+      console.log("[UpdateManager] Added new plugin");
+    }
+
+    // 8. 저장 및 오류 처리
+    try {
+      setDatabaseLite(db);
+      console.log("[UpdateManager] Database saved successfully");
+      return { success: true };
+    } catch (saveError) {
+      console.error("[UpdateManager] Database save failed:", saveError);
+      // 롤백
+      if (backup && oldPluginIndex >= 0) {
+        db.plugins[oldPluginIndex] = backup;
+        console.log("[UpdateManager] Rolled back to previous plugin");
+      } else if (oldPluginIndex === -1) {
+        db.plugins.pop();
+        console.log("[UpdateManager] Removed newly added plugin");
+      }
+      return { success: false, error: saveError };
+    }
+  } catch (error) {
+    console.error("[UpdateManager] Plugin update failed:", error);
+    return { success: false, error };
+  }
+}
+
+/**
+ * 업데이트 확인 UI (Web Components 사용)
+ */
+function confirmUpdate(opts) {
+  const {
+    name,
+    currentVersion,
+    manifest,
+    i18n = {},
+    mandatory = manifest.mandatory === true,
+  } = opts;
+
+  const t = Object.assign(
+    {
+      title: "플러그인 업데이트 준비 완료",
+      primary: "지금 업데이트",
+      later: "나중에",
+      skip: "이번 버전 건너뛰기",
+    },
+    i18n
+  );
+
+  // UpdateDialog Custom Element 생성
+  const dialog = document.createElement("update-dialog");
+
+  // 속성 설정
+  if (name) dialog.setAttribute("name", name);
+  dialog.setAttribute("current-version", currentVersion);
+  dialog.setAttribute("version", manifest.version);
+  dialog.setAttribute("released-at", manifest.released_at || new Date().toISOString());
+  if (mandatory) dialog.setAttribute("mandatory", "");
+  dialog.setAttribute("notes", JSON.stringify(manifest.notes || []));
+
+  // 다국어 설정
+  dialog.setAttribute("title", t.title);
+  dialog.setAttribute("btn-update", t.primary);
+  dialog.setAttribute("btn-later", t.later);
+  dialog.setAttribute("btn-skip", t.skip);
+
+  // Promise로 사용자 액션 대기
+  const promise = new Promise((resolve) => {
+    const handler = (event) => {
+      const { action, skipVersion } = event.detail;
+
+      // 결과 구성
+      const result = { action };
+      if (action === "update") {
+        result.url = manifest.url;
+      } else if (action === "skip") {
+        result.skipVersion = skipVersion;
+      }
+
+      // 정리 및 resolve
+      dialog.removeEventListener("update-action", handler);
+      dialog.remove();
+      resolve(result);
+    };
+
+    dialog.addEventListener("update-action", handler);
+  });
+
+  document.body.appendChild(dialog);
+  return promise;
+}
+
+/**
+ * 업데이트 체크 및 사용자 확인
+ * @param {Object} options - 옵션
+ * @param {boolean} [options.silent=false] - silent 모드 (로그 최소화)
+ * @param {boolean} [options.force=false] - skip 버전 무시
+ * @param {Object} [options.i18n={}] - 다국어 텍스트
+ * @returns {Promise<Object>} 업데이트 결과
+ */
+async function checkForUpdates(options = {}) {
+  const { silent = false, force = false, i18n = {} } = options;
+
+  try {
+    const manifest = await fetchLatestManifest();
+
+    if (!manifest) {
+      if (!silent) console.log("[UpdateManager] Unable to check for updates");
+      return { available: false, error: "fetch_failed" };
+    }
+
+    const currentVersion = _constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_VERSION */ .jN;
+    const latestVersion = manifest.version;
+
+    // Skip 버전 확인
+    const skipKey = `${_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF}_skip_version`;
+    const skipVersion = localStorage.getItem(skipKey);
+    if (!force && skipVersion === latestVersion) {
+      if (!silent)
+        console.log(
+          `[UpdateManager] Version ${latestVersion} is skipped by user`
+        );
+      return { available: false, skipped: true, version: latestVersion };
+    }
+
+    // 버전 비교
+    const comparison = compareVersions(latestVersion, currentVersion);
+
+    if (comparison <= 0) {
+      if (!silent)
+        console.log(`[UpdateManager] Already up to date (${currentVersion})`);
+      return {
+        available: false,
+        current: currentVersion,
+        latest: latestVersion,
+      };
+    }
+
+    console.log(
+      `[UpdateManager] New version available: ${currentVersion} → ${latestVersion}`
+    );
+
+    // 사용자 확인 UI 표시
+    const result = await confirmUpdate({
+      name: _constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF,
+      currentVersion,
+      manifest,
+      i18n,
+    });
+
+    // 결과 처리
+    if (result.action === "update") {
+      // 플러그인 스크립트 업데이트
+      console.log("[UpdateManager] Updating to version", latestVersion);
+      const updateResult = await updatePluginScript(manifest);
+
+      if (updateResult.success) {
+        console.log("[UpdateManager] Plugin script updated successfully");
+        // 페이지 리로드하여 새 스크립트 적용
+        window.location.reload();
+        return { available: true, action: "updated", version: latestVersion };
+      } else {
+        console.error("[UpdateManager] Plugin update failed:", updateResult.error);
+        alert(
+          `업데이트 실패: ${updateResult.error?.message || "알 수 없는 오류"}\n\n페이지를 새로고침하여 다시 시도해주세요.`
+        );
+        return {
+          available: true,
+          action: "update_failed",
+          error: updateResult.error,
+        };
+      }
+    } else if (result.action === "skip") {
+      localStorage.setItem(skipKey, result.skipVersion);
+      console.log("[UpdateManager] Skipped version", result.skipVersion);
+      return {
+        available: true,
+        action: "skipped",
+        version: result.skipVersion,
+      };
+    } else {
+      console.log("[UpdateManager] Update postponed");
+      return { available: true, action: "later", version: latestVersion };
+    }
+  } catch (error) {
+    console.error("[UpdateManager] Check failed:", error);
+    return { available: false, error: error.message };
+  }
+}
+
+
+
+
+/***/ }),
+
 /***/ 300:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -46,6 +622,97 @@ class RisuAPI {
   }
 }
 
+
+/***/ }),
+
+/***/ 314:
+/***/ ((module) => {
+
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+module.exports = function (cssWithMappingToString) {
+  var list = [];
+
+  // return the list of modules as css string
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = "";
+      var needLayer = typeof item[5] !== "undefined";
+      if (item[4]) {
+        content += "@supports (".concat(item[4], ") {");
+      }
+      if (item[2]) {
+        content += "@media ".concat(item[2], " {");
+      }
+      if (needLayer) {
+        content += "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {");
+      }
+      content += cssWithMappingToString(item);
+      if (needLayer) {
+        content += "}";
+      }
+      if (item[2]) {
+        content += "}";
+      }
+      if (item[4]) {
+        content += "}";
+      }
+      return content;
+    }).join("");
+  };
+
+  // import a list of modules into the list
+  list.i = function i(modules, media, dedupe, supports, layer) {
+    if (typeof modules === "string") {
+      modules = [[null, modules, undefined]];
+    }
+    var alreadyImportedModules = {};
+    if (dedupe) {
+      for (var k = 0; k < this.length; k++) {
+        var id = this[k][0];
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+    for (var _k = 0; _k < modules.length; _k++) {
+      var item = [].concat(modules[_k]);
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        continue;
+      }
+      if (typeof layer !== "undefined") {
+        if (typeof item[5] === "undefined") {
+          item[5] = layer;
+        } else {
+          item[1] = "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {").concat(item[1], "}");
+          item[5] = layer;
+        }
+      }
+      if (media) {
+        if (!item[2]) {
+          item[2] = media;
+        } else {
+          item[1] = "@media ".concat(item[2], " {").concat(item[1], "}");
+          item[2] = media;
+        }
+      }
+      if (supports) {
+        if (!item[4]) {
+          item[4] = "".concat(supports);
+        } else {
+          item[1] = "@supports (".concat(item[4], ") {").concat(item[1], "}");
+          item[4] = supports;
+        }
+      }
+      list.push(item);
+    }
+  };
+  return list;
+};
 
 /***/ }),
 
@@ -95,6 +762,310 @@ const EXTERNAL_SCRIPTS = [
 ];
 
 
+/***/ }),
+
+/***/ 540:
+/***/ ((module) => {
+
+
+
+/* istanbul ignore next  */
+function insertStyleElement(options) {
+  var element = document.createElement("style");
+  options.setAttributes(element, options.attributes);
+  options.insert(element, options.options);
+  return element;
+}
+module.exports = insertStyleElement;
+
+/***/ }),
+
+/***/ 565:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(601);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(314);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일 */
+
+.cu-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.cu-card {
+  width: min(520px, 92vw);
+  border-radius: 16px;
+  padding: 20px;
+  background: var(--bg, #111);
+  color: var(--fg, #eaeaea);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transform: scale(0.97);
+  animation: cu-pop 0.16s ease-out forwards;
+}
+.cu-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.cu-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.cu-pill {
+  font: 12px/1.8 system-ui;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #2a2a2a;
+  color: #cfcfcf;
+}
+.cu-sub {
+  margin: 8px 0 12px;
+  color: #9aa0a6;
+  font: 13px/1.5 system-ui;
+}
+.cu-list {
+  margin: 10px 0 16px;
+  padding-left: 18px;
+  max-height: 180px;
+  overflow: auto;
+}
+.cu-list li {
+  margin: 6px 0;
+}
+.cu-list .feat::marker {
+  content: "✨ ";
+}
+.cu-list .fix::marker {
+  content: "🔧 ";
+}
+.cu-list .perf::marker {
+  content: "⚡ ";
+}
+.cu-list .break::marker {
+  content: "⚠️ ";
+}
+.cu-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.cu-btn {
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.cu-btn.primary {
+  background: #4f7cff;
+  color: white;
+}
+.cu-btn.ghost {
+  background: transparent;
+  color: #cfcfcf;
+}
+.cu-btn:hover {
+  filter: brightness(1.05);
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #fff;
+    --fg: #111;
+  }
+  .cu-card {
+    background: #fff;
+    color: #111;
+  }
+  .cu-pill {
+    background: #eef2ff;
+    color: #1f3fb3;
+  }
+  .cu-sub {
+    color: #4b5563;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cu-card {
+    animation: none;
+    transform: none;
+  }
+}
+@keyframes cu-pop {
+  to {
+    transform: scale(1);
+  }
+}
+`, ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ 601:
+/***/ ((module) => {
+
+
+
+module.exports = function (i) {
+  return i[1];
+};
+
+/***/ }),
+
+/***/ 659:
+/***/ ((module) => {
+
+
+
+var memo = {};
+
+/* istanbul ignore next  */
+function getTarget(target) {
+  if (typeof memo[target] === "undefined") {
+    var styleTarget = document.querySelector(target);
+
+    // Special case to return head of iframe instead of iframe itself
+    if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+      try {
+        // This will throw an exception if access to iframe is blocked
+        // due to cross-origin restrictions
+        styleTarget = styleTarget.contentDocument.head;
+      } catch (e) {
+        // istanbul ignore next
+        styleTarget = null;
+      }
+    }
+    memo[target] = styleTarget;
+  }
+  return memo[target];
+}
+
+/* istanbul ignore next  */
+function insertBySelector(insert, style) {
+  var target = getTarget(insert);
+  if (!target) {
+    throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+  }
+  target.appendChild(style);
+}
+module.exports = insertBySelector;
+
+/***/ }),
+
+/***/ 734:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(601);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(314);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css);"]);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);"]);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* Pretendard 폰트 CDN */
+
+/* 전체 폰트 설정 */
+.rb-box * {
+  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif !important;
+  font-weight: 600;
+  font-size: 19px;
+}
+`, ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ 825:
+/***/ ((module) => {
+
+
+
+/* istanbul ignore next  */
+function apply(styleElement, options, obj) {
+  var css = "";
+  if (obj.supports) {
+    css += "@supports (".concat(obj.supports, ") {");
+  }
+  if (obj.media) {
+    css += "@media ".concat(obj.media, " {");
+  }
+  var needLayer = typeof obj.layer !== "undefined";
+  if (needLayer) {
+    css += "@layer".concat(obj.layer.length > 0 ? " ".concat(obj.layer) : "", " {");
+  }
+  css += obj.css;
+  if (needLayer) {
+    css += "}";
+  }
+  if (obj.media) {
+    css += "}";
+  }
+  if (obj.supports) {
+    css += "}";
+  }
+  var sourceMap = obj.sourceMap;
+  if (sourceMap && typeof btoa !== "undefined") {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
+  }
+
+  // For old IE
+  /* istanbul ignore if  */
+  options.styleTagTransform(css, styleElement, options.options);
+}
+function removeStyleElement(styleElement) {
+  // istanbul ignore if
+  if (styleElement.parentNode === null) {
+    return false;
+  }
+  styleElement.parentNode.removeChild(styleElement);
+}
+
+/* istanbul ignore next  */
+function domAPI(options) {
+  if (typeof document === "undefined") {
+    return {
+      update: function update() {},
+      remove: function remove() {}
+    };
+  }
+  var styleElement = options.insertStyleElement(options);
+  return {
+    update: function update(obj) {
+      apply(styleElement, options, obj);
+    },
+    remove: function remove() {
+      removeStyleElement(styleElement);
+    }
+  };
+}
+module.exports = domAPI;
+
 /***/ })
 
 /******/ 	});
@@ -111,7 +1082,7 @@ const EXTERNAL_SCRIPTS = [
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
+/******/ 			id: moduleId,
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
@@ -124,6 +1095,18 @@ const EXTERNAL_SCRIPTS = [
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -139,6 +1122,11 @@ const EXTERNAL_SCRIPTS = [
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/nonce */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nc = undefined;
 /******/ 	})();
 /******/ 	
 /************************************************************************/
@@ -172,7 +1160,7 @@ function injectScripts() {
  * 블랙마켓 메뉴 버튼 컴포넌트
  * RISU AI의 메뉴 영역에 표시되는 버튼
  */
-  class MenuButton extends HTMLElement {
+class MenuButton extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
       <div class="flex items-center cursor-pointer hover:text-green-500 transition-colors">
@@ -188,7 +1176,7 @@ function injectScripts() {
           <line x1="7" y1="10" x2="13" y2="10" stroke-width="2"></line>
           <circle cx="8.5" cy="10" r="1" fill="currentColor"></circle>
           <circle cx="11.5" cy="10" r="1" fill="currentColor"></circle>
-          
+           
           <!-- 정장 -->
           <path d="M6 15 L7 17 M14 15 L13 17"></path>
           <line x1="10" y1="15" x2="10" y2="18"></line>
@@ -334,199 +1322,293 @@ class App {
       }
     }
   
+    // plugin이 unload될 때 호출되는 함수
     destroy() {
       if (this.observer) this.observer.disconnect();
       console.log(`${constants/* PLUGIN_NAME */.AF} 언로드`);
     }
   }
   
-;// ./src/core/update-manager.js
+// EXTERNAL MODULE: ./src/core/update-manager.js
+var update_manager = __webpack_require__(159);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
+var injectStylesIntoStyleTag = __webpack_require__(72);
+var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleDomAPI.js
+var styleDomAPI = __webpack_require__(825);
+var styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(styleDomAPI);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertBySelector.js
+var insertBySelector = __webpack_require__(659);
+var insertBySelector_default = /*#__PURE__*/__webpack_require__.n(insertBySelector);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
+var setAttributesWithoutAttributes = __webpack_require__(56);
+var setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(setAttributesWithoutAttributes);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertStyleElement.js
+var insertStyleElement = __webpack_require__(540);
+var insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(insertStyleElement);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleTagTransform.js
+var styleTagTransform = __webpack_require__(113);
+var styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(styleTagTransform);
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/ui/styles/base.css
+var base = __webpack_require__(734);
+;// ./src/ui/styles/base.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (styleTagTransform_default());
+options.setAttributes = (setAttributesWithoutAttributes_default());
+options.insert = insertBySelector_default().bind(null, "head");
+options.domAPI = (styleDomAPI_default());
+options.insertStyleElement = (insertStyleElement_default());
+
+var update = injectStylesIntoStyleTag_default()(base/* default */.A, options);
 
 
+
+
+       /* harmony default export */ const styles_base = (base/* default */.A && base/* default */.A.locals ? base/* default */.A.locals : undefined);
+
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/ui/styles/update-dialog.css
+var update_dialog = __webpack_require__(565);
+;// ./src/ui/styles/update-dialog.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var update_dialog_options = {};
+
+update_dialog_options.styleTagTransform = (styleTagTransform_default());
+update_dialog_options.setAttributes = (setAttributesWithoutAttributes_default());
+update_dialog_options.insert = insertBySelector_default().bind(null, "head");
+update_dialog_options.domAPI = (styleDomAPI_default());
+update_dialog_options.insertStyleElement = (insertStyleElement_default());
+
+var update_dialog_update = injectStylesIntoStyleTag_default()(update_dialog/* default */.A, update_dialog_options);
+
+
+
+
+       /* harmony default export */ const styles_update_dialog = (update_dialog/* default */.A && update_dialog/* default */.A.locals ? update_dialog/* default */.A.locals : undefined);
+
+;// ./src/ui/styles/registry.js
 /**
- * unpkg에서 최신 버전의 메타데이터를 파싱
- * @returns {Promise<Object|null>} manifest 객체 또는 null
+ * Style Registry
+ * 모든 CSS 스타일을 여기서 중앙 관리합니다.
  */
-async function fetchLatestManifest() {
-  try {
-    const url = `https://unpkg.com/${constants/* PLUGIN_NAME */.AF}@latest/dist/${constants/* PLUGIN_NAME */.AF}.js`;
 
-    // HEAD 요청으로 redirect된 최종 URL 확인
-    const headResponse = await fetch(url, {
-      method: "HEAD",
-      redirect: "follow",
-    });
+// 기본 스타일 (폰트, 리셋, 전역 스타일)
 
-    // 실제 resolved 버전 확인 (예: https://unpkg.com/cdn-test1@0.2.0/dist/cdn_test1.js)
-    const resolvedUrl = headResponse.url;
-    const versionMatch = resolvedUrl.match(/@([\d.]+)\//);
 
-    if (!versionMatch) {
-      throw new Error("Version not found in resolved URL");
+// 컴포넌트 스타일
+
+
+;// ./src/ui/components/updateManager/update-dialog.js
+/**
+ * UpdateDialog Custom Element
+ * 플러그인 업데이트 확인 다이얼로그 컴포넌트
+ */
+
+const ELEMENT_TAG = "update-dialog";
+
+class UpdateDialog extends HTMLElement {
+  constructor() {
+    super();
+    this._cleanup = null;
+  }
+
+  static get observedAttributes() {
+    return [
+      "name",
+      "current-version",
+      "version",
+      "released-at",
+      "mandatory",
+      "notes",
+      "title",
+      "btn-update",
+      "btn-later",
+      "btn-skip",
+    ];
+  }
+
+  connectedCallback() {
+    this.render();
+    this.attachEventListeners();
+    // 포커스 설정
+    setTimeout(() => this.querySelector(".js-update")?.focus(), 0);
+  }
+
+  disconnectedCallback() {
+    if (this._cleanup) {
+      this._cleanup();
     }
+  }
 
-    const latestVersion = versionMatch[1];
+  get name() {
+    return this.getAttribute("name") || "";
+  }
 
-    // 실제 파일 내용에서 배너 메타데이터 추출 (옵션)
-    const content = await fetch(resolvedUrl).then((r) => r.text());
-    const bannerRegex =
-      /\/\/@name (.+?)\n\/\/@display-name (.+?)\n\/\/@version (.+?)\n\/\/@description (.+?)(?:\n|$)/;
-    const bannerMatch = content.match(bannerRegex);
+  get currentVersion() {
+    return this.getAttribute("current-version") || "0.0.0";
+  }
 
-    // 릴리즈 노트 가져오기
-    const notesUrl = `https://unpkg.com/${constants/* PLUGIN_NAME */.AF}@${latestVersion}/dist/release-notes.json`;
-    let releaseData = {};
+  get version() {
+    return this.getAttribute("version") || "0.0.0";
+  }
 
+  get releasedAt() {
+    return this.getAttribute("released-at") || new Date().toISOString();
+  }
+
+  get mandatory() {
+    return this.hasAttribute("mandatory");
+  }
+
+  get notes() {
+    const notesAttr = this.getAttribute("notes");
+    if (!notesAttr) return [];
     try {
-      const notesResponse = await fetch(notesUrl);
-      if (notesResponse.ok) {
-        const allNotes = await notesResponse.json();
-        releaseData = allNotes[latestVersion] || {};
-      }
-    } catch (error) {
-      console.warn("[UpdateManager] Failed to fetch release notes:", error);
+      return JSON.parse(notesAttr);
+    } catch {
+      return [];
     }
+  }
 
+  get i18n() {
     return {
-      version: latestVersion,
-      url: resolvedUrl,
-      name: bannerMatch?.[1]?.trim() || constants/* PLUGIN_NAME */.AF,
-      displayName:
-        bannerMatch?.[2]?.trim() || `${constants/* PLUGIN_NAME */.AF}_v${latestVersion}`,
-      description: bannerMatch?.[4]?.trim() || "",
-      mandatory: releaseData.mandatory || false,
-      notes: releaseData.notes || [],
-      released_at: releaseData.released_at || new Date().toISOString(),
+      title: this.getAttribute("title") || "플러그인 업데이트 준비 완료",
+      primary: this.getAttribute("btn-update") || "지금 업데이트",
+      later: this.getAttribute("btn-later") || "나중에",
+      skip: this.getAttribute("btn-skip") || "이번 버전 건너뛰기",
     };
-  } catch (error) {
-    console.error("[UpdateManager] Failed to fetch manifest:", error);
-    return null;
   }
-}
 
-/**
- * 버전 비교 (semver 기반)
- * @param {string} v1 - 비교할 버전 1
- * @param {string} v2 - 비교할 버전 2
- * @returns {number} v1 > v2: 1, v1 < v2: -1, v1 === v2: 0
- */
-function compareVersions(v1, v2) {
-  const parts1 = v1.split(".").map(Number);
-  const parts2 = v2.split(".").map(Number);
+  render() {
+    const t = this.i18n;
+    const mandatory = this.mandatory;
+    const notes = this.notes;
 
-  for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
-    const p1 = parts1[i] || 0;
-    const p2 = parts2[i] || 0;
-    if (p1 > p2) return 1;
-    if (p1 < p2) return -1;
-  }
-  return 0;
-}
+    this.setAttribute("role", "dialog");
+    this.setAttribute("aria-modal", "true");
+    this.className = "cu-root";
 
-/**
- * 업데이트 확인 UI
- */
-function confirmUpdate(opts) {
-  const {
-    name,
-    currentVersion,
-    manifest,
-    i18n = {},
-    mandatory = manifest.mandatory === true,
-  } = opts;
+    const releasedDate = new Date(this.releasedAt).toLocaleDateString();
+    const updateType = mandatory ? "필수 업데이트" : "선택 업데이트";
 
-  const t = Object.assign(
-    {
-      title: "업데이트 준비 완료",
-      primary: "지금 업데이트",
-      later: "나중에",
-      skip: "이번 버전 건너뛰기",
-      notes: "노트 보기",
-    },
-    i18n
-  );
-
-  const root = document.createElement("div");
-  root.setAttribute("role", "dialog");
-  root.setAttribute("aria-modal", "true");
-  root.setAttribute("class", "cu-root");
-
-  const card = document.createElement("div");
-  card.className = "cu-card";
-  card.innerHTML = `
-      <div class="cu-title">
-        <h3>${t.title}${name ? ` · ${name}` : ""}</h3>
-        <span class="cu-pill">v${currentVersion} → v${manifest.version}</span>
-      </div>
-      <div class="cu-sub">
-        ${new Date(manifest.released_at || Date.now()).toLocaleDateString()} ·
-        ${manifest.mandatory ? "필수 업데이트" : "선택 업데이트"}
-      </div>
-      <ul class="cu-list" aria-label="변경사항">
-        ${
-          (manifest.notes || [])
+    const notesList =
+      notes.length > 0
+        ? notes
             .slice(0, 8)
             .map(
               (n) =>
-                `<li class="${(n.type || "").trim()}">${escapeHtml(
-                  n.text || ""
-                )}</li>`
+                `<li class="${this.escapeHtml(n.type || "").trim()}">${this.escapeHtml(n.text || "")}</li>`
             )
-            .join("") || "<li>세부 변경사항은 릴리스 노트를 참고해주세요</li>"
-        }
-      </ul>
-      <div class="cu-actions">
-        ${
-          !mandatory
-            ? `<button class="cu-btn ghost js-later">${t.later}</button>`
-            : ""
-        }
-        ${
-          !mandatory
-            ? `<button class="cu-btn ghost js-skip">${t.skip}</button>`
-            : ""
-        }
-        <button class="cu-btn primary js-update">${t.primary}</button>
+            .join("")
+        : "<li>세부 변경사항은 릴리스 노트를 참고해주세요</li>";
+
+    this.innerHTML = `
+      <div class="cu-card">
+        <div class="cu-title">
+          <h3>${t.title}${this.name ? ` · ${this.name}` : ""}</h3>
+          <span class="cu-pill">v${this.currentVersion} → v${this.version}</span>
+        </div>
+        <div class="cu-sub">
+          ${releasedDate} · ${updateType}
+        </div>
+        <ul class="cu-list" aria-label="변경사항">
+          ${notesList}
+        </ul>
+        <div class="cu-actions">
+          ${!mandatory ? `<button class="cu-btn ghost js-later">${t.later}</button>` : ""}
+          ${!mandatory ? `<button class="cu-btn ghost js-skip">${t.skip}</button>` : ""}
+          <button class="cu-btn primary js-update">${t.primary}</button>
+        </div>
       </div>
     `;
-  root.appendChild(card);
+  }
 
-  const p = new Promise((resolve) => {
-    const onCleanup = (result) => {
-      document.removeEventListener("keydown", onKey);
-      root.remove();
-      resolve(result);
-    };
+  attachEventListeners() {
+    const card = this.querySelector(".cu-card");
+    const mandatory = this.mandatory;
+
+    // 키보드 이벤트
     const onKey = (e) => {
-      if (e.key === "Escape" && !mandatory) onCleanup({ action: "later" });
-      if (e.key === "Enter") onCleanup({ action: "update" });
+      if (e.key === "Escape" && !mandatory) {
+        this.dispatchAction("later");
+      }
+      if (e.key === "Enter") {
+        this.dispatchAction("update");
+      }
     };
-    root.addEventListener("click", (e) => {
-      if (!mandatory && e.target === root) onCleanup({ action: "later" });
+
+    // 배경 클릭
+    this.addEventListener("click", (e) => {
+      if (!mandatory && e.target === this) {
+        this.dispatchAction("later");
+      }
     });
-    card
-      .querySelector(".js-update")
-      .addEventListener("click", () =>
-        onCleanup({ action: "update", url: manifest.url })
-      );
-    if (!mandatory) {
-      card
-        .querySelector(".js-later")
-        .addEventListener("click", () => onCleanup({ action: "later" }));
-      card
-        .querySelector(".js-skip")
-        .addEventListener("click", () =>
-          onCleanup({ action: "skip", skipVersion: manifest.version })
-        );
+
+    // 버튼 클릭
+    const updateBtn = card.querySelector(".js-update");
+    if (updateBtn) {
+      updateBtn.addEventListener("click", () => this.dispatchAction("update"));
     }
+
+    if (!mandatory) {
+      const laterBtn = card.querySelector(".js-later");
+      const skipBtn = card.querySelector(".js-skip");
+
+      if (laterBtn) {
+        laterBtn.addEventListener("click", () => this.dispatchAction("later"));
+      }
+      if (skipBtn) {
+        skipBtn.addEventListener("click", () => this.dispatchAction("skip"));
+      }
+    }
+
     document.addEventListener("keydown", onKey);
-    setTimeout(() => card.querySelector(".js-update")?.focus(), 0);
-  });
 
-  document.body.appendChild(root);
-  return p;
+    // Cleanup 함수 저장
+    this._cleanup = () => {
+      document.removeEventListener("keydown", onKey);
+    };
+  }
 
-  function escapeHtml(s) {
+  dispatchAction(action) {
+    const detail = { action };
+
+    if (action === "skip") {
+      detail.skipVersion = this.version;
+    }
+
+    // Custom Event 발생
+    this.dispatchEvent(
+      new CustomEvent("update-action", {
+        detail,
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  escapeHtml(s) {
     return String(s).replace(
       /[&<>"']/g,
       (m) =>
@@ -541,88 +1623,23 @@ function confirmUpdate(opts) {
   }
 }
 
-/**
- * 업데이트 체크 및 사용자 확인
- * @param {Object} options - 옵션
- * @param {boolean} [options.silent=false] - silent 모드 (로그 최소화)
- * @param {boolean} [options.force=false] - skip 버전 무시
- * @param {Object} [options.i18n={}] - 다국어 텍스트
- * @returns {Promise<Object>} 업데이트 결과
- */
-async function checkForUpdates(options = {}) {
-  const { silent = false, force = false, i18n = {} } = options;
-
-  try {
-    const manifest = await fetchLatestManifest();
-
-    if (!manifest) {
-      if (!silent) console.log("[UpdateManager] Unable to check for updates");
-      return { available: false, error: "fetch_failed" };
-    }
-
-    const currentVersion = constants/* PLUGIN_VERSION */.jN;
-    const latestVersion = manifest.version;
-
-    // Skip 버전 확인
-    const skipKey = `${constants/* PLUGIN_NAME */.AF}_skip_version`;
-    const skipVersion = localStorage.getItem(skipKey);
-    if (!force && skipVersion === latestVersion) {
-      if (!silent)
-        console.log(
-          `[UpdateManager] Version ${latestVersion} is skipped by user`
-        );
-      return { available: false, skipped: true, version: latestVersion };
-    }
-
-    // 버전 비교
-    const comparison = compareVersions(latestVersion, currentVersion);
-
-    if (comparison <= 0) {
-      if (!silent)
-        console.log(`[UpdateManager] Already up to date (${currentVersion})`);
-      return {
-        available: false,
-        current: currentVersion,
-        latest: latestVersion,
-      };
-    }
-
-    console.log(
-      `[UpdateManager] New version available: ${currentVersion} → ${latestVersion}`
-    );
-
-    // 사용자 확인 UI 표시
-    const result = await confirmUpdate({
-      name: constants/* PLUGIN_NAME */.AF,
-      currentVersion,
-      manifest,
-      i18n,
-    });
-
-    // 결과 처리
-    if (result.action === "update") {
-      // 새 버전으로 업데이트 (페이지 리로드)
-      console.log("[UpdateManager] Updating to version", latestVersion);
-      window.location.reload();
-      return { available: true, action: "updating", version: latestVersion };
-    } else if (result.action === "skip") {
-      localStorage.setItem(skipKey, result.skipVersion);
-      console.log("[UpdateManager] Skipped version", result.skipVersion);
-      return {
-        available: true,
-        action: "skipped",
-        version: result.skipVersion,
-      };
-    } else {
-      console.log("[UpdateManager] Update postponed");
-      return { available: true, action: "later", version: latestVersion };
-    }
-  } catch (error) {
-    console.error("[UpdateManager] Check failed:", error);
-    return { available: false, error: error.message };
-  }
+// Custom Element 등록
+if (!customElements.get(ELEMENT_TAG)) {
+  customElements.define(ELEMENT_TAG, UpdateDialog);
 }
 
+const UPDATE_DIALOG_TAG = (/* unused pure expression or super */ null && (ELEMENT_TAG));
+
+;// ./src/ui/components/registry.js
+/**
+ * Web Components 중앙 레지스트리
+ * 모든 Custom Elements를 여기서 관리합니다.
+ */
+
+// UI 컴포넌트
+
+
+// 업데이트 매니저 컴포넌트
 
 
 ;// ./src/index.js
@@ -631,6 +1648,8 @@ async function checkForUpdates(options = {}) {
 
 
 
+ // Style Registry
+ // Web Components 레지스트리
 
 function printPackageVersion() {
   console.log(`${constants/* PLUGIN_NAME */.AF} v${constants/* PLUGIN_VERSION */.jN} loaded`);
@@ -640,7 +1659,7 @@ function printPackageVersion() {
 // 애플리케이션 실행
 (async () => {
   // 업데이트 체크 (백그라운드, silent 모드)
-  checkForUpdates({ silent: true }).catch(err => {
+  (0,update_manager/* checkForUpdates */.U)({ silent: true }).catch(err => {
     console.warn('[App] Update check failed:', err);
   });
 

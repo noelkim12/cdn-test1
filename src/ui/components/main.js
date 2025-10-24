@@ -87,6 +87,7 @@ export class App {
       }
     }
   
+    // plugin이 unload될 때 호출되는 함수
     destroy() {
       if (this.observer) this.observer.disconnect();
       console.log(`${PLUGIN_NAME} 언로드`);

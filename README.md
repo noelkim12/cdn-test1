@@ -150,13 +150,14 @@ cdn-test/
 │   │   ├── script-updater.js       # 스크립트 업데이터
 │   │   └── image-storage.js        # 이미지 저장소 (IndexedDB)
 │   ├── ui/                         # UI 관련
-│   │   ├── styles.js               # CSS 스타일
+│   │   ├── styles.css              # CSS 스타일 (Webpack으로 injection)
 │   │   └── components/             # UI 컴포넌트
+│   │       ├── index.js            # Web Components 레지스트리 (중앙 관리)
 │   │       ├── main.js             # 메인 앱 컴포넌트
 │   │       ├── ui/                 # UI 요소
-│   │       │   └── menu-button.js  # 메뉴 버튼
+│   │       │   └── menu-button.js  # 메뉴 버튼 (Custom Element)
 │   │       └── updateManager/      # 업데이트 매니저 UI
-│   │           └── um-component.js # 업데이트 UI 컴포넌트
+│   │           └── update-dialog.js # 업데이트 다이얼로그 (Custom Element)
 │   ├── data/                       # 데이터
 │   │   └── img.js                  # 이미지 데이터
 │   └── utils/                      # 유틸리티
@@ -166,6 +167,63 @@ cdn-test/
 ├── webpack.config.js               # Webpack 설정
 └── README.md                       # 프로젝트 문서
 ```
+
+## Web Components 아키텍처
+
+이 프로젝트는 재사용 가능한 Web Components (Custom Elements)를 사용합니다.
+
+### 컴포넌트 레지스트리 시스템
+
+모든 Custom Elements는 `src/ui/components/index.js`에서 중앙 관리됩니다.
+
+#### 구조
+```javascript
+// src/ui/components/index.js
+export * from "./ui/menu-button.js";
+export * from "./updateManager/update-dialog.js";
+```
+
+#### 새 컴포넌트 추가 방법
+
+**1단계: 컴포넌트 파일 생성**
+```javascript
+// src/ui/components/modal/confirm-dialog.js
+export class ConfirmDialog extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `<div>확인 다이얼로그</div>`;
+  }
+}
+
+const ELEMENT_TAG = "confirm-dialog";
+if (!customElements.get(ELEMENT_TAG)) {
+  customElements.define(ELEMENT_TAG, ConfirmDialog);
+}
+export { ELEMENT_TAG };
+```
+
+**2단계: 레지스트리에 등록**
+```javascript
+// src/ui/components/index.js에 한 줄 추가
+export * from "./modal/confirm-dialog.js";
+```
+
+**3단계: 사용**
+```javascript
+// 어디서든 태그로 사용 가능
+const dialog = document.createElement("confirm-dialog");
+document.body.appendChild(dialog);
+```
+
+#### 장점
+- ✅ **중앙 집중 관리**: 모든 컴포넌트를 한 곳에서 관리
+- ✅ **index.js 깔끔 유지**: 메인 파일에 import 누적 방지
+- ✅ **Tree-shaking 지원**: 사용하지 않는 컴포넌트 자동 제거
+- ✅ **재사용성**: 태그로 선언적 사용 가능
+- ✅ **캡슐화**: 각 컴포넌트가 독립적으로 동작
+
+### 현재 사용 중인 컴포넌트
+- `<menu-button-cdn-test1>`: 메뉴 버튼 컴포넌트
+- `<update-dialog>`: 업데이트 확인 다이얼로그
 
 ## 릴리즈 노트 시스템
 
