@@ -32,5 +32,15 @@
         "text": "자동 업데이트 시스템 구축"
       }
     ]
+  },
+  "0.6.0": {
+    "released_at": "2025-10-24T12:14:44.307Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "feat",
+        "text": "release note관련 버그 수정"
+      }
+    ]
   }
 }
