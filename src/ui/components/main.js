@@ -14,19 +14,18 @@ export class App {
     }
   
     async initialize() {
-      // RisuAPI 초기화
-      this.risuAPI = new RisuAPI(globalThis.__pluginApis__);
-      const accepted = await this.risuAPI.initialize();
-  
-      if (!accepted) {
-        console.log(`[${PLUGIN_NAME}] Failed to initialize`);
+      // RisuAPI 싱글톤 인스턴스 가져오기
+      this.risuAPI = RisuAPI.getInstance();
+
+      if (!this.risuAPI) {
+        console.log(`[${PLUGIN_NAME}] RisuAPI is not initialized`);
         return false;
       }
-  
+
       // UI 초기화
       this.initializeUI();
       this.startObserver();
-  
+
       console.log(`[${PLUGIN_NAME}] plugin loaded`);
       return true;
     }

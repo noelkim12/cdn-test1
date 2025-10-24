@@ -1,4 +1,5 @@
 import { PLUGIN_NAME, PLUGIN_VERSION } from "../constants.js";
+import { RisuAPI } from "./risu-api.js";
 
 /**
  * unpkg에서 최신 버전의 메타데이터를 파싱
@@ -209,17 +210,21 @@ async function updatePluginScript(manifest) {
     console.log("[UpdateManager] Parsing plugin script...");
     const parsed = parsePluginScript(scriptContent);
 
-    // 3. getDatabase(), setDatabaseLite 가져오기
-    const getDatabase = globalThis.__pluginApis__?.getDatabase;
-    if (!getDatabase) {
-      throw new Error("getDatabase is not available");
+    // 3. RisuAPI 싱글톤 인스턴스에서 getDatabase(), setDatabaseLite 가져오기
+    const risuAPI = RisuAPI.getInstance();
+    if (!risuAPI) {
+      throw new Error("RisuAPI is not initialized. Please ensure the plugin is loaded.");
     }
 
-    let setDatabaseLite;
-    try {
-      setDatabaseLite = eval("setDatabaseLite");
-    } catch (e) {
-      throw new Error("setDatabaseLite is not available");
+    const getDatabase = risuAPI.getDatabase;
+    const setDatabaseLite = risuAPI.setDatabaseLite;
+
+    if (!getDatabase) {
+      throw new Error("getDatabase is not available in RisuAPI");
+    }
+
+    if (!setDatabaseLite) {
+      throw new Error("setDatabaseLite is not available in RisuAPI");
     }
 
     // 4. 기존 플러그인 찾기 및 백업

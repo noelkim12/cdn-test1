@@ -13,23 +13,37 @@ function printPackageVersion() {
 
 // 애플리케이션 실행
 (async () => {
-  // 업데이트 체크 (백그라운드, silent 모드)
-  checkForUpdates({ silent: true }).catch(err => {
-    console.warn('[App] Update check failed:', err);
-  });
+  try {
+    // 1. RisuAPI 싱글톤 초기화 (최초 한 번만)
+    const risuAPI = new RisuAPI(globalThis.__pluginApis__);
+    const initialized = await risuAPI.initialize();
 
-  // 외부 스크립트 주입
-  injectScripts();
-  // CSS는 webpack에 의해 자동으로 주입됨
-  const app = new App();
-  await app.initialize();
+    if (!initialized) {
+      console.error(`[${PLUGIN_NAME}] Failed to initialize RisuAPI`);
+      return;
+    }
 
-  printPackageVersion();
-
-  // 언로드 핸들러 등록
-  if (globalThis?.__pluginApis__?.onUnload) {
-    globalThis.__pluginApis__.onUnload(() => {
-      app.destroy();
+    // 2. 업데이트 체크 (백그라운드, silent 모드)
+    checkForUpdates({ silent: true }).catch(err => {
+      console.warn('[App] Update check failed:', err);
     });
+
+    // 3. 외부 스크립트 주입
+    injectScripts();
+
+    // 4. App 초기화 (RisuAPI 싱글톤 사용)
+    const app = new App();
+    await app.initialize();
+
+    printPackageVersion();
+
+    // 5. 언로드 핸들러 등록
+    if (globalThis?.__pluginApis__?.onUnload) {
+      globalThis.__pluginApis__.onUnload(() => {
+        app.destroy();
+      });
+    }
+  } catch (error) {
+    console.error(`[${PLUGIN_NAME}] Initialization failed:`, error);
   }
 })();
