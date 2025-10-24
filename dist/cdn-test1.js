@@ -496,6 +496,34 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
     transform: scale(1);
   }
 }
+
+/* AlertDialog 컴포넌트 스타일 */
+.cu-alert {
+  max-width: 420px;
+  text-align: center;
+}
+
+.cu-alert-message {
+  margin: 16px 0 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg, #eaeaea);
+  white-space: pre-line;
+}
+
+.cu-alert .cu-actions {
+  justify-content: center;
+}
+
+.cu-alert .cu-btn {
+  min-width: 120px;
+}
+
+@media (prefers-color-scheme: light) {
+  .cu-alert-message {
+    color: var(--fg, #111);
+  }
+}
 `, ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
@@ -913,7 +941,143 @@ class App {
     }
   }
   
+;// ./src/ui/components/updateManager/alert-dialog.js
+/**
+ * AlertDialog Custom Element
+ * 간단한 알림 메시지를 표시하는 다이얼로그 컴포넌트
+ */
+
+const ELEMENT_TAG = "alert-dialog";
+
+class AlertDialog extends HTMLElement {
+  constructor() {
+    super();
+    this._cleanup = null;
+  }
+
+  static get observedAttributes() {
+    return ["message", "btn-confirm"];
+  }
+
+  connectedCallback() {
+    this.render();
+    this.attachEventListeners();
+    // 포커스 설정
+    setTimeout(() => this.querySelector(".js-confirm")?.focus(), 0);
+  }
+
+  disconnectedCallback() {
+    if (this._cleanup) {
+      this._cleanup();
+    }
+  }
+
+  get message() {
+    return this.getAttribute("message") || "";
+  }
+
+  get confirmText() {
+    return this.getAttribute("btn-confirm") || "확인";
+  }
+
+  render() {
+    this.setAttribute("role", "dialog");
+    this.setAttribute("aria-modal", "true");
+    this.className = "cu-root";
+
+    this.innerHTML = `
+      <div class="cu-card cu-alert">
+        <div class="cu-alert-message">
+          ${this.escapeHtml(this.message)}
+        </div>
+        <div class="cu-actions">
+          <button class="cu-btn primary js-confirm">${this.confirmText}</button>
+        </div>
+      </div>
+    `;
+  }
+
+  attachEventListeners() {
+    const card = this.querySelector(".cu-card");
+
+    // 키보드 이벤트
+    const onKey = (e) => {
+      if (e.key === "Enter" || e.key === "Escape") {
+        this.dispatchConfirm();
+      }
+    };
+
+    // 확인 버튼 클릭
+    const confirmBtn = card.querySelector(".js-confirm");
+    if (confirmBtn) {
+      confirmBtn.addEventListener("click", () => this.dispatchConfirm());
+    }
+
+    document.addEventListener("keydown", onKey);
+
+    // Cleanup 함수 저장
+    this._cleanup = () => {
+      document.removeEventListener("keydown", onKey);
+    };
+  }
+
+  dispatchConfirm() {
+    // Custom Event 발생
+    this.dispatchEvent(
+      new CustomEvent("alert-confirm", {
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  escapeHtml(s) {
+    return String(s).replace(
+      /[&<>"']/g,
+      (m) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        }[m])
+    );
+  }
+}
+
+// Custom Element 등록
+if (!customElements.get(ELEMENT_TAG)) {
+  customElements.define(ELEMENT_TAG, AlertDialog);
+}
+
+const ALERT_DIALOG_TAG = ELEMENT_TAG;
+
+/**
+ * AlertDialog를 표시하고 사용자 확인을 기다림
+ * @param {string} message - 표시할 메시지
+ * @param {string} [confirmText="확인"] - 확인 버튼 텍스트
+ * @returns {Promise<void>}
+ */
+function showAlert(message, confirmText = "확인") {
+  return new Promise((resolve) => {
+    const dialog = document.createElement(ALERT_DIALOG_TAG);
+    dialog.setAttribute("message", message);
+    dialog.setAttribute("btn-confirm", confirmText);
+
+    const handler = () => {
+      dialog.removeEventListener("alert-confirm", handler);
+      dialog.remove();
+      resolve();
+    };
+
+    dialog.addEventListener("alert-confirm", handler);
+    document.body.appendChild(dialog);
+  });
+}
+
 ;// ./src/core/update-manager.js
+
 
 
 
@@ -1324,7 +1488,8 @@ async function checkForUpdates(options = {}) {
 
       if (updateResult.success) {
         console.log("[UpdateManager] Plugin script updated successfully");
-        // 페이지 리로드하여 새 스크립트 적용
+        // 업데이트 성공 알림 표시 후 리로드
+        await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
         window.location.reload();
         return { available: true, action: "updated", version: latestVersion };
       } else {
@@ -1452,7 +1617,7 @@ var update_dialog_update = injectStylesIntoStyleTag_default()(update_dialog/* de
  * 플러그인 업데이트 확인 다이얼로그 컴포넌트
  */
 
-const ELEMENT_TAG = "update-dialog";
+const update_dialog_ELEMENT_TAG = "update-dialog";
 
 class UpdateDialog extends HTMLElement {
   constructor() {
@@ -1651,11 +1816,11 @@ class UpdateDialog extends HTMLElement {
 }
 
 // Custom Element 등록
-if (!customElements.get(ELEMENT_TAG)) {
-  customElements.define(ELEMENT_TAG, UpdateDialog);
+if (!customElements.get(update_dialog_ELEMENT_TAG)) {
+  customElements.define(update_dialog_ELEMENT_TAG, UpdateDialog);
 }
 
-const UPDATE_DIALOG_TAG = (/* unused pure expression or super */ null && (ELEMENT_TAG));
+const UPDATE_DIALOG_TAG = (/* unused pure expression or super */ null && (update_dialog_ELEMENT_TAG));
 
 ;// ./src/ui/components/registry.js
 /**
@@ -1667,6 +1832,7 @@ const UPDATE_DIALOG_TAG = (/* unused pure expression or super */ null && (ELEMEN
 
 
 // 업데이트 매니저 컴포넌트
+
 
 
 ;// ./src/index.js

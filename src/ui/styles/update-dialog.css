@@ -114,3 +114,31 @@
     transform: scale(1);
   }
 }
+
+/* AlertDialog 컴포넌트 스타일 */
+.cu-alert {
+  max-width: 420px;
+  text-align: center;
+}
+
+.cu-alert-message {
+  margin: 16px 0 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg, #eaeaea);
+  white-space: pre-line;
+}
+
+.cu-alert .cu-actions {
+  justify-content: center;
+}
+
+.cu-alert .cu-btn {
+  min-width: 120px;
+}
+
+@media (prefers-color-scheme: light) {
+  .cu-alert-message {
+    color: var(--fg, #111);
+  }
+}

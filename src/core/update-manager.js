@@ -1,5 +1,6 @@
 import { PLUGIN_NAME, PLUGIN_VERSION } from "../constants.js";
 import { RisuAPI } from "./risu-api.js";
+import { showAlert } from "../ui/components/updateManager/alert-dialog.js";
 
 /**
  * unpkg에서 최신 버전의 메타데이터를 파싱
@@ -408,7 +409,8 @@ export async function checkForUpdates(options = {}) {
 
       if (updateResult.success) {
         console.log("[UpdateManager] Plugin script updated successfully");
-        // 페이지 리로드하여 새 스크립트 적용
+        // 업데이트 성공 알림 표시 후 리로드
+        await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
         window.location.reload();
         return { available: true, action: "updated", version: latestVersion };
       } else {
