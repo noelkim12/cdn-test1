@@ -88,13 +88,6 @@ npm run dev
 npm run build
 ```
 
-### 4. 버전 동기화
-```bash
-npm run sync-version
-```
-- constants.js의 PLUGIN_VERSION을 읽어서 package.json의 version을 자동 동기화
-- 버전이 이미 동일하면 변경하지 않음
-
 ## 프로젝트 구조
 
 ```

@@ -22,7 +22,7 @@ module.exports = {
   // 출력 설정 (보통 dist 폴더에 번들 파일 생성)
   output: {
     path: path.resolve(__dirname, 'dist'), // 절대 경로 사용 권장
-    filename: 'cdn_test1.js', // 파일명 패턴 예시: '[name].js', '[name].[hash].js', '[name].[chunkhash:8].js', '[id].js'
+    filename: `${pkg.name}.js`, // 파일명 패턴 예시: '[name].js', '[name].[hash].js', '[name].[chunkhash:8].js', '[id].js'
     // 네이밍 컨벤션: kebab-case (cdn-test1.js), snake_case (cdn_test1.js), camelCase (cdnTest1.js), PascalCase (CdnTest1.js)
     library: {
       type: 'var', // 'var', 'this', 'window', 'global', 'commonjs2' 등
