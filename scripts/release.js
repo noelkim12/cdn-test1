@@ -20,28 +20,53 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { execSync } = require('node:child_process');
+const readline = require('node:readline');
 
-// 인자 파싱
-const args = process.argv.slice(2);
-const versionType = args[0]; // patch, minor, major
-const releaseNote = args[1] || ''; // 릴리즈 노트 텍스트
+// 사용자 입력을 받는 함수
+function askQuestion(query) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
 
-// 유효성 검사
-if (!versionType || !['patch', 'minor', 'major'].includes(versionType)) {
-  console.error('❌ Error: Version type must be "patch", "minor", or "major"');
-  console.log('\n사용법:');
-  console.log('  npm run release -- patch "버그 수정 내용"');
-  console.log('  npm run release -- minor "새 기능 설명"');
-  console.log('  npm run release -- major "Breaking Change 설명"');
-  process.exit(1);
+  return new Promise(resolve => {
+    rl.question(query, (answer) => {
+      rl.close();
+      resolve(answer);
+    });
+  });
 }
 
-if (!releaseNote) {
-  console.error('❌ Error: Release note is required');
-  console.log('\n사용법:');
-  console.log('  npm run release -- patch "버그 수정 내용"');
-  process.exit(1);
-}
+// 메인 함수
+async function main() {
+  // 인자 파싱
+  const args = process.argv.slice(2);
+  let versionType = args[0]; // patch, minor, major
+  let releaseNote = args[1] || ''; // 릴리즈 노트 텍스트
+
+  // 버전 타입 유효성 검사
+  if (!versionType || !['patch', 'minor', 'major'].includes(versionType)) {
+    console.error('❌ Error: Version type must be "patch", "minor", or "major"');
+    console.log('\n사용법:');
+    console.log('  npm run release -- patch "버그 수정 내용"');
+    console.log('  npm run release:patch (대화형)');
+    console.log('  npm run release -- minor "새 기능 설명"');
+    console.log('  npm run release:minor (대화형)');
+    console.log('  npm run release -- major "Breaking Change 설명"');
+    console.log('  npm run release:major (대화형)');
+    process.exit(1);
+  }
+
+  // 릴리즈 노트가 없으면 대화형으로 입력받기
+  if (!releaseNote) {
+    console.log(`\n📝 ${versionType} 버전 릴리즈를 진행합니다.`);
+    releaseNote = await askQuestion('릴리즈 노트를 입력하세요: ');
+
+    if (!releaseNote.trim()) {
+      console.error('\n❌ Error: Release note is required (릴리즈 노트는 필수입니다)');
+      process.exit(1);
+    }
+  }
 
 // 경로 설정
 const rootDir = path.resolve(__dirname, '..');
@@ -373,11 +398,18 @@ try {
   console.log('\n참고: 패키지는 npm에 성공적으로 배포되었습니다!');
 }
 
-// 완료
-console.log('\n✨ Release automation completed successfully!\n');
-console.log('📦 Package Information:');
-console.log(`   Name: ${packageJson.name}`);
-console.log(`   Version: ${newVersion}`);
-console.log(`   Release Note: ${releaseNote}`);
-console.log(`\n🔗 View on npm: https://www.npmjs.com/package/${packageJson.name}`);
-console.log(`🔗 View on unpkg: https://unpkg.com/${packageJson.name}@${newVersion}/\n`);
+  // 완료
+  console.log('\n✨ Release automation completed successfully!\n');
+  console.log('📦 Package Information:');
+  console.log(`   Name: ${packageJson.name}`);
+  console.log(`   Version: ${newVersion}`);
+  console.log(`   Release Note: ${releaseNote}`);
+  console.log(`\n🔗 View on npm: https://www.npmjs.com/package/${packageJson.name}`);
+  console.log(`🔗 View on unpkg: https://unpkg.com/${packageJson.name}@${newVersion}/\n`);
+}
+
+// 메인 함수 실행
+main().catch(error => {
+  console.error('\n❌ Unexpected error:', error);
+  process.exit(1);
+});

@@ -1,6 +1,5 @@
 import { PLUGIN_NAME, PLUGIN_VERSION } from "./constants.js";
 import { RisuAPI } from "./core/risu-api.js";
-import "./ui/styles.js"; // CSS 자동 import (webpack이 처리)
 import { injectScripts } from "./utils/script-injector.js";
 import { App } from "./ui/components/main.js";
 import { checkForUpdates } from "./core/update-manager.js";

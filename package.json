@@ -20,7 +20,10 @@
     "dev": "webpack --mode production --watch",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
-    "release": "node scripts/release.js"
+    "release": "node scripts/release.js",
+    "release:minor": "node scripts/release.js -- minor",
+    "release:patch": "node scripts/release.js -- patch",
+    "release:major": "node scripts/release.js -- major"
   },
   "devDependencies": {
     "css-loader": "^7.1.2",

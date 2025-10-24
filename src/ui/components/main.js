@@ -1,6 +1,5 @@
 import { PLUGIN_NAME } from "../../constants";
 import { MENU_BUTTON_TAG } from "./ui/menu-button";
-import { injectStyles } from "../styles";
 import { RisuAPI } from "../../core/risu-api";
 import "winbox";
 
@@ -33,8 +32,6 @@ export class App {
     }
   
     initializeUI() {
-      // 스타일 주입
-      injectStyles();
     }
   
     openModuleBox() {
