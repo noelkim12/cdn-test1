@@ -49,9 +49,19 @@ module.exports = {
     ],
   },
   
+  // 모듈 로더 설정
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+
   // 모듈 해석 설정 (자주 사용하는 확장자 우선순위로 배열)
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'] 
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css']
   },
   
   // 플러그인 설정 (순서대로 실행됨)

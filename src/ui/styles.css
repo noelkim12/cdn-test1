@@ -1,0 +1,127 @@
+/* Pretendard 폰트 CDN */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("//fonts.googleapis.com/earlyaccess/notosanskr.css");
+
+/* 전체 폰트 설정 */
+.rb-box * {
+  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif !important;
+  font-weight: 600;
+  font-size: 19px;
+}
+
+/* 업데이트 매니저 관련 */
+
+.cu-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.cu-card {
+  width: min(520px, 92vw);
+  border-radius: 16px;
+  padding: 20px;
+  background: var(--bg, #111);
+  color: var(--fg, #eaeaea);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transform: scale(0.97);
+  animation: cu-pop 0.16s ease-out forwards;
+}
+.cu-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.cu-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.cu-pill {
+  font: 12px/1.8 system-ui;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #2a2a2a;
+  color: #cfcfcf;
+}
+.cu-sub {
+  margin: 8px 0 12px;
+  color: #9aa0a6;
+  font: 13px/1.5 system-ui;
+}
+.cu-list {
+  margin: 10px 0 16px;
+  padding-left: 18px;
+  max-height: 180px;
+  overflow: auto;
+}
+.cu-list li {
+  margin: 6px 0;
+}
+.cu-list .feat::marker {
+  content: "✨ ";
+}
+.cu-list .fix::marker {
+  content: "🔧 ";
+}
+.cu-list .perf::marker {
+  content: "⚡ ";
+}
+.cu-list .break::marker {
+  content: "⚠️ ";
+}
+.cu-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.cu-btn {
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.cu-btn.primary {
+  background: #4f7cff;
+  color: white;
+}
+.cu-btn.ghost {
+  background: transparent;
+  color: #cfcfcf;
+}
+.cu-btn:hover {
+  filter: brightness(1.05);
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #fff;
+    --fg: #111;
+  }
+  .cu-card {
+    background: #fff;
+    color: #111;
+  }
+  .cu-pill {
+    background: #eef2ff;
+    color: #1f3fb3;
+  }
+  .cu-sub {
+    color: #4b5563;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cu-card {
+    animation: none;
+    transform: none;
+  }
+}
+@keyframes cu-pop {
+  to {
+    transform: scale(1);
+  }
+}
