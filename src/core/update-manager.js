@@ -227,9 +227,10 @@ function checkVersionUpdateNeeded(latestVersion, currentVersion, silent) {
  */
 async function executeUpdate(manifest, latestVersion) {
   console.log("[UpdateManager] Updating to version", latestVersion);
+  console.log("update test")  
   const updateResult = await updatePluginScript(manifest);
 
-  if (updateResult.success) {
+  if (updateResult.success) {  
     console.log("[UpdateManager] Plugin script updated successfully");
     await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
     window.location.reload();

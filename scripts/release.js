@@ -90,23 +90,16 @@ try {
   process.exit(1);
 }
 
-// 2. Git working directory clean 확인
+// 2. Git working directory 상태 확인 (경고만 표시)
 try {
   const status = execSync('git status --porcelain', { cwd: rootDir, encoding: 'utf8' });
   if (status.trim()) {
-    console.error('❌ Error: Git working directory not clean (Git 작업 디렉토리가 깨끗하지 않습니다)');
-    console.log('\n💡 해결 방법: 먼저 변경사항을 커밋하거나 stash하세요');
-    console.log('\n커밋되지 않은 변경사항:');
+    console.warn('⚠️  Warning: Git working directory has uncommitted changes');
+    console.log('📝 These changes will be included in the release commit:');
     console.log(status);
-    console.log('옵션:');
-    console.log('  1. 변경사항 커밋:');
-    console.log('     git add .');
-    console.log('     git commit -m "커밋 메시지"');
-    console.log('\n  2. 변경사항 임시 저장:');
-    console.log('     git stash');
-    console.log('\n  3. 변경사항 폐기 (⚠️  주의: 복구 불가):');
-    console.log('     git reset --hard');
-    process.exit(1);
+    console.log('✅ Continuing with release...\n');
+  } else {
+    console.log('✅ Git working directory clean');
   }
 } catch (error) {
   console.error('❌ Failed to check git status (Git 상태 확인 실패)');
@@ -235,10 +228,11 @@ try {
   process.exit(1);
 }
 
-// 4. Git commit & tag (빌드 결과물 포함)
+// 4. Git commit & tag (모든 변경사항 포함)
 console.log('\n📝 Step 4: Creating Git commit and tag...');
 try {
-  execSync('git add package.json package-lock.json dist/', {
+  // 모든 변경사항을 하나의 커밋으로 통합 (작업 중 변경사항 + 릴리즈 변경사항)
+  execSync('git add .', {
     cwd: rootDir,
     stdio: 'inherit'
   });
@@ -257,11 +251,11 @@ try {
   console.log(`✅ Git commit and tag created: v${newVersion}`);
 } catch (error) {
   console.error('❌ Failed to create Git commit/tag (Git 커밋/태그 생성 실패)');
-  console.log('\n💡 일반적인 문제:');
+  console.log('\n�� 일반적인 문제:');
   console.log('  1. Git이 초기화되지 않음');
   console.log('     → git init');
-  console.log('  2. 이미 스테이징된 파일 충돌');
-  console.log('     → git reset');
+  console.log('  2. 커밋할 변경사항이 없음');
+  console.log('     → 정상적인 경우입니다');
   console.log('  3. 태그가 이미 존재함');
   console.log('     → git tag -d v' + newVersion);
   console.log('  4. 커밋 메시지에 특수문자 포함');

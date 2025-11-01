@@ -5,3 +5,5 @@ node_modules
 
 # Auto-generated files (do not commit)
 src/core/plugin-config.js
+src/core/dev-reload.js
+dist/src_core*

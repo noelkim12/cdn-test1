@@ -1,10 +1,11 @@
 //@name cdn-test1
-//@display-name cdn-test1_v0.6.8
-//@version 0.6.8
+//@display-name cdn-test1_v0.6.9
+//@version 0.6.9
 //@description Cdn Test1 for RISU AI
 //@arg test123 string
 //@arg watchTest21 int
-//@link https://unpkg.com/cdn-test1@0.6.8/dist/cdn-test1.js
+
+//@link https://unpkg.com/cdn-test1@0.6.9/dist/cdn-test1.js
 var cdnTest1;
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
@@ -830,7 +831,7 @@ const PLUGIN_NAME =
    true ? "cdn-test1" : 0;
 
 const PLUGIN_VERSION =
-   true ? "0.6.8" : 0;
+   true ? "0.6.9" : 0;
 
 const PLUGIN_DESCRIPTION =
   (/* unused pure expression or super */ null && ( true ? "Cdn Test1 for RISU AI" : 0));
@@ -2114,9 +2115,10 @@ function checkVersionUpdateNeeded(latestVersion, currentVersion, silent) {
  */
 async function executeUpdate(manifest, latestVersion) {
   console.log("[UpdateManager] Updating to version", latestVersion);
+  console.log("update test")  
   const updateResult = await updatePluginScript(manifest);
 
-  if (updateResult.success) {
+  if (updateResult.success) {  
     console.log("[UpdateManager] Plugin script updated successfully");
     await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
     window.location.reload();
@@ -2248,25 +2250,32 @@ async function checkForUpdates(options = {}) {
       return;
     }
 
-    // 2. 업데이트 체크 (백그라운드, silent 모드-로그 최소화)
-    checkForUpdates({ silent: true }).catch(err => {
-      console.warn('[App] Update check failed:', err);
-    });
+    // 2. 개발 모드일 때만 Hot Reload 활성화
+    if (false) // removed by dead control flow
+{}
 
-    // 3. 외부 스크립트 import(script 태그 추가)
+    // 3. 업데이트 체크 (백그라운드, silent 모드-로그 최소화)
+    // 개발 모드에서는 업데이트 체크 비활성화
+    if (true) {
+      checkForUpdates({ silent: true }).catch(err => {
+        console.warn('[App] Update check failed:', err);
+      });
+    }
+
+    // 4. 외부 스크립트 import(script 태그 추가)
     injectScripts();
 
-    // 4. App 초기화
+    // 5. App 초기화
     const app = new App();
     await app.initialize();
 
     console.log(`${constants/* PLUGIN_NAME */.AF} v${constants/* PLUGIN_VERSION */.jN} loaded`);
 
-    // 5. 언로드 핸들러 등록
+    // 6. 언로드 핸들러 등록
     risuAPI.onUnload(() => {
       app.destroy();
     });
-    
+
   } catch (error) {
     console.error(`[${constants/* PLUGIN_NAME */.AF}] Initialization failed:`, error);
   }

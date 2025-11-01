@@ -1,6 +1,6 @@
 /**
  * Webpack 설정 파일
- * 
+ *
  * 일반적인 작성 규칙:
  * 1. entry: 진입점은 보통 src/index.js 또는 src/main.js
  * 2. output: dist 폴더에 번들 파일 생성이 일반적
@@ -16,11 +16,12 @@ const webpack = require('webpack');
 const pkg = require('./package.json');
 const { toCamelCase, toSnakeCase, toKebabCase } = require('./scripts/script-util.js');
 const { PluginArgsWebpackPlugin, generateBannerArgs } = require('./scripts/webpack-plugin-args.js');
+const { DevModeWebpackPlugin, getDevModeBanner } = require('./scripts/webpack-plugin-devmode.js');
 
 module.exports = {
   // 진입점 파일 (일반적으로 src/index.js 또는 src/main.js 사용)
   entry: './src/index.js',
-  
+
   // 출력 설정 (보통 dist 폴더에 번들 파일 생성)
   output: {
     path: path.resolve(__dirname, 'dist'), // 절대 경로 사용 권장
@@ -34,10 +35,10 @@ module.exports = {
       keep: /release-notes\.json$/ // release-notes.json은 삭제하지 않음
     }
   },
-  
+
   // 모드 설정 (development: 개발용, production: 배포용)
   mode: 'production',
-  
+
   // 최적화 설정 (프로덕션에서는 압축 활성화 권장)
   optimization: {
     minimize: false, // 프로덕션에서는 true 권장
@@ -52,7 +53,7 @@ module.exports = {
       }),
     ],
   },
-  
+
   // 모듈 로더 설정
   module: {
     rules: [
@@ -81,9 +82,15 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.css']
   },
-  
+
   // 플러그인 설정 (순서대로 실행됨)
   plugins: [
+    // Development Mode Hot Reload (개발 모드 전용)
+    new DevModeWebpackPlugin({
+      wssUrl: 'ws://localhost:13131',
+      outputFilePath: path.resolve(__dirname, 'src/core/dev-reload.js'),
+    }),
+
     // Plugin Args 자동 생성 (빌드 전에 실행되어야 함)
     new PluginArgsWebpackPlugin({
       argsFilePath: path.resolve(__dirname, 'src/plugin-args.json'),
@@ -95,6 +102,7 @@ module.exports = {
       __PLUGIN_NAME__: JSON.stringify(pkg.name),
       __PLUGIN_VERSION__: JSON.stringify(pkg.version),
       __PLUGIN_DESCRIPTION__: JSON.stringify(pkg.description),
+      __DEV_MODE__: JSON.stringify(process.env.NODE_ENV === 'development'),
     }),
 
     // 배너 (package.json + plugin-args.json 기반)
@@ -104,9 +112,9 @@ module.exports = {
 //@version ${pkg.version}
 //@description ${pkg.description}
 ${generateBannerArgs(path.resolve(__dirname, 'src/plugin-args.json'))}
+${getDevModeBanner()}
 //@link https://unpkg.com/${pkg.name}@${pkg.version}/dist/${toKebabCase(pkg.name)}.js`,
       raw: true // 원시 문자열로 처리 (헤더 주석용)
     })
   ],
 };
-
