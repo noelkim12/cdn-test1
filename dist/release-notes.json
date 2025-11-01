@@ -82,5 +82,15 @@
         "text": "css 충돌 방지용 로직개선, Risu Plugin 변수관리용 lombok like 기능추가"
       }
     ]
+  },
+  "0.6.5": {
+    "released_at": "2025-11-01T16:33:49.845Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "fix",
+        "text": "업데이터 오류 수정"
+      }
+    ]
   }
 }
