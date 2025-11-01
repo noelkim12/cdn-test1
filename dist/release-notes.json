@@ -72,5 +72,15 @@
         "text": "update alert 개선 "
       }
     ]
+  },
+  "0.6.4": {
+    "released_at": "2025-11-01T16:05:36.509Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "fix",
+        "text": "css 충돌 방지용 로직개선, Risu Plugin 변수관리용 lombok like 기능추가"
+      }
+    ]
   }
 }
