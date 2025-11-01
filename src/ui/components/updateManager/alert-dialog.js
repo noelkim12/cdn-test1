@@ -21,8 +21,8 @@ export class AlertDialog extends HTMLElement {
   connectedCallback() {
     this.render();
     this.attachEventListeners();
-    // 포커스 설정
-    setTimeout(() => this.querySelector(`.${updateDialogStyles.udBtnPrimary}`)?.focus(), 0);
+    // 포커스 설정 - data 속성으로 안전하게 선택
+    setTimeout(() => this.querySelector('[data-confirm-btn]')?.focus(), 0);
   }
 
   disconnectedCallback() {
@@ -45,20 +45,18 @@ export class AlertDialog extends HTMLElement {
     this.className = updateDialogStyles.udRoot;
 
     this.innerHTML = `
-      <div class="${updateDialogStyles.udCard} ${updateDialogStyles.udAlert}">
+      <div class="${updateDialogStyles.udCard} ${updateDialogStyles.udAlert}" data-alert-card>
         <div class="${updateDialogStyles.udAlertMessage}">
           ${this.escapeHtml(this.message)}
         </div>
         <div class="${updateDialogStyles.udActions}">
-          <button class="cu-btn primary js-confirm">${this.confirmText}</button>
+          <button class="${updateDialogStyles.udBtnPrimary}" data-confirm-btn>${this.confirmText}</button>
         </div>
       </div>
     `;
   }
 
   attachEventListeners() {
-    const card = this.querySelector(`.${updateDialogStyles.udCard}`);
-
     // 키보드 이벤트
     const onKey = (e) => {
       if (e.key === "Enter" || e.key === "Escape") {
@@ -66,8 +64,8 @@ export class AlertDialog extends HTMLElement {
       }
     };
 
-    // 확인 버튼 클릭
-    const confirmBtn = card.querySelector(`.${updateDialogStyles.udBtnPrimary}`);
+    // 확인 버튼 클릭 - data 속성으로 안전하게 선택
+    const confirmBtn = this.querySelector('[data-confirm-btn]');
     if (confirmBtn) {
       confirmBtn.addEventListener("click", () => this.dispatchConfirm());
     }

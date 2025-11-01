@@ -31,8 +31,8 @@ export class UpdateDialog extends HTMLElement {
   connectedCallback() {
     this.render();
     this.attachEventListeners();
-    // 포커스 설정
-    setTimeout(() => this.querySelector(`.${updateDialogStyles.udBtnPrimary}`)?.focus(), 0);
+    // 포커스 설정 - data 속성으로 안전하게 선택
+    setTimeout(() => this.querySelector('[data-action="update"]')?.focus(), 0);
   }
 
   disconnectedCallback() {
@@ -105,7 +105,7 @@ export class UpdateDialog extends HTMLElement {
         : "<li>세부 변경사항은 릴리스 노트를 참고해주세요</li>";
 
     this.innerHTML = `
-      <div class="${s.udCard}">
+      <div class="${s.udCard}" data-update-card>
         <div class="${s.udTitle}">
           <h3>${t.title}${this.name ? ` · ${this.name}` : ""}</h3>
           <span class="${s.udPill}">v${this.currentVersion} → v${this.version}</span>
@@ -117,17 +117,15 @@ export class UpdateDialog extends HTMLElement {
           ${notesList}
         </ul>
         <div class="${s.udActions}">
-          ${!mandatory ? `<button class="${s.udBtnGhost}">${t.later}</button>` : ""}
-          ${!mandatory ? `<button class="${s.udBtnGhost}">${t.skip}</button>` : ""}
-          <button class="${s.udBtnPrimary}">${t.primary}</button>
+          ${!mandatory ? `<button class="${s.udBtnGhost}" data-action="later">${t.later}</button>` : ""}
+          ${!mandatory ? `<button class="${s.udBtnGhost}" data-action="skip">${t.skip}</button>` : ""}
+          <button class="${s.udBtnPrimary}" data-action="update">${t.primary}</button>
         </div>
       </div>
     `;
   }
 
   attachEventListeners() {
-    const s = updateDialogStyles;
-    const card = this.querySelector(`.${s.udCard}`);
     const mandatory = this.mandatory;
 
     // 키보드 이벤트
@@ -147,16 +145,11 @@ export class UpdateDialog extends HTMLElement {
       }
     });
 
-    // 버튼 클릭
-    const buttons = card.querySelectorAll(`.${s.udBtnPrimary}, .${s.udBtnGhost}`);
-    buttons.forEach((btn, index) => {
-      if (btn.classList.contains(s.udBtnPrimary)) {
-        btn.addEventListener("click", () => this.dispatchAction("update"));
-      } else if (!mandatory) {
-        // Ghost 버튼들: 첫 번째는 later, 두 번째는 skip
-        const action = index === 0 ? "later" : "skip";
-        btn.addEventListener("click", () => this.dispatchAction(action));
-      }
+    // 버튼 클릭 - data-action 속성으로 안전하게 처리
+    const buttons = this.querySelectorAll('[data-action]');
+    buttons.forEach((btn) => {
+      const action = btn.getAttribute('data-action');
+      btn.addEventListener("click", () => this.dispatchAction(action));
     });
 
     document.addEventListener("keydown", onKey);
