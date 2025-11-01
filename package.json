@@ -1,6 +1,6 @@
 {
   "name": "cdn-test1",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "Cdn Test1 for RISU AI",
   "main": "src/index.js",
   "browser": "dist/cdn_test1.js",
