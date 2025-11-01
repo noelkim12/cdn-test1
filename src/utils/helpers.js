@@ -15,3 +15,5 @@ export function parseHash() {
     return { path: "/edit/:id", params: { id: Number(parts[1]) } };
   return { path: "/", params: {} };
 }
+
+

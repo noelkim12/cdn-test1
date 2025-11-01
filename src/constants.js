@@ -3,13 +3,13 @@
  * 개발 환경(webpack 없이 직접 실행)을 위한 fallback 제공
  */
 export const PLUGIN_NAME =
-  typeof __PLUGIN_NAME__ !== 'undefined' ? __PLUGIN_NAME__ : "cdn-test1";
+  typeof __PLUGIN_NAME__ !== 'undefined' ? __PLUGIN_NAME__ : `${프로젝트명}`;
 
 export const PLUGIN_VERSION =
   typeof __PLUGIN_VERSION__ !== 'undefined' ? __PLUGIN_VERSION__ : "0.0.0-dev";
 
 export const PLUGIN_DESCRIPTION =
-  typeof __PLUGIN_DESCRIPTION__ !== 'undefined' ? __PLUGIN_DESCRIPTION__ : "Cdn Test1 for RISU AI";
+  typeof __PLUGIN_DESCRIPTION__ !== 'undefined' ? __PLUGIN_DESCRIPTION__ : `${프로젝트명} for RISU AI`;
 
 export const RANDOM_HASH = "";
 

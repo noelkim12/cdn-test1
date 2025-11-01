@@ -1,6 +1,7 @@
 import { PLUGIN_NAME } from "../../constants";
 import { MENU_BUTTON_TAG } from "./ui/menu-button";
 import { RisuAPI } from "../../core/risu-api";
+import { baseStyles } from "../styles/index.js";
 import "winbox";
 
 // 메인 애플리케이션 클래스
@@ -8,9 +9,10 @@ export class App {
     constructor() {
       this.risuAPI = null;
       this.observer = null;
-      this.moduleBox = null;
-      this.moduleBoxRoot = document.createElement("div");
-      this.moduleBoxRoot.className = "sample-wrap";
+      this.pluginWindow = null;
+      this.pluginWindowRoot = document.createElement("div");
+      // CSS Modules 클래스 사용 (자동으로 해시된 고유 클래스명)
+      this.pluginWindowRoot.className = baseStyles.container;
     }
   
     async initialize() {
@@ -24,7 +26,7 @@ export class App {
 
       // UI 초기화
       this.initializeUI();
-      this.startObserver();
+      this.startObserver(); 
 
       console.log(`[${PLUGIN_NAME}] plugin loaded`);
       return true;
@@ -33,25 +35,25 @@ export class App {
     initializeUI() {
     }
   
-    openModuleBox() {
-      if (this.moduleBox) return;
+    openPluginWindow() {
+      if (this.pluginWindow) return;
   
       const winboxConfig = {
-        title: "CDN TEST",
+        title: `${PLUGIN_NAME}`,
         x: "center",
         y: "center",
         width: Math.min(1080, window.innerWidth * 0.9) + "px",
         height: Math.min(800, window.innerHeight * 0.8) + "px",
-        mount: this.moduleBoxRoot,
+        mount: this.pluginWindowRoot,
         background: "#0f131a",
         class: ["no-full", "no-max", "no-min", "rb-box"],
         onclose: () => {
-          this.moduleBox = null;
+          this.pluginWindow = null;
           location.hash = "";
         },
       };
   
-      this.moduleBox = new WinBox(winboxConfig);
+      this.pluginWindow = new WinBox(winboxConfig);
       this.render();
     }
   
@@ -76,13 +78,13 @@ export class App {
       let burgerEl = document.querySelector(
         "div.absolute.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
       );
-      if (burgerEl && !burgerEl.classList.contains("sample-btn-class")) {
+      if (burgerEl && !burgerEl.classList.contains(`${PLUGIN_NAME}-btn-class`)) {
         const buttonDiv = document.createElement(MENU_BUTTON_TAG);
         buttonDiv.addEventListener("click", () => {
-          this.openModuleBox();
+          this.openPluginWindow();
         });
         burgerEl.appendChild(buttonDiv);
-        burgerEl.classList.add("sample-btn-class");
+        burgerEl.classList.add(`${PLUGIN_NAME}-btn-class`);
       }
     }
   

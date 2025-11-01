@@ -14,6 +14,8 @@ const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const pkg = require('./package.json');
+const { toCamelCase, toSnakeCase, toKebabCase } = require('./scripts/script-util.js');
+const { PluginArgsWebpackPlugin, generateBannerArgs } = require('./scripts/webpack-plugin-args.js');
 
 module.exports = {
   // 진입점 파일 (일반적으로 src/index.js 또는 src/main.js 사용)
@@ -22,11 +24,11 @@ module.exports = {
   // 출력 설정 (보통 dist 폴더에 번들 파일 생성)
   output: {
     path: path.resolve(__dirname, 'dist'), // 절대 경로 사용 권장
-    filename: `${pkg.name}.js`, // 파일명 패턴 예시: '[name].js', '[name].[hash].js', '[name].[chunkhash:8].js', '[id].js'
+    filename: `${toKebabCase(pkg.name)}.js`, // 파일명 패턴 예시: '[name].js', '[name].[hash].js', '[name].[chunkhash:8].js', '[id].js'
     // 네이밍 컨벤션: kebab-case (cdn-test1.js), snake_case (cdn_test1.js), camelCase (cdnTest1.js), PascalCase (CdnTest1.js)
     library: {
       type: 'var', // 'var', 'this', 'window', 'global', 'commonjs2' 등
-      name: 'cdnTest1' // 전역 변수명 (camelCase 권장)
+      name: toCamelCase(pkg.name) // 전역 변수명 (camelCase 권장)
     },
     clean: {
       keep: /release-notes\.json$/ // release-notes.json은 삭제하지 않음
@@ -56,7 +58,21 @@ module.exports = {
     rules: [
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                auto: true, // .module.css 파일만 CSS Modules로 처리
+                localIdentName: '[name]__[local]--[hash:base64:5]', // 클래스명 패턴
+                exportLocalsConvention: 'camelCase', // camelCase로 export
+                namedExport: false, // default export 사용
+              },
+              importLoaders: 1,
+            },
+          },
+        ],
       },
     ],
   },
@@ -68,6 +84,12 @@ module.exports = {
   
   // 플러그인 설정 (순서대로 실행됨)
   plugins: [
+    // Plugin Args 자동 생성 (빌드 전에 실행되어야 함)
+    new PluginArgsWebpackPlugin({
+      argsFilePath: path.resolve(__dirname, 'src/plugin-args.json'),
+      outputFilePath: path.resolve(__dirname, 'src/core/plugin-config.js'),
+    }),
+
     // 빌드 타임 상수 주입
     new webpack.DefinePlugin({
       __PLUGIN_NAME__: JSON.stringify(pkg.name),
@@ -75,13 +97,14 @@ module.exports = {
       __PLUGIN_DESCRIPTION__: JSON.stringify(pkg.description),
     }),
 
-    // 배너 (package.json 기반)
+    // 배너 (package.json + plugin-args.json 기반)
     new webpack.BannerPlugin({
       banner: `//@name ${pkg.name}
 //@display-name ${pkg.name}_v${pkg.version}
 //@version ${pkg.version}
 //@description ${pkg.description}
-//@unpkg https://unpkg.com/${pkg.name}@${pkg.version}/dist/cdn_test1.js`,
+${generateBannerArgs(path.resolve(__dirname, 'src/plugin-args.json'))}
+//@link https://unpkg.com/${pkg.name}@${pkg.version}/dist/${toKebabCase(pkg.name)}.js`,
       raw: true // 원시 문자열로 처리 (헤더 주석용)
     })
   ],

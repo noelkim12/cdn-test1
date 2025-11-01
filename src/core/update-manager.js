@@ -1,7 +1,7 @@
 import { PLUGIN_NAME, PLUGIN_VERSION } from "../constants.js";
 import { RisuAPI } from "./risu-api.js";
 import { showAlert } from "../ui/components/updateManager/alert-dialog.js";
-
+import { parsePluginScript, scriptUpdater } from "./script-updater.js";
 /**
  * unpkg에서 최신 버전의 메타데이터를 파싱
  * @returns {Promise<Object|null>} manifest 객체 또는 null
@@ -20,7 +20,7 @@ async function fetchLatestManifest() {
     const resolvedUrl = headResponse.url;
     const versionMatch = resolvedUrl.match(/@([\d.]+)\//);
 
-    if (!versionMatch) {
+    if (!versionMatch) {  
       throw new Error("Version not found in resolved URL");
     }
 
@@ -83,97 +83,6 @@ function compareVersions(v1, v2) {
 }
 
 /**
- * 플러그인 스크립트 파싱 (script-updater.js 로직 재사용)
- * @param {string} scriptContent - unpkg에서 fetch한 스크립트 내용
- * @returns {Object} 파싱된 플러그인 데이터
- */
-function parsePluginScript(scriptContent) {
-  const splitedJs = scriptContent.split("\n");
-
-  let name = "";
-  let displayName = undefined;
-  let arg = {};
-  let realArg = {};
-  let customLink = [];
-
-  for (const line of splitedJs) {
-    // V1 플러그인 체크 (지원하지 않음)
-    if (line.startsWith("//@risu-name") || line.startsWith("//@risu-display-name")) {
-      throw new Error("V1 plugin is not supported. Please use V2 plugin.");
-    }
-
-    // name 파싱
-    if (line.startsWith("//@name")) {
-      const provided = line.slice(7).trim();
-      if (provided === "") {
-        throw new Error("Plugin name must be longer than 0");
-      }
-      name = provided;
-    }
-
-    // display-name 파싱
-    if (line.startsWith("//@display-name")) {
-      const provided = line.slice("//@display-name".length + 1).trim();
-      if (provided === "") {
-        throw new Error("Plugin display name must be longer than 0");
-      }
-      displayName = provided;
-    }
-
-    // link 파싱
-    if (line.startsWith("//@link")) {
-      const link = line.split(" ")[1];
-      if (!link || link === "") {
-        throw new Error("Plugin link is empty");
-      }
-      if (!link.startsWith("https")) {
-        throw new Error("Plugin link must start with https");
-      }
-      const hoverText = line.split(" ").slice(2).join(" ").trim();
-      customLink.push({
-        link: link,
-        hoverText: hoverText || undefined,
-      });
-    }
-
-    // arg 파싱
-    if (line.startsWith("//@risu-arg") || line.startsWith("//@arg")) {
-      const provided = line.trim().split(" ");
-      if (provided.length < 3) {
-        throw new Error("Plugin argument is incorrect");
-      }
-      const provKey = provided[1];
-
-      if (provided[2] !== "int" && provided[2] !== "string") {
-        throw new Error(`Unknown argument type: ${provided[2]}`);
-      }
-
-      if (provided[2] === "int") {
-        arg[provKey] = "int";
-        realArg[provKey] = 0;
-      } else if (provided[2] === "string") {
-        arg[provKey] = "string";
-        realArg[provKey] = "";
-      }
-    }
-  }
-
-  if (name.length === 0) {
-    throw new Error("Plugin name not found");
-  }
-
-  return {
-    name: name,
-    script: scriptContent,
-    realArg: realArg,
-    arguments: arg,
-    displayName: displayName,
-    version: 2,
-    customLink: customLink,
-  };
-}
-
-/**
  * realArg 병합 (기존 값 보존 + 새 key 추가)
  * @param {Object} oldRealArg - 기존 플러그인의 realArg
  * @param {Object} newArguments - 새 플러그인의 arguments
@@ -211,67 +120,7 @@ async function updatePluginScript(manifest) {
     console.log("[UpdateManager] Parsing plugin script...");
     const parsed = parsePluginScript(scriptContent);
 
-    // 3. RisuAPI 싱글톤 인스턴스에서 getDatabase(), setDatabaseLite 가져오기
-    const risuAPI = RisuAPI.getInstance();
-    if (!risuAPI) {
-      throw new Error("RisuAPI is not initialized. Please ensure the plugin is loaded.");
-    }
-
-    const getDatabase = risuAPI.getDatabase;
-    const setDatabaseLite = risuAPI.setDatabaseLite;
-
-    if (!getDatabase) {
-      throw new Error("getDatabase is not available in RisuAPI");
-    }
-
-    if (!setDatabaseLite) {
-      throw new Error("setDatabaseLite is not available in RisuAPI");
-    }
-
-    // 4. 기존 플러그인 찾기 및 백업
-    const db = getDatabase();
-    const oldPluginIndex = db.plugins.findIndex((p) => p.name === PLUGIN_NAME);
-    const backup = oldPluginIndex >= 0 ? { ...db.plugins[oldPluginIndex] } : null;
-
-    console.log("[UpdateManager] Old plugin found:", oldPluginIndex >= 0, backup?.name);
-
-    // 5. realArg 병합 (기존 값 보존 + 새 key 추가)
-    const mergedRealArg = mergeRealArgs(backup?.realArg, parsed.arguments);
-
-    // 6. 새 플러그인 데이터 생성
-    const newPlugin = {
-      ...parsed,
-      realArg: mergedRealArg,
-    };
-
-    console.log("[UpdateManager] New plugin data prepared:", newPlugin.name, newPlugin.displayName);
-
-    // 7. DB 업데이트
-    if (oldPluginIndex >= 0) {
-      db.plugins[oldPluginIndex] = newPlugin;
-      console.log("[UpdateManager] Replaced existing plugin at index", oldPluginIndex);
-    } else {
-      db.plugins.push(newPlugin);
-      console.log("[UpdateManager] Added new plugin");
-    }
-
-    // 8. 저장 및 오류 처리
-    try {
-      setDatabaseLite(db);
-      console.log("[UpdateManager] Database saved successfully");
-      return { success: true };
-    } catch (saveError) {
-      console.error("[UpdateManager] Database save failed:", saveError);
-      // 롤백
-      if (backup && oldPluginIndex >= 0) {
-        db.plugins[oldPluginIndex] = backup;
-        console.log("[UpdateManager] Rolled back to previous plugin");
-      } else if (oldPluginIndex === -1) {
-        db.plugins.pop();
-        console.log("[UpdateManager] Removed newly added plugin");
-      }
-      return { success: false, error: saveError };
-    }
+    return scriptUpdater(parsed);
   } catch (error) {
     console.error("[UpdateManager] Plugin update failed:", error);
     return { success: false, error };
@@ -301,7 +150,7 @@ function confirmUpdate(opts) {
   );
 
   // UpdateDialog Custom Element 생성
-  const dialog = document.createElement("update-dialog");
+  const dialog = document.createElement("update-dialog"); 
 
   // 속성 설정
   if (name) dialog.setAttribute("name", name);
@@ -344,6 +193,110 @@ function confirmUpdate(opts) {
 }
 
 /**
+ * Skip 버전 확인
+ * @param {string} latestVersion - 최신 버전
+ * @param {boolean} force - skip 버전 무시 여부
+ * @param {boolean} silent - silent 모드
+ * @returns {Object|null} skip된 경우 결과 객체, 아니면 null
+ */
+function checkSkippedVersion(latestVersion, force, silent) {
+  if (force) return null;
+
+  const skipKey = `${PLUGIN_NAME}_skip_version`;
+  const skipVersion = localStorage.getItem(skipKey);
+  
+  if (skipVersion === latestVersion) {
+    if (!silent) {
+      console.log(
+        `[UpdateManager] Version ${latestVersion} is skipped by user`
+      );
+    }
+    return { available: false, skipped: true, version: latestVersion };
+  }
+  
+  return null;
+}
+
+/**
+ * 버전 비교 및 업데이트 필요 여부 확인
+ * @param {string} latestVersion - 최신 버전
+ * @param {string} currentVersion - 현재 버전
+ * @param {boolean} silent - silent 모드
+ * @returns {Object|null} 업데이트 불필요한 경우 결과 객체, 필요하면 null
+ */
+function checkVersionUpdateNeeded(latestVersion, currentVersion, silent) {
+  const comparison = compareVersions(latestVersion, currentVersion);
+
+  if (comparison <= 0) {
+    if (!silent) {
+      console.log(`[UpdateManager] Already up to date (${currentVersion})`);
+    }
+    return {
+      available: false,
+      current: currentVersion,
+      latest: latestVersion,
+    };
+  }
+
+  return null;
+}
+
+/**
+ * 업데이트 실행 및 처리
+ * @param {Object} manifest - 매니페스트
+ * @param {string} latestVersion - 최신 버전
+ * @returns {Promise<Object>} 업데이트 결과
+ */
+async function executeUpdate(manifest, latestVersion) {
+  console.log("[UpdateManager] Updating to version", latestVersion);
+  const updateResult = await updatePluginScript(manifest);
+
+  if (updateResult.success) {
+    console.log("[UpdateManager] Plugin script updated successfully");
+    await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
+    window.location.reload();
+    return { available: true, action: "updated", version: latestVersion };
+  }
+
+  console.error("[UpdateManager] Plugin update failed:", updateResult.error);
+  alert(
+    `업데이트 실패: ${updateResult.error?.message || "알 수 없는 오류"}\n\n페이지를 새로고침하여 다시 시도해주세요.`
+  );
+  return {
+    available: true,
+    action: "update_failed",
+    error: updateResult.error,
+  };
+}
+
+/**
+ * 사용자 액션 결과 처리
+ * @param {Object} result - confirmUpdate 결과
+ * @param {Object} manifest - 매니페스트
+ * @param {string} latestVersion - 최신 버전
+ * @returns {Promise<Object>} 처리 결과
+ */
+async function handleUserAction(result, manifest, latestVersion) {
+  if (result.action === "update") {
+    return await executeUpdate(manifest, latestVersion);
+  }
+
+  if (result.action === "skip") {
+    const skipKey = `${PLUGIN_NAME}_skip_version`;
+    localStorage.setItem(skipKey, result.skipVersion);
+    console.log("[UpdateManager] Skipped version", result.skipVersion);
+    return {
+      available: true,
+      action: "skipped",
+      version: result.skipVersion,
+    };
+  }
+
+  console.log("[UpdateManager] Update postponed");
+  return { available: true, action: "later", version: latestVersion };
+}
+
+/**
  * 업데이트 체크 및 사용자 확인
  * @param {Object} options - 옵션
  * @param {boolean} [options.silent=false] - silent 모드 (로그 최소화)
@@ -366,28 +319,12 @@ export async function checkForUpdates(options = {}) {
     const latestVersion = manifest.version;
 
     // Skip 버전 확인
-    const skipKey = `${PLUGIN_NAME}_skip_version`;
-    const skipVersion = localStorage.getItem(skipKey);
-    if (!force && skipVersion === latestVersion) {
-      if (!silent)
-        console.log(
-          `[UpdateManager] Version ${latestVersion} is skipped by user`
-        );
-      return { available: false, skipped: true, version: latestVersion };
-    }
+    const skipResult = checkSkippedVersion(latestVersion, force, silent);
+    if (skipResult) return skipResult;
 
     // 버전 비교
-    const comparison = compareVersions(latestVersion, currentVersion);
-
-    if (comparison <= 0) {
-      if (!silent)
-        console.log(`[UpdateManager] Already up to date (${currentVersion})`);
-      return {
-        available: false,
-        current: currentVersion,
-        latest: latestVersion,
-      };
-    }
+    const versionResult = checkVersionUpdateNeeded(latestVersion, currentVersion, silent);
+    if (versionResult) return versionResult;
 
     console.log(
       `[UpdateManager] New version available: ${currentVersion} → ${latestVersion}`
@@ -402,40 +339,7 @@ export async function checkForUpdates(options = {}) {
     });
 
     // 결과 처리
-    if (result.action === "update") {
-      // 플러그인 스크립트 업데이트
-      console.log("[UpdateManager] Updating to version", latestVersion);
-      const updateResult = await updatePluginScript(manifest);
-
-      if (updateResult.success) {
-        console.log("[UpdateManager] Plugin script updated successfully");
-        // 업데이트 성공 알림 표시 후 리로드
-        await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
-        window.location.reload();
-        return { available: true, action: "updated", version: latestVersion };
-      } else {
-        console.error("[UpdateManager] Plugin update failed:", updateResult.error);
-        alert(
-          `업데이트 실패: ${updateResult.error?.message || "알 수 없는 오류"}\n\n페이지를 새로고침하여 다시 시도해주세요.`
-        );
-        return {
-          available: true,
-          action: "update_failed",
-          error: updateResult.error,
-        };
-      }
-    } else if (result.action === "skip") {
-      localStorage.setItem(skipKey, result.skipVersion);
-      console.log("[UpdateManager] Skipped version", result.skipVersion);
-      return {
-        available: true,
-        action: "skipped",
-        version: result.skipVersion,
-      };
-    } else {
-      console.log("[UpdateManager] Update postponed");
-      return { available: true, action: "later", version: latestVersion };
-    }
+    return await handleUserAction(result, manifest, latestVersion);
   } catch (error) {
     console.error("[UpdateManager] Check failed:", error);
     return { available: false, error: error.message };

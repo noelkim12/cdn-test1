@@ -3,6 +3,8 @@
  * 플러그인 업데이트 확인 다이얼로그 컴포넌트
  */
 
+import { updateDialogStyles } from "../../styles/index.js";
+
 const ELEMENT_TAG = "update-dialog";
 
 export class UpdateDialog extends HTMLElement {
@@ -30,7 +32,7 @@ export class UpdateDialog extends HTMLElement {
     this.render();
     this.attachEventListeners();
     // 포커스 설정
-    setTimeout(() => this.querySelector(".js-update")?.focus(), 0);
+    setTimeout(() => this.querySelector(`.${updateDialogStyles.udBtnPrimary}`)?.focus(), 0);
   }
 
   disconnectedCallback() {
@@ -82,10 +84,11 @@ export class UpdateDialog extends HTMLElement {
     const t = this.i18n;
     const mandatory = this.mandatory;
     const notes = this.notes;
+    const s = updateDialogStyles; // 스타일 별칭
 
     this.setAttribute("role", "dialog");
     this.setAttribute("aria-modal", "true");
-    this.className = "cu-root";
+    this.className = s.udRoot;
 
     const releasedDate = new Date(this.releasedAt).toLocaleDateString();
     const updateType = mandatory ? "필수 업데이트" : "선택 업데이트";
@@ -96,34 +99,35 @@ export class UpdateDialog extends HTMLElement {
             .slice(0, 8)
             .map(
               (n) =>
-                `<li class="${this.escapeHtml(n.type || "").trim()}">${this.escapeHtml(n.text || "")}</li>`
+                `<li class="${s[`ud${this.escapeHtml(n.type || "").trim().charAt(0).toUpperCase() + this.escapeHtml(n.type || "").trim().slice(1)}`] || ""}">${this.escapeHtml(n.text || "")}</li>`
             )
             .join("")
         : "<li>세부 변경사항은 릴리스 노트를 참고해주세요</li>";
 
     this.innerHTML = `
-      <div class="cu-card">
-        <div class="cu-title">
+      <div class="${s.udCard}">
+        <div class="${s.udTitle}">
           <h3>${t.title}${this.name ? ` · ${this.name}` : ""}</h3>
-          <span class="cu-pill">v${this.currentVersion} → v${this.version}</span>
+          <span class="${s.udPill}">v${this.currentVersion} → v${this.version}</span>
         </div>
-        <div class="cu-sub">
+        <div class="${s.udSub}">
           ${releasedDate} · ${updateType}
         </div>
-        <ul class="cu-list" aria-label="변경사항">
+        <ul class="${s.udList}" aria-label="변경사항">
           ${notesList}
         </ul>
-        <div class="cu-actions">
-          ${!mandatory ? `<button class="cu-btn ghost js-later">${t.later}</button>` : ""}
-          ${!mandatory ? `<button class="cu-btn ghost js-skip">${t.skip}</button>` : ""}
-          <button class="cu-btn primary js-update">${t.primary}</button>
+        <div class="${s.udActions}">
+          ${!mandatory ? `<button class="${s.udBtnGhost}">${t.later}</button>` : ""}
+          ${!mandatory ? `<button class="${s.udBtnGhost}">${t.skip}</button>` : ""}
+          <button class="${s.udBtnPrimary}">${t.primary}</button>
         </div>
       </div>
     `;
   }
 
   attachEventListeners() {
-    const card = this.querySelector(".cu-card");
+    const s = updateDialogStyles;
+    const card = this.querySelector(`.${s.udCard}`);
     const mandatory = this.mandatory;
 
     // 키보드 이벤트
@@ -144,22 +148,16 @@ export class UpdateDialog extends HTMLElement {
     });
 
     // 버튼 클릭
-    const updateBtn = card.querySelector(".js-update");
-    if (updateBtn) {
-      updateBtn.addEventListener("click", () => this.dispatchAction("update"));
-    }
-
-    if (!mandatory) {
-      const laterBtn = card.querySelector(".js-later");
-      const skipBtn = card.querySelector(".js-skip");
-
-      if (laterBtn) {
-        laterBtn.addEventListener("click", () => this.dispatchAction("later"));
+    const buttons = card.querySelectorAll(`.${s.udBtnPrimary}, .${s.udBtnGhost}`);
+    buttons.forEach((btn, index) => {
+      if (btn.classList.contains(s.udBtnPrimary)) {
+        btn.addEventListener("click", () => this.dispatchAction("update"));
+      } else if (!mandatory) {
+        // Ghost 버튼들: 첫 번째는 later, 두 번째는 skip
+        const action = index === 0 ? "later" : "skip";
+        btn.addEventListener("click", () => this.dispatchAction(action));
       }
-      if (skipBtn) {
-        skipBtn.addEventListener("click", () => this.dispatchAction("skip"));
-      }
-    }
+    });
 
     document.addEventListener("keydown", onKey);
 

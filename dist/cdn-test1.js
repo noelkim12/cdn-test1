@@ -2,7 +2,9 @@
 //@display-name cdn-test1_v0.6.3
 //@version 0.6.3
 //@description Cdn Test1 for RISU AI
-//@unpkg https://unpkg.com/cdn-test1@0.6.3/dist/cdn_test1.js
+//@arg test123 string
+//@arg watchTest21 int
+//@link https://unpkg.com/cdn-test1@0.6.3/dist/cdn-test1.js
 var cdnTest1;
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
@@ -134,6 +136,223 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
+/***/ 199:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(601);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(314);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일 - CSS Modules */
+
+.update-dialog-module__udRoot--aUh0H {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.update-dialog-module__udCard--QaBAr {
+  width: min(520px, 92vw);
+  border-radius: 16px;
+  padding: 20px;
+  background: var(--bg, #111);
+  color: var(--fg, #eaeaea);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transform: scale(0.97);
+  animation: update-dialog-module__udPop--wt5vi 0.16s ease-out forwards;
+}
+
+.update-dialog-module__udTitle--VQB_3 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.update-dialog-module__udTitle--VQB_3 h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.update-dialog-module__udPill--pW87e {
+  font: 12px/1.8 system-ui;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #2a2a2a;
+  color: #cfcfcf;
+}
+
+.update-dialog-module__udSub--Y03Tv {
+  margin: 8px 0 12px;
+  color: #9aa0a6;
+  font: 13px/1.5 system-ui;
+}
+
+.update-dialog-module__udList--HduVR {
+  margin: 10px 0 16px;
+  padding-left: 18px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.update-dialog-module__udList--HduVR li {
+  margin: 6px 0;
+}
+
+.update-dialog-module__udFeat--JNLt9::marker {
+  content: "✨ ";
+}
+
+.update-dialog-module__udFix--BQIiW::marker {
+  content: "🔧 ";
+}
+
+.update-dialog-module__udPerf--zN5cv::marker {
+  content: "⚡ ";
+}
+
+.update-dialog-module__udBreak--Qza1r::marker {
+  content: "⚠️ ";
+}
+
+.update-dialog-module__udActions--AuWA7 {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.update-dialog-module__udBtn--EstXt {
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.update-dialog-module__udBtnPrimary--H3naJ {
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  background: #4f7cff;
+  color: white;
+}
+
+.update-dialog-module__udBtnGhost--juD9P {
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  background: transparent;
+  color: #cfcfcf;
+}
+
+.update-dialog-module__udBtn--EstXt:hover,
+.update-dialog-module__udBtnPrimary--H3naJ:hover,
+.update-dialog-module__udBtnGhost--juD9P:hover {
+  filter: brightness(1.05);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #fff;
+    --fg: #111;
+  }
+  .update-dialog-module__udCard--QaBAr {
+    background: #fff;
+    color: #111;
+  }
+  .update-dialog-module__udPill--pW87e {
+    background: #eef2ff;
+    color: #1f3fb3;
+  }
+  .update-dialog-module__udSub--Y03Tv {
+    color: #4b5563;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .update-dialog-module__udCard--QaBAr {
+    animation: none;
+    transform: none;
+  }
+}
+
+@keyframes update-dialog-module__udPop--wt5vi {
+  to {
+    transform: scale(1);
+  }
+}
+
+/* AlertDialog 컴포넌트 스타일 */
+.update-dialog-module__udAlert--URrlp {
+  max-width: 420px;
+  text-align: center;
+}
+
+.update-dialog-module__udAlertMessage--fUewu {
+  margin: 16px 0 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg, #eaeaea);
+  white-space: pre-line;
+}
+
+.update-dialog-module__udAlert--URrlp .update-dialog-module__udActions--AuWA7 {
+  justify-content: center;
+}
+
+.update-dialog-module__udAlert--URrlp .update-dialog-module__udBtn--EstXt,
+.update-dialog-module__udAlert--URrlp .update-dialog-module__udBtnPrimary--H3naJ,
+.update-dialog-module__udAlert--URrlp .update-dialog-module__udBtnGhost--juD9P {
+  min-width: 120px;
+}
+
+@media (prefers-color-scheme: light) {
+  .update-dialog-module__udAlertMessage--fUewu {
+    color: var(--fg, #111);
+  }
+}
+`, ""]);
+// Exports
+___CSS_LOADER_EXPORT___.locals = {
+	"udRoot": `update-dialog-module__udRoot--aUh0H`,
+	"udCard": `update-dialog-module__udCard--QaBAr`,
+	"udPop": `update-dialog-module__udPop--wt5vi`,
+	"udTitle": `update-dialog-module__udTitle--VQB_3`,
+	"udPill": `update-dialog-module__udPill--pW87e`,
+	"udSub": `update-dialog-module__udSub--Y03Tv`,
+	"udList": `update-dialog-module__udList--HduVR`,
+	"udFeat": `update-dialog-module__udFeat--JNLt9`,
+	"udFix": `update-dialog-module__udFix--BQIiW`,
+	"udPerf": `update-dialog-module__udPerf--zN5cv`,
+	"udBreak": `update-dialog-module__udBreak--Qza1r`,
+	"udActions": `update-dialog-module__udActions--AuWA7`,
+	"udBtn": `update-dialog-module__udBtn--EstXt`,
+	"udBtnPrimary": `update-dialog-module__udBtnPrimary--H3naJ`,
+	"udBtnGhost": `update-dialog-module__udBtnGhost--juD9P`,
+	"udAlert": `update-dialog-module__udAlert--URrlp`,
+	"udAlertMessage": `update-dialog-module__udAlertMessage--fUewu`
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ 300:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -158,31 +377,39 @@ class RisuAPI {
       return RisuAPI._instance;
     }
 
-    this.risuFetch = pluginApis.risuFetch;
-    this.nativeFetch = pluginApis.nativeFetch;
-    this.getArg = pluginApis.getArg;
-    this.getChar = pluginApis.getChar;
-    this.setChar = pluginApis.setChar;
-    this.addProvider = pluginApis.addProvider;
-    this.addRisuScriptHandler = pluginApis.addRisuScriptHandler;
-    this.removeRisuScriptHandler = pluginApis.removeRisuScriptHandler;
-    this.addRisuReplacer = pluginApis.addRisuReplacer;
-    this.removeRisuReplacer = pluginApis.removeRisuReplacer;
-    this.onUnload = pluginApis.onUnload;
-    this.setArg = pluginApis.setArg;
-    this.getDatabase = null;
-    this.setDatabaseLite = null;
+    // RisuAI 플러그인 API들을 private 필드로 저장 (메서드에서 사용)
+    this._risuFetch = pluginApis.risuFetch;
+    this._nativeFetch = pluginApis.nativeFetch;
+    this._getArg = pluginApis.getArg;
+    this._setArg = pluginApis.setArg;
+    this._getChar = pluginApis.getChar;
+    this._setChar = pluginApis.setChar;
+    this._addProvider = pluginApis.addProvider;
+    this._addRisuScriptHandler = pluginApis.addRisuScriptHandler;
+    this._removeRisuScriptHandler = pluginApis.removeRisuScriptHandler;
+    this._addRisuReplacer = pluginApis.addRisuReplacer;
+    this._removeRisuReplacer = pluginApis.removeRisuReplacer;
+    this._onUnload = pluginApis.onUnload;
+    
+    // eval로 초기화할 함수들 (나중에 initialize에서 설정됨)
+    this._getDatabase = null;
+    this._setDatabaseLite = null;
 
     // 싱글톤 인스턴스 저장
     RisuAPI._instance = this;
   }
 
+  /**
+   * RisuAPI 초기화
+   * eval을 통해 전역 컨텍스트의 함수들을 가져옵니다.
+   * @returns {Promise<boolean>} 초기화 성공 여부
+   */
   async initialize() {
     try {
       // eval은 최초 스크립트 실행 컨텍스트에서만 작동
       // 싱글톤이므로 한 번만 실행되고 이후 재사용됨
-      this.getDatabase = eval("getDatabase");
-      this.setDatabaseLite = eval("setDatabaseLite");
+      this._getDatabase = eval("getDatabase");
+      this._setDatabaseLite = eval("setDatabaseLite");
       console.log(`[${_constants_js__WEBPACK_IMPORTED_MODULE_0__/* .PLUGIN_NAME */ .AF}] RisuAPI initialized successfully`);
       return true;
     } catch (error) {
@@ -192,10 +419,21 @@ class RisuAPI {
   }
 
   /**
-   * 싱글톤 인스턴스 가져오기
-   * @returns {RisuAPI|null} 초기화된 인스턴스 또는 null
+   * 싱글톤 인스턴스 가져오기 또는 생성
+   * 
+   * @param {Object} [pluginApis] - 플러그인 API 객체. 첫 번째 호출 시에만 필요합니다.
+   * @returns {RisuAPI} RisuAPI 인스턴스
+   * @throws {Error} 인스턴스가 없고 pluginApis가 제공되지 않은 경우
    */
-  static getInstance() {
+  static getInstance(pluginApis = null) {
+    if (!RisuAPI._instance) {
+      if (!pluginApis) {
+        throw new Error(
+          'RisuAPI instance does not exist. Provide pluginApis on first call.'
+        );
+      }
+      RisuAPI._instance = new RisuAPI(pluginApis);
+    }
     return RisuAPI._instance;
   }
 
@@ -204,6 +442,214 @@ class RisuAPI {
    */
   static resetInstance() {
     RisuAPI._instance = null;
+  }
+
+  // ==================== Fetch API ====================
+
+  /**
+   * CORS 제한 없이 URL을 가져옵니다.
+   * 
+   * 참고: `nativeFetch`를 사용하는 것이 권장됩니다. 
+   * `nativeFetch`는 표준 fetch API와 유사하며 더 예측 가능한 동작을 제공합니다.
+   * 
+   * @param {string} url - 가져올 URL
+   * @param {Object} [arg={}] - Fetch 인자
+   * @param {string|Object} [arg.body] - 요청 본문. 객체인 경우 JSON으로 변환됩니다.
+   * @param {Record<string, string>} [arg.headers] - 요청 헤더
+   * @param {string} [arg.method='POST'] - 요청 메서드. `GET`, `POST` 지원
+   * @param {AbortSignal} [arg.abortSignal] - 요청 중단 신호
+   * @param {boolean} [arg.rawResponse=false] - true인 경우 응답이 Uint8Array로 반환됩니다.
+   * @returns {Promise<Object>} Fetch 결과
+   * @returns {boolean} returns.ok - 요청 성공 여부
+   * @returns {any} returns.data - 응답 데이터. JSON 가능한 경우 파싱되며, rawResponse가 true면 Uint8Array
+   * @returns {Record<string, string>} returns.headers - 응답 헤더
+   */
+  risuFetch(url, arg = {}) {
+    // 싱글톤 인스턴스의 원본 함수를 호출 (this는 항상 같은 인스턴스를 참조)
+    return this._risuFetch(url, arg);
+  }
+
+  /**
+   * CORS 제한 없이 URL을 가져옵니다.
+   * 표준 fetch API의 하위 집합으로 설계되었으며, CORS 제한이 없고 기본 메서드가 `POST`입니다.
+   * 
+   * @param {string} url - 가져올 URL
+   * @param {Object} [arg={}] - Fetch 인자
+   * @param {string|Uint8Array|ArrayBuffer} [arg.body] - 요청 본문
+   * @param {Record<string, string>} [arg.headers] - 요청 헤더
+   * @param {string} [arg.method='POST'] - 요청 메서드. `GET`, `POST`, `PUT`, `DELETE` 지원
+   * @param {AbortSignal} [arg.signal] - 요청 중단 신호
+   * @returns {Promise<Response>} 표준 Response 객체
+   */
+  nativeFetch(url, arg = {}) {
+    return this._nativeFetch(url, arg);
+  }
+
+  // ==================== Argument API ====================
+
+  /**
+   * 인자 값을 이름으로 가져옵니다.
+   * 
+   * @param {string} name - 인자 이름. `<plugin_name>::<arg_name>` 형식이어야 합니다. (예: `exampleplugin::arg1`)
+   * @returns {string|number} 인자 값
+   */
+  getArg(name) {
+    return this._getArg(name);
+  }
+
+  /**
+   * 인자 값을 이름으로 설정합니다.
+   * 
+   * @param {string} name - 인자 이름. `<plugin_name>::<arg_name>` 형식이어야 합니다. (예: `exampleplugin::arg1`)
+   * @param {string|number} value - 인자 값
+   */
+  setArg(name, value) {
+    return this._setArg(name, value);
+  }
+
+  // ==================== Character API ====================
+
+  /**
+   * 현재 캐릭터를 가져옵니다.
+   * 
+   * @returns {Object} 현재 캐릭터 객체
+   */
+  getChar() {
+    return this._getChar();
+  }
+
+  /**
+   * 현재 캐릭터를 설정합니다.
+   * 
+   * @param {Object} char - 설정할 캐릭터 객체
+   */
+  setChar(char) {
+    return this._setChar(char);
+  }
+
+  // ==================== Provider API ====================
+
+  /**
+   * 프로바이더를 추가합니다.
+   * 
+   * @param {string} type - 프로바이더 이름
+   * @param {Function} func - 프로바이더 함수
+   * @param {Object} func.arg - 프로바이더 인자
+   * @param {Array} func.arg.prompt_chat - 채팅 프롬프트
+   * @param {number} [func.arg.frequency_penalty] - 빈도 페널티
+   * @param {number} [func.arg.min_p] - 최소 p 값
+   * @param {number} [func.arg.presence_penalty] - 존재 페널티
+   * @param {number} [func.arg.repetition_penalty] - 반복 페널티
+   * @param {number} [func.arg.top_k] - Top k 값
+   * @param {number} [func.arg.top_p] - Top p 값
+   * @param {number} [func.arg.temperature] - 온도 값
+   * @param {number} [func.arg.max_tokens] - 최대 토큰 수
+   * @param {string} func.arg.mode - 모드. `model`, `submodel`, `memory`, `emotion`, `otherAx`, `translate` 중 하나
+   * @param {AbortSignal} [func.abortSignal] - 요청 중단 신호
+   * @param {Promise<Object>} func.returns - 프로바이더 결과
+   * @param {boolean} func.returns.success - 프로바이더 성공 여부
+   * @param {string|ReadableStream<string>} func.returns.content - 프로바이더 콘텐츠. ReadableStream인 경우 스트리밍됩니다.
+   * @param {Object} [options] - 프로바이더 옵션
+   * @param {string} [options.tokenizer] - 토크나이저 이름. `"mistral"`, `"llama"`, `"novelai"`, `"claude"`, `"novellist"`, `"llama3"`, `"gemma"`, `"cohere"`, `"tiktoken"`, `"custom"` 중 하나
+   * @param {Function} [options.tokenizerFunc] - 커스텀 토크나이저 함수. `(content: string) => number[]|Promise<number[]>`
+   */
+  addProvider(type, func, options) {
+    return this._addProvider(type, func, options);
+  }
+
+  // ==================== Risu Script Handler API ====================
+
+  /**
+   * Risu 스크립트 핸들러를 추가합니다.
+   * 
+   * @param {string} type - 핸들러 타입. `display`, `output`, `input`, `process` 중 하나
+   *   - `display`: 데이터가 표시될 때 호출됩니다.
+   *   - `output`: AI 모델이 데이터를 출력할 때 호출됩니다.
+   *   - `input`: 사용자가 데이터를 입력할 때 호출됩니다.
+   *   - `process`: 실제 요청 데이터를 생성할 때 호출됩니다.
+   * @param {Function} func - 핸들러 함수
+   * @param {string} func.content - 처리할 콘텐츠
+   * @returns {string|null|undefined|Promise<string|null|undefined>} 핸들러 결과. 문자열 또는 문자열 Promise인 경우 데이터가 결과로 대체됩니다.
+   */
+  addRisuScriptHandler(type, func) {
+    return this._addRisuScriptHandler(type, func);
+  }
+
+  /**
+   * Risu 스크립트 핸들러를 제거합니다.
+   * 
+   * @param {string} type - 핸들러 타입. `display`, `output`, `input`, `process` 중 하나
+   * @param {Function} func - 제거할 핸들러 함수
+   */
+  removeRisuScriptHandler(type, func) {
+    return this._removeRisuScriptHandler(type, func);
+  }
+
+  // ==================== Risu Replacer API ====================
+
+  /**
+   * Risu 리플레이서를 추가합니다.
+   * 
+   * @param {string} type - 리플레이서 타입. `beforeRequest`, `afterRequest` 중 하나
+   *   - `beforeRequest`: 요청이 전송되기 직전에 호출됩니다.
+   *   - `afterRequest`: 응답이 수신된 직후에 호출됩니다.
+   * @param {Function} func - 리플레이서 함수. 타입에 따라 시그니처가 다릅니다.
+   *   - `afterRequest` 타입: `(content: string, mode: string) => string`
+   *   - `beforeRequest` 타입: `(content: Chat[], mode: string) => Chat[]`
+   *   - mode는 `model`, `submodel`, `memory`, `emotion`, `otherAx`, `translate` 중 하나입니다.
+   */
+  addRisuReplacer(type, func) {
+    return this._addRisuReplacer(type, func);
+  }
+
+  /**
+   * Risu 리플레이서를 제거합니다.
+   * 
+   * @param {string} type - 리플레이서 타입. `beforeRequest`, `afterRequest` 중 하나
+   * @param {Function} func - 제거할 리플레이서 함수
+   */
+  removeRisuReplacer(type, func) {
+    return this._removeRisuReplacer(type, func);
+  }
+
+  // ==================== Lifecycle API ====================
+
+  /**
+   * 플러그인 언로드 핸들러를 추가합니다.
+   * 플러그인이 언로드될 때 호출될 함수를 등록합니다.
+   * 
+   * @param {Function} func - 언로드 시 호출할 함수
+   */
+  onUnload(func) {
+    return this._onUnload(func);
+  }
+
+  // ==================== Database API ====================
+
+  /**
+   * 데이터베이스를 가져옵니다.
+   * eval을 통해 전역 컨텍스트에서 가져온 함수입니다.
+   * 
+   * @returns {any} 데이터베이스 객체
+   */
+  getDatabase() {
+    if (!this._getDatabase) {
+      throw new Error('RisuAPI is not initialized. Call initialize() first.');
+    }
+    return this._getDatabase();
+  }
+
+  /**
+   * 데이터베이스 Lite를 설정합니다.
+   * eval을 통해 전역 컨텍스트에서 가져온 함수입니다.
+   * 
+   * @param {any} data - 설정할 데이터
+   */
+  setDatabaseLite(data) {
+    if (!this._setDatabaseLite) {
+      throw new Error('RisuAPI is not initialized. Call initialize() first.');
+    }
+    return this._setDatabaseLite(data);
   }
 }
 
@@ -301,6 +747,72 @@ module.exports = function (cssWithMappingToString) {
 
 /***/ }),
 
+/***/ 362:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(601);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(314);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* 플러그인 컨테이너 스타일 */
+.base-module__container--l6yV4 {
+  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif !important;
+  font-weight: 600;
+  font-size: 19px;
+}
+
+/* container 내부의 모든 요소에 폰트 적용 */
+.base-module__container--l6yV4 * {
+  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif !important;
+}
+
+/* WinBox 윈도우 커스텀 스타일 (전역으로 적용) */
+.rb-box * {
+  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif !important;
+}
+`, ""]);
+// Exports
+___CSS_LOADER_EXPORT___.locals = {
+	"container": `base-module__container--l6yV4`
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ 436:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(601);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(314);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css);"]);
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);"]);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* Pretendard 폰트 CDN */
+`, ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ 521:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -365,172 +877,6 @@ module.exports = insertStyleElement;
 
 /***/ }),
 
-/***/ 565:
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(601);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(314);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-// Imports
-
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일 */
-
-.cu-root {
-  position: fixed;
-  inset: 0;
-  z-index: 2147483646;
-  display: grid;
-  place-items: center;
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.cu-card {
-  width: min(520px, 92vw);
-  border-radius: 16px;
-  padding: 20px;
-  background: var(--bg, #111);
-  color: var(--fg, #eaeaea);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  transform: scale(0.97);
-  animation: cu-pop 0.16s ease-out forwards;
-}
-.cu-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-.cu-title h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-.cu-pill {
-  font: 12px/1.8 system-ui;
-  padding: 0 8px;
-  border-radius: 999px;
-  background: #2a2a2a;
-  color: #cfcfcf;
-}
-.cu-sub {
-  margin: 8px 0 12px;
-  color: #9aa0a6;
-  font: 13px/1.5 system-ui;
-}
-.cu-list {
-  margin: 10px 0 16px;
-  padding-left: 18px;
-  max-height: 180px;
-  overflow: auto;
-}
-.cu-list li {
-  margin: 6px 0;
-}
-.cu-list .feat::marker {
-  content: "✨ ";
-}
-.cu-list .fix::marker {
-  content: "🔧 ";
-}
-.cu-list .perf::marker {
-  content: "⚡ ";
-}
-.cu-list .break::marker {
-  content: "⚠️ ";
-}
-.cu-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-}
-.cu-btn {
-  border: 0;
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-}
-.cu-btn.primary {
-  background: #4f7cff;
-  color: white;
-}
-.cu-btn.ghost {
-  background: transparent;
-  color: #cfcfcf;
-}
-.cu-btn:hover {
-  filter: brightness(1.05);
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #fff;
-    --fg: #111;
-  }
-  .cu-card {
-    background: #fff;
-    color: #111;
-  }
-  .cu-pill {
-    background: #eef2ff;
-    color: #1f3fb3;
-  }
-  .cu-sub {
-    color: #4b5563;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .cu-card {
-    animation: none;
-    transform: none;
-  }
-}
-@keyframes cu-pop {
-  to {
-    transform: scale(1);
-  }
-}
-
-/* AlertDialog 컴포넌트 스타일 */
-.cu-alert {
-  max-width: 420px;
-  text-align: center;
-}
-
-.cu-alert-message {
-  margin: 16px 0 20px;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--fg, #eaeaea);
-  white-space: pre-line;
-}
-
-.cu-alert .cu-actions {
-  justify-content: center;
-}
-
-.cu-alert .cu-btn {
-  min-width: 120px;
-}
-
-@media (prefers-color-scheme: light) {
-  .cu-alert-message {
-    color: var(--fg, #111);
-  }
-}
-`, ""]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
 /***/ 601:
 /***/ ((module) => {
 
@@ -579,38 +925,6 @@ function insertBySelector(insert, style) {
   target.appendChild(style);
 }
 module.exports = insertBySelector;
-
-/***/ }),
-
-/***/ 734:
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(601);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(314);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-// Imports
-
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css);"]);
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);"]);
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, `/* Pretendard 폰트 CDN */
-
-/* 전체 폰트 설정 */
-.rb-box * {
-  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif !important;
-  font-weight: 600;
-  font-size: 19px;
-}
-`, ""]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
 
 /***/ }),
 
@@ -796,7 +1110,7 @@ class MenuButton extends HTMLElement {
           <path d="M6 15 L7 17 M14 15 L13 17"></path>
           <line x1="10" y1="15" x2="10" y2="18"></line>
         </svg>
-        <span class="ml-2">블랙마켓</span>
+        <span class="ml-2">${constants/* PLUGIN_NAME */.AF}</span>
       </div>
     `;
   }
@@ -808,6 +1122,128 @@ if (!customElements.get(`menu-button-${constants/* PLUGIN_NAME */.AF}`)) {
 }
 
 const MENU_BUTTON_TAG = `menu-button-${constants/* PLUGIN_NAME */.AF}`;
+
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
+var injectStylesIntoStyleTag = __webpack_require__(72);
+var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleDomAPI.js
+var styleDomAPI = __webpack_require__(825);
+var styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(styleDomAPI);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertBySelector.js
+var insertBySelector = __webpack_require__(659);
+var insertBySelector_default = /*#__PURE__*/__webpack_require__.n(insertBySelector);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
+var setAttributesWithoutAttributes = __webpack_require__(56);
+var setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(setAttributesWithoutAttributes);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertStyleElement.js
+var insertStyleElement = __webpack_require__(540);
+var insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(insertStyleElement);
+// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleTagTransform.js
+var styleTagTransform = __webpack_require__(113);
+var styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(styleTagTransform);
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./src/ui/styles/global.css
+var global = __webpack_require__(436);
+;// ./src/ui/styles/global.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (styleTagTransform_default());
+options.setAttributes = (setAttributesWithoutAttributes_default());
+options.insert = insertBySelector_default().bind(null, "head");
+options.domAPI = (styleDomAPI_default());
+options.insertStyleElement = (insertStyleElement_default());
+
+var update = injectStylesIntoStyleTag_default()(global/* default */.A, options);
+
+
+
+
+       /* harmony default export */ const styles_global = (global/* default */.A && global/* default */.A.locals ? global/* default */.A.locals : undefined);
+
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./src/ui/styles/base.module.css
+var base_module = __webpack_require__(362);
+;// ./src/ui/styles/base.module.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var base_module_options = {};
+
+base_module_options.styleTagTransform = (styleTagTransform_default());
+base_module_options.setAttributes = (setAttributesWithoutAttributes_default());
+base_module_options.insert = insertBySelector_default().bind(null, "head");
+base_module_options.domAPI = (styleDomAPI_default());
+base_module_options.insertStyleElement = (insertStyleElement_default());
+
+var base_module_update = injectStylesIntoStyleTag_default()(base_module/* default */.A, base_module_options);
+
+
+
+
+       /* harmony default export */ const styles_base_module = (base_module/* default */.A && base_module/* default */.A.locals ? base_module/* default */.A.locals : undefined);
+
+// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./src/ui/styles/update-dialog.module.css
+var update_dialog_module = __webpack_require__(199);
+;// ./src/ui/styles/update-dialog.module.css
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var update_dialog_module_options = {};
+
+update_dialog_module_options.styleTagTransform = (styleTagTransform_default());
+update_dialog_module_options.setAttributes = (setAttributesWithoutAttributes_default());
+update_dialog_module_options.insert = insertBySelector_default().bind(null, "head");
+update_dialog_module_options.domAPI = (styleDomAPI_default());
+update_dialog_module_options.insertStyleElement = (insertStyleElement_default());
+
+var update_dialog_module_update = injectStylesIntoStyleTag_default()(update_dialog_module/* default */.A, update_dialog_module_options);
+
+
+
+
+       /* harmony default export */ const styles_update_dialog_module = (update_dialog_module/* default */.A && update_dialog_module/* default */.A.locals ? update_dialog_module/* default */.A.locals : undefined);
+
+;// ./src/ui/styles/index.js
+/**
+ * Style Registry
+ * 모든 CSS 스타일을 여기서 중앙 관리합니다.
+ */
+
+// 전역 스타일 (폰트 CDN)
+
+
+// CSS Modules (자동으로 스코프 적용됨)
+
+
+
+// CSS Modules를 사용하는 컴포넌트에서 import 가능하도록 export
+
+
 
 ;// ./node_modules/winbox/dist/winbox.bundle.min.js
 /**
@@ -851,14 +1287,16 @@ e.removeClass=function(a){this.g.classList.remove(a);return this};e.toggleClass=
 
 
 
+
 // 메인 애플리케이션 클래스
 class App {
     constructor() {
       this.risuAPI = null;
       this.observer = null;
-      this.moduleBox = null;
-      this.moduleBoxRoot = document.createElement("div");
-      this.moduleBoxRoot.className = "sample-wrap";
+      this.pluginWindow = null;
+      this.pluginWindowRoot = document.createElement("div");
+      // CSS Modules 클래스 사용 (자동으로 해시된 고유 클래스명)
+      this.pluginWindowRoot.className = styles_base_module.container;
     }
   
     async initialize() {
@@ -872,7 +1310,7 @@ class App {
 
       // UI 초기화
       this.initializeUI();
-      this.startObserver();
+      this.startObserver(); 
 
       console.log(`[${constants/* PLUGIN_NAME */.AF}] plugin loaded`);
       return true;
@@ -881,25 +1319,25 @@ class App {
     initializeUI() {
     }
   
-    openModuleBox() {
-      if (this.moduleBox) return;
+    openPluginWindow() {
+      if (this.pluginWindow) return;
   
       const winboxConfig = {
-        title: "CDN TEST",
+        title: `${constants/* PLUGIN_NAME */.AF}`,
         x: "center",
         y: "center",
         width: Math.min(1080, window.innerWidth * 0.9) + "px",
         height: Math.min(800, window.innerHeight * 0.8) + "px",
-        mount: this.moduleBoxRoot,
+        mount: this.pluginWindowRoot,
         background: "#0f131a",
         class: ["no-full", "no-max", "no-min", "rb-box"],
         onclose: () => {
-          this.moduleBox = null;
+          this.pluginWindow = null;
           location.hash = "";
         },
       };
   
-      this.moduleBox = new WinBox(winboxConfig);
+      this.pluginWindow = new WinBox(winboxConfig);
       this.render();
     }
   
@@ -924,13 +1362,13 @@ class App {
       let burgerEl = document.querySelector(
         "div.absolute.right-2.bottom-16.p-5.bg-darkbg.flex.flex-col.gap-3.text-textcolor.rounded-md"
       );
-      if (burgerEl && !burgerEl.classList.contains("sample-btn-class")) {
+      if (burgerEl && !burgerEl.classList.contains(`${constants/* PLUGIN_NAME */.AF}-btn-class`)) {
         const buttonDiv = document.createElement(MENU_BUTTON_TAG);
         buttonDiv.addEventListener("click", () => {
-          this.openModuleBox();
+          this.openPluginWindow();
         });
         burgerEl.appendChild(buttonDiv);
-        burgerEl.classList.add("sample-btn-class");
+        burgerEl.classList.add(`${constants/* PLUGIN_NAME */.AF}-btn-class`);
       }
     }
   
@@ -1076,6 +1514,161 @@ function showAlert(message, confirmText = "확인") {
   });
 }
 
+;// ./src/core/script-updater.js
+
+
+
+/**
+ * 플러그인 스크립트 파싱 (script-updater.js 로직 재사용)
+ * @param {string} scriptContent - unpkg에서 fetch한 스크립트 내용
+ * @returns {Object} 파싱된 플러그인 데이터
+ */
+function parsePluginScript(scriptContent) {
+  const splitedJs = scriptContent.split("\n");
+
+  let name = "";
+  let displayName = undefined;
+  let arg = {};
+  let realArg = {};
+  let customLink = [];
+
+  for (const line of splitedJs) {
+    // V1 플러그인 체크 (지원하지 않음)
+    if (line.startsWith("//@risu-name") || line.startsWith("//@risu-display-name")) {
+      throw new Error("V1 plugin is not supported. Please use V2 plugin.");
+    }
+
+    // name 파싱
+    if (line.startsWith("//@name")) {
+      const provided = line.slice(7).trim();
+      if (provided === "") {
+        throw new Error("Plugin name must be longer than 0");
+      }
+      name = provided;
+    }
+
+    // display-name 파싱
+    if (line.startsWith("//@display-name")) {
+      const provided = line.slice("//@display-name".length + 1).trim();
+      if (provided === "") {
+        throw new Error("Plugin display name must be longer than 0");
+      }
+      displayName = provided;
+    }
+
+    // link 파싱
+    if (line.startsWith("//@link")) {
+      const link = line.split(" ")[1];
+      if (!link || link === "") {
+        throw new Error("Plugin link is empty");
+      }
+      if (!link.startsWith("https")) {
+        throw new Error("Plugin link must start with https");
+      }
+      const hoverText = line.split(" ").slice(2).join(" ").trim();
+      customLink.push({
+        link: link,
+        hoverText: hoverText || undefined,
+      });
+    }
+
+    // arg 파싱
+    if (line.startsWith("//@risu-arg") || line.startsWith("//@arg")) {
+      const provided = line.trim().split(" ");
+      const provKey = provided[1];
+
+      if (provided[2] !== "int" && provided[2] !== "string") {
+        throw new Error(`Unknown argument type: ${provided[2]}`);
+      }
+
+      if (provided[2] === "int") {
+        arg[provKey] = "int";
+        realArg[provKey] = 0;
+      } else if (provided[2] === "string") {
+        arg[provKey] = "string";
+        realArg[provKey] = "";
+      }
+    }
+  }
+
+  if (name.length === 0) {
+    throw new Error("Plugin name not found");
+  }
+
+  return {
+    name: name,
+    script: scriptContent,
+    realArg: realArg,
+    arguments: arg,
+    displayName: displayName,
+    version: 2,
+    customLink: customLink,
+  };
+}
+
+function scriptUpdater(parsed) {
+  // 3. RisuAPI 싱글톤 인스턴스에서 getDatabase(), setDatabaseLite 가져오기
+  const risuAPI = risu_api/* RisuAPI */.m.getInstance();
+  if (!risuAPI) {
+    throw new Error("RisuAPI is not initialized. Please ensure the plugin is loaded.");
+  }
+
+  const getDatabase = risuAPI.getDatabase;
+  const setDatabaseLite = risuAPI.setDatabaseLite;
+
+  if (!getDatabase) {
+    throw new Error("getDatabase is not available in RisuAPI");
+  }
+
+  if (!setDatabaseLite) {
+    throw new Error("setDatabaseLite is not available in RisuAPI");
+  }
+
+  // 4. 기존 플러그인 찾기 및 백업
+  const db = getDatabase();
+  const oldPluginIndex = db.plugins.findIndex((p) => p.name === constants/* PLUGIN_NAME */.AF);
+  const backup = oldPluginIndex >= 0 ? { ...db.plugins[oldPluginIndex] } : null;
+
+  console.log("[UpdateManager] Old plugin found:", oldPluginIndex >= 0, backup?.name);
+
+  // 5. realArg 병합 (기존 값 보존 + 새 key 추가)
+  const mergedRealArg = mergeRealArgs(backup?.realArg, parsed.arguments);
+
+  // 6. 새 플러그인 데이터 생성
+  const newPlugin = {
+    ...parsed,
+    realArg: mergedRealArg,
+  };
+
+  console.log("[UpdateManager] New plugin data prepared:", newPlugin.name, newPlugin.displayName);
+
+  // 7. DB 업데이트
+  if (oldPluginIndex >= 0) {
+    db.plugins[oldPluginIndex] = newPlugin;
+    console.log("[UpdateManager] Replaced existing plugin at index", oldPluginIndex);
+  } else {
+    db.plugins.push(newPlugin);
+    console.log("[UpdateManager] Added new plugin");
+  }
+
+  // 8. 저장 및 오류 처리
+  try {
+    setDatabaseLite(db);
+    console.log("[UpdateManager] Database saved successfully");
+    return { success: true };
+  } catch (saveError) {
+    console.error("[UpdateManager] Database save failed:", saveError);
+    // 롤백
+    if (backup && oldPluginIndex >= 0) {
+      db.plugins[oldPluginIndex] = backup;
+      console.log("[UpdateManager] Rolled back to previous plugin");
+    } else if (oldPluginIndex === -1) {
+      db.plugins.pop();
+      console.log("[UpdateManager] Removed newly added plugin");
+    }
+    return { success: false, error: saveError };
+  }
+}
 ;// ./src/core/update-manager.js
 
 
@@ -1099,7 +1692,7 @@ async function fetchLatestManifest() {
     const resolvedUrl = headResponse.url;
     const versionMatch = resolvedUrl.match(/@([\d.]+)\//);
 
-    if (!versionMatch) {
+    if (!versionMatch) {  
       throw new Error("Version not found in resolved URL");
     }
 
@@ -1162,103 +1755,12 @@ function compareVersions(v1, v2) {
 }
 
 /**
- * 플러그인 스크립트 파싱 (script-updater.js 로직 재사용)
- * @param {string} scriptContent - unpkg에서 fetch한 스크립트 내용
- * @returns {Object} 파싱된 플러그인 데이터
- */
-function parsePluginScript(scriptContent) {
-  const splitedJs = scriptContent.split("\n");
-
-  let name = "";
-  let displayName = undefined;
-  let arg = {};
-  let realArg = {};
-  let customLink = [];
-
-  for (const line of splitedJs) {
-    // V1 플러그인 체크 (지원하지 않음)
-    if (line.startsWith("//@risu-name") || line.startsWith("//@risu-display-name")) {
-      throw new Error("V1 plugin is not supported. Please use V2 plugin.");
-    }
-
-    // name 파싱
-    if (line.startsWith("//@name")) {
-      const provided = line.slice(7).trim();
-      if (provided === "") {
-        throw new Error("Plugin name must be longer than 0");
-      }
-      name = provided;
-    }
-
-    // display-name 파싱
-    if (line.startsWith("//@display-name")) {
-      const provided = line.slice("//@display-name".length + 1).trim();
-      if (provided === "") {
-        throw new Error("Plugin display name must be longer than 0");
-      }
-      displayName = provided;
-    }
-
-    // link 파싱
-    if (line.startsWith("//@link")) {
-      const link = line.split(" ")[1];
-      if (!link || link === "") {
-        throw new Error("Plugin link is empty");
-      }
-      if (!link.startsWith("https")) {
-        throw new Error("Plugin link must start with https");
-      }
-      const hoverText = line.split(" ").slice(2).join(" ").trim();
-      customLink.push({
-        link: link,
-        hoverText: hoverText || undefined,
-      });
-    }
-
-    // arg 파싱
-    if (line.startsWith("//@risu-arg") || line.startsWith("//@arg")) {
-      const provided = line.trim().split(" ");
-      if (provided.length < 3) {
-        throw new Error("Plugin argument is incorrect");
-      }
-      const provKey = provided[1];
-
-      if (provided[2] !== "int" && provided[2] !== "string") {
-        throw new Error(`Unknown argument type: ${provided[2]}`);
-      }
-
-      if (provided[2] === "int") {
-        arg[provKey] = "int";
-        realArg[provKey] = 0;
-      } else if (provided[2] === "string") {
-        arg[provKey] = "string";
-        realArg[provKey] = "";
-      }
-    }
-  }
-
-  if (name.length === 0) {
-    throw new Error("Plugin name not found");
-  }
-
-  return {
-    name: name,
-    script: scriptContent,
-    realArg: realArg,
-    arguments: arg,
-    displayName: displayName,
-    version: 2,
-    customLink: customLink,
-  };
-}
-
-/**
  * realArg 병합 (기존 값 보존 + 새 key 추가)
  * @param {Object} oldRealArg - 기존 플러그인의 realArg
  * @param {Object} newArguments - 새 플러그인의 arguments
  * @returns {Object} 병합된 realArg
  */
-function mergeRealArgs(oldRealArg, newArguments) {
+function update_manager_mergeRealArgs(oldRealArg, newArguments) {
   const merged = {};
 
   // 새 arguments를 기준으로 순회
@@ -1290,67 +1792,7 @@ async function updatePluginScript(manifest) {
     console.log("[UpdateManager] Parsing plugin script...");
     const parsed = parsePluginScript(scriptContent);
 
-    // 3. RisuAPI 싱글톤 인스턴스에서 getDatabase(), setDatabaseLite 가져오기
-    const risuAPI = risu_api/* RisuAPI */.m.getInstance();
-    if (!risuAPI) {
-      throw new Error("RisuAPI is not initialized. Please ensure the plugin is loaded.");
-    }
-
-    const getDatabase = risuAPI.getDatabase;
-    const setDatabaseLite = risuAPI.setDatabaseLite;
-
-    if (!getDatabase) {
-      throw new Error("getDatabase is not available in RisuAPI");
-    }
-
-    if (!setDatabaseLite) {
-      throw new Error("setDatabaseLite is not available in RisuAPI");
-    }
-
-    // 4. 기존 플러그인 찾기 및 백업
-    const db = getDatabase();
-    const oldPluginIndex = db.plugins.findIndex((p) => p.name === constants/* PLUGIN_NAME */.AF);
-    const backup = oldPluginIndex >= 0 ? { ...db.plugins[oldPluginIndex] } : null;
-
-    console.log("[UpdateManager] Old plugin found:", oldPluginIndex >= 0, backup?.name);
-
-    // 5. realArg 병합 (기존 값 보존 + 새 key 추가)
-    const mergedRealArg = mergeRealArgs(backup?.realArg, parsed.arguments);
-
-    // 6. 새 플러그인 데이터 생성
-    const newPlugin = {
-      ...parsed,
-      realArg: mergedRealArg,
-    };
-
-    console.log("[UpdateManager] New plugin data prepared:", newPlugin.name, newPlugin.displayName);
-
-    // 7. DB 업데이트
-    if (oldPluginIndex >= 0) {
-      db.plugins[oldPluginIndex] = newPlugin;
-      console.log("[UpdateManager] Replaced existing plugin at index", oldPluginIndex);
-    } else {
-      db.plugins.push(newPlugin);
-      console.log("[UpdateManager] Added new plugin");
-    }
-
-    // 8. 저장 및 오류 처리
-    try {
-      setDatabaseLite(db);
-      console.log("[UpdateManager] Database saved successfully");
-      return { success: true };
-    } catch (saveError) {
-      console.error("[UpdateManager] Database save failed:", saveError);
-      // 롤백
-      if (backup && oldPluginIndex >= 0) {
-        db.plugins[oldPluginIndex] = backup;
-        console.log("[UpdateManager] Rolled back to previous plugin");
-      } else if (oldPluginIndex === -1) {
-        db.plugins.pop();
-        console.log("[UpdateManager] Removed newly added plugin");
-      }
-      return { success: false, error: saveError };
-    }
+    return scriptUpdater(parsed);
   } catch (error) {
     console.error("[UpdateManager] Plugin update failed:", error);
     return { success: false, error };
@@ -1380,7 +1822,7 @@ function confirmUpdate(opts) {
   );
 
   // UpdateDialog Custom Element 생성
-  const dialog = document.createElement("update-dialog");
+  const dialog = document.createElement("update-dialog"); 
 
   // 속성 설정
   if (name) dialog.setAttribute("name", name);
@@ -1423,6 +1865,110 @@ function confirmUpdate(opts) {
 }
 
 /**
+ * Skip 버전 확인
+ * @param {string} latestVersion - 최신 버전
+ * @param {boolean} force - skip 버전 무시 여부
+ * @param {boolean} silent - silent 모드
+ * @returns {Object|null} skip된 경우 결과 객체, 아니면 null
+ */
+function checkSkippedVersion(latestVersion, force, silent) {
+  if (force) return null;
+
+  const skipKey = `${constants/* PLUGIN_NAME */.AF}_skip_version`;
+  const skipVersion = localStorage.getItem(skipKey);
+  
+  if (skipVersion === latestVersion) {
+    if (!silent) {
+      console.log(
+        `[UpdateManager] Version ${latestVersion} is skipped by user`
+      );
+    }
+    return { available: false, skipped: true, version: latestVersion };
+  }
+  
+  return null;
+}
+
+/**
+ * 버전 비교 및 업데이트 필요 여부 확인
+ * @param {string} latestVersion - 최신 버전
+ * @param {string} currentVersion - 현재 버전
+ * @param {boolean} silent - silent 모드
+ * @returns {Object|null} 업데이트 불필요한 경우 결과 객체, 필요하면 null
+ */
+function checkVersionUpdateNeeded(latestVersion, currentVersion, silent) {
+  const comparison = compareVersions(latestVersion, currentVersion);
+
+  if (comparison <= 0) {
+    if (!silent) {
+      console.log(`[UpdateManager] Already up to date (${currentVersion})`);
+    }
+    return {
+      available: false,
+      current: currentVersion,
+      latest: latestVersion,
+    };
+  }
+
+  return null;
+}
+
+/**
+ * 업데이트 실행 및 처리
+ * @param {Object} manifest - 매니페스트
+ * @param {string} latestVersion - 최신 버전
+ * @returns {Promise<Object>} 업데이트 결과
+ */
+async function executeUpdate(manifest, latestVersion) {
+  console.log("[UpdateManager] Updating to version", latestVersion);
+  const updateResult = await updatePluginScript(manifest);
+
+  if (updateResult.success) {
+    console.log("[UpdateManager] Plugin script updated successfully");
+    await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
+    window.location.reload();
+    return { available: true, action: "updated", version: latestVersion };
+  }
+
+  console.error("[UpdateManager] Plugin update failed:", updateResult.error);
+  alert(
+    `업데이트 실패: ${updateResult.error?.message || "알 수 없는 오류"}\n\n페이지를 새로고침하여 다시 시도해주세요.`
+  );
+  return {
+    available: true,
+    action: "update_failed",
+    error: updateResult.error,
+  };
+}
+
+/**
+ * 사용자 액션 결과 처리
+ * @param {Object} result - confirmUpdate 결과
+ * @param {Object} manifest - 매니페스트
+ * @param {string} latestVersion - 최신 버전
+ * @returns {Promise<Object>} 처리 결과
+ */
+async function handleUserAction(result, manifest, latestVersion) {
+  if (result.action === "update") {
+    return await executeUpdate(manifest, latestVersion);
+  }
+
+  if (result.action === "skip") {
+    const skipKey = `${constants/* PLUGIN_NAME */.AF}_skip_version`;
+    localStorage.setItem(skipKey, result.skipVersion);
+    console.log("[UpdateManager] Skipped version", result.skipVersion);
+    return {
+      available: true,
+      action: "skipped",
+      version: result.skipVersion,
+    };
+  }
+
+  console.log("[UpdateManager] Update postponed");
+  return { available: true, action: "later", version: latestVersion };
+}
+
+/**
  * 업데이트 체크 및 사용자 확인
  * @param {Object} options - 옵션
  * @param {boolean} [options.silent=false] - silent 모드 (로그 최소화)
@@ -1445,28 +1991,12 @@ async function checkForUpdates(options = {}) {
     const latestVersion = manifest.version;
 
     // Skip 버전 확인
-    const skipKey = `${constants/* PLUGIN_NAME */.AF}_skip_version`;
-    const skipVersion = localStorage.getItem(skipKey);
-    if (!force && skipVersion === latestVersion) {
-      if (!silent)
-        console.log(
-          `[UpdateManager] Version ${latestVersion} is skipped by user`
-        );
-      return { available: false, skipped: true, version: latestVersion };
-    }
+    const skipResult = checkSkippedVersion(latestVersion, force, silent);
+    if (skipResult) return skipResult;
 
     // 버전 비교
-    const comparison = compareVersions(latestVersion, currentVersion);
-
-    if (comparison <= 0) {
-      if (!silent)
-        console.log(`[UpdateManager] Already up to date (${currentVersion})`);
-      return {
-        available: false,
-        current: currentVersion,
-        latest: latestVersion,
-      };
-    }
+    const versionResult = checkVersionUpdateNeeded(latestVersion, currentVersion, silent);
+    if (versionResult) return versionResult;
 
     console.log(
       `[UpdateManager] New version available: ${currentVersion} → ${latestVersion}`
@@ -1481,40 +2011,7 @@ async function checkForUpdates(options = {}) {
     });
 
     // 결과 처리
-    if (result.action === "update") {
-      // 플러그인 스크립트 업데이트
-      console.log("[UpdateManager] Updating to version", latestVersion);
-      const updateResult = await updatePluginScript(manifest);
-
-      if (updateResult.success) {
-        console.log("[UpdateManager] Plugin script updated successfully");
-        // 업데이트 성공 알림 표시 후 리로드
-        await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
-        window.location.reload();
-        return { available: true, action: "updated", version: latestVersion };
-      } else {
-        console.error("[UpdateManager] Plugin update failed:", updateResult.error);
-        alert(
-          `업데이트 실패: ${updateResult.error?.message || "알 수 없는 오류"}\n\n페이지를 새로고침하여 다시 시도해주세요.`
-        );
-        return {
-          available: true,
-          action: "update_failed",
-          error: updateResult.error,
-        };
-      }
-    } else if (result.action === "skip") {
-      localStorage.setItem(skipKey, result.skipVersion);
-      console.log("[UpdateManager] Skipped version", result.skipVersion);
-      return {
-        available: true,
-        action: "skipped",
-        version: result.skipVersion,
-      };
-    } else {
-      console.log("[UpdateManager] Update postponed");
-      return { available: true, action: "later", version: latestVersion };
-    }
+    return await handleUserAction(result, manifest, latestVersion);
   } catch (error) {
     console.error("[UpdateManager] Check failed:", error);
     return { available: false, error: error.message };
@@ -1523,99 +2020,13 @@ async function checkForUpdates(options = {}) {
 
 
 
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
-var injectStylesIntoStyleTag = __webpack_require__(72);
-var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleDomAPI.js
-var styleDomAPI = __webpack_require__(825);
-var styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(styleDomAPI);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertBySelector.js
-var insertBySelector = __webpack_require__(659);
-var insertBySelector_default = /*#__PURE__*/__webpack_require__.n(insertBySelector);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
-var setAttributesWithoutAttributes = __webpack_require__(56);
-var setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(setAttributesWithoutAttributes);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/insertStyleElement.js
-var insertStyleElement = __webpack_require__(540);
-var insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(insertStyleElement);
-// EXTERNAL MODULE: ./node_modules/style-loader/dist/runtime/styleTagTransform.js
-var styleTagTransform = __webpack_require__(113);
-var styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(styleTagTransform);
-// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/ui/styles/base.css
-var base = __webpack_require__(734);
-;// ./src/ui/styles/base.css
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-var options = {};
-
-options.styleTagTransform = (styleTagTransform_default());
-options.setAttributes = (setAttributesWithoutAttributes_default());
-options.insert = insertBySelector_default().bind(null, "head");
-options.domAPI = (styleDomAPI_default());
-options.insertStyleElement = (insertStyleElement_default());
-
-var update = injectStylesIntoStyleTag_default()(base/* default */.A, options);
-
-
-
-
-       /* harmony default export */ const styles_base = (base/* default */.A && base/* default */.A.locals ? base/* default */.A.locals : undefined);
-
-// EXTERNAL MODULE: ./node_modules/css-loader/dist/cjs.js!./src/ui/styles/update-dialog.css
-var update_dialog = __webpack_require__(565);
-;// ./src/ui/styles/update-dialog.css
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-var update_dialog_options = {};
-
-update_dialog_options.styleTagTransform = (styleTagTransform_default());
-update_dialog_options.setAttributes = (setAttributesWithoutAttributes_default());
-update_dialog_options.insert = insertBySelector_default().bind(null, "head");
-update_dialog_options.domAPI = (styleDomAPI_default());
-update_dialog_options.insertStyleElement = (insertStyleElement_default());
-
-var update_dialog_update = injectStylesIntoStyleTag_default()(update_dialog/* default */.A, update_dialog_options);
-
-
-
-
-       /* harmony default export */ const styles_update_dialog = (update_dialog/* default */.A && update_dialog/* default */.A.locals ? update_dialog/* default */.A.locals : undefined);
-
-;// ./src/ui/styles/registry.js
-/**
- * Style Registry
- * 모든 CSS 스타일을 여기서 중앙 관리합니다.
- */
-
-// 기본 스타일 (폰트, 리셋, 전역 스타일)
-
-
-// 컴포넌트 스타일
-
-
 ;// ./src/ui/components/updateManager/update-dialog.js
 /**
  * UpdateDialog Custom Element
  * 플러그인 업데이트 확인 다이얼로그 컴포넌트
  */
+
+
 
 const update_dialog_ELEMENT_TAG = "update-dialog";
 
@@ -1644,7 +2055,7 @@ class UpdateDialog extends HTMLElement {
     this.render();
     this.attachEventListeners();
     // 포커스 설정
-    setTimeout(() => this.querySelector(".js-update")?.focus(), 0);
+    setTimeout(() => this.querySelector(`.${styles_update_dialog_module.udBtnPrimary}`)?.focus(), 0);
   }
 
   disconnectedCallback() {
@@ -1696,10 +2107,11 @@ class UpdateDialog extends HTMLElement {
     const t = this.i18n;
     const mandatory = this.mandatory;
     const notes = this.notes;
+    const s = styles_update_dialog_module; // 스타일 별칭
 
     this.setAttribute("role", "dialog");
     this.setAttribute("aria-modal", "true");
-    this.className = "cu-root";
+    this.className = s.udRoot;
 
     const releasedDate = new Date(this.releasedAt).toLocaleDateString();
     const updateType = mandatory ? "필수 업데이트" : "선택 업데이트";
@@ -1710,34 +2122,35 @@ class UpdateDialog extends HTMLElement {
             .slice(0, 8)
             .map(
               (n) =>
-                `<li class="${this.escapeHtml(n.type || "").trim()}">${this.escapeHtml(n.text || "")}</li>`
+                `<li class="${s[`ud${this.escapeHtml(n.type || "").trim().charAt(0).toUpperCase() + this.escapeHtml(n.type || "").trim().slice(1)}`] || ""}">${this.escapeHtml(n.text || "")}</li>`
             )
             .join("")
         : "<li>세부 변경사항은 릴리스 노트를 참고해주세요</li>";
 
     this.innerHTML = `
-      <div class="cu-card">
-        <div class="cu-title">
+      <div class="${s.udCard}">
+        <div class="${s.udTitle}">
           <h3>${t.title}${this.name ? ` · ${this.name}` : ""}</h3>
-          <span class="cu-pill">v${this.currentVersion} → v${this.version}</span>
+          <span class="${s.udPill}">v${this.currentVersion} → v${this.version}</span>
         </div>
-        <div class="cu-sub">
+        <div class="${s.udSub}">
           ${releasedDate} · ${updateType}
         </div>
-        <ul class="cu-list" aria-label="변경사항">
+        <ul class="${s.udList}" aria-label="변경사항">
           ${notesList}
         </ul>
-        <div class="cu-actions">
-          ${!mandatory ? `<button class="cu-btn ghost js-later">${t.later}</button>` : ""}
-          ${!mandatory ? `<button class="cu-btn ghost js-skip">${t.skip}</button>` : ""}
-          <button class="cu-btn primary js-update">${t.primary}</button>
+        <div class="${s.udActions}">
+          ${!mandatory ? `<button class="${s.udBtnGhost}">${t.later}</button>` : ""}
+          ${!mandatory ? `<button class="${s.udBtnGhost}">${t.skip}</button>` : ""}
+          <button class="${s.udBtnPrimary}">${t.primary}</button>
         </div>
       </div>
     `;
   }
 
   attachEventListeners() {
-    const card = this.querySelector(".cu-card");
+    const s = styles_update_dialog_module;
+    const card = this.querySelector(`.${s.udCard}`);
     const mandatory = this.mandatory;
 
     // 키보드 이벤트
@@ -1758,22 +2171,16 @@ class UpdateDialog extends HTMLElement {
     });
 
     // 버튼 클릭
-    const updateBtn = card.querySelector(".js-update");
-    if (updateBtn) {
-      updateBtn.addEventListener("click", () => this.dispatchAction("update"));
-    }
-
-    if (!mandatory) {
-      const laterBtn = card.querySelector(".js-later");
-      const skipBtn = card.querySelector(".js-skip");
-
-      if (laterBtn) {
-        laterBtn.addEventListener("click", () => this.dispatchAction("later"));
+    const buttons = card.querySelectorAll(`.${s.udBtnPrimary}, .${s.udBtnGhost}`);
+    buttons.forEach((btn, index) => {
+      if (btn.classList.contains(s.udBtnPrimary)) {
+        btn.addEventListener("click", () => this.dispatchAction("update"));
+      } else if (!mandatory) {
+        // Ghost 버튼들: 첫 번째는 later, 두 번째는 skip
+        const action = index === 0 ? "later" : "skip";
+        btn.addEventListener("click", () => this.dispatchAction(action));
       }
-      if (skipBtn) {
-        skipBtn.addEventListener("click", () => this.dispatchAction("skip"));
-      }
-    }
+    });
 
     document.addEventListener("keydown", onKey);
 
@@ -1822,7 +2229,7 @@ if (!customElements.get(update_dialog_ELEMENT_TAG)) {
 
 const UPDATE_DIALOG_TAG = (/* unused pure expression or super */ null && (update_dialog_ELEMENT_TAG));
 
-;// ./src/ui/components/registry.js
+;// ./src/ui/components/index.js
 /**
  * Web Components 중앙 레지스트리
  * 모든 Custom Elements를 여기서 관리합니다.
@@ -1835,6 +2242,7 @@ const UPDATE_DIALOG_TAG = (/* unused pure expression or super */ null && (update
 
 
 
+
 ;// ./src/index.js
 
 
@@ -1844,16 +2252,11 @@ const UPDATE_DIALOG_TAG = (/* unused pure expression or super */ null && (update
  // Style Registry
  // Web Components 레지스트리
 
-function printPackageVersion() {
-  console.log(`${constants/* PLUGIN_NAME */.AF} v${constants/* PLUGIN_VERSION */.jN} loaded`);
-  return `${constants/* PLUGIN_NAME */.AF} v${constants/* PLUGIN_VERSION */.jN}`;
-}
-
 // 애플리케이션 실행
 (async () => {
   try {
     // 1. RisuAPI 싱글톤 초기화 (최초 한 번만)
-    const risuAPI = new risu_api/* RisuAPI */.m(globalThis.__pluginApis__);
+    const risuAPI = risu_api/* RisuAPI */.m.getInstance(globalThis.__pluginApis__);
     const initialized = await risuAPI.initialize();
 
     if (!initialized) {
@@ -1861,26 +2264,25 @@ function printPackageVersion() {
       return;
     }
 
-    // 2. 업데이트 체크 (백그라운드, silent 모드)
+    // 2. 업데이트 체크 (백그라운드, silent 모드-로그 최소화)
     checkForUpdates({ silent: true }).catch(err => {
       console.warn('[App] Update check failed:', err);
     });
 
-    // 3. 외부 스크립트 주입
+    // 3. 외부 스크립트 import(script 태그 추가)
     injectScripts();
 
-    // 4. App 초기화 (RisuAPI 싱글톤 사용)
+    // 4. App 초기화
     const app = new App();
     await app.initialize();
 
-    printPackageVersion();
+    console.log(`${constants/* PLUGIN_NAME */.AF} v${constants/* PLUGIN_VERSION */.jN} loaded`);
 
     // 5. 언로드 핸들러 등록
-    if (globalThis?.__pluginApis__?.onUnload) {
-      globalThis.__pluginApis__.onUnload(() => {
-        app.destroy();
-      });
-    }
+    risuAPI.onUnload(() => {
+      app.destroy();
+    });
+    
   } catch (error) {
     console.error(`[${constants/* PLUGIN_NAME */.AF}] Initialization failed:`, error);
   }

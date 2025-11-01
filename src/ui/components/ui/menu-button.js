@@ -24,7 +24,7 @@ export class MenuButton extends HTMLElement {
           <path d="M6 15 L7 17 M14 15 L13 17"></path>
           <line x1="10" y1="15" x2="10" y2="18"></line>
         </svg>
-        <span class="ml-2">블랙마켓</span>
+        <span class="ml-2">${PLUGIN_NAME}</span>
       </div>
     `;
   }

@@ -1,6 +1,6 @@
 # NPM 배포 가이드
 
-이 문서는 `cdn-test1` 프로젝트를 npm에 배포하는 전체 과정을 설명합니다.
+이 문서는 `${프로젝트명}` 프로젝트를 npm에 배포하는 전체 과정을 설명합니다.
 
 ## 📋 목차
 
@@ -36,7 +36,7 @@ npm whoami
 
 ### 2. Organization 설정
 
-이 프로젝트는 개인 패키지로 배포됩니다. (`cdn-test1`)
+이 프로젝트는 개인 패키지로 배포됩니다. (`${프로젝트명}`)
 
 만약 organization scope를 사용하려면:
 - npm 웹사이트에서 organization 생성: https://www.npmjs.com/org/create
@@ -62,12 +62,12 @@ npm --version
 
 ```json
 {
-  "name": "cdn-test1",                     // 패키지 이름
+  "name": "${프로젝트명}",                     // 패키지 이름
   "version": "0.1.0",                      // 현재 버전
-  "description": "Cdn Test1 for RISU AI", // 패키지 설명
+  "description": "${프로젝트명} for RISU AI", // 패키지 설명
   "main": "src/index.js",                  // CommonJS 진입점
-  "browser": "dist/cdn_test1.js",          // 브라우저 진입점
-  "unpkg": "dist/cdn_test1.js",            // CDN 진입점
+  "browser": "dist/${프로젝트명}.js",          // 브라우저 진입점
+  "unpkg": "dist/${프로젝트명}.js",            // CDN 진입점
   "files": ["dist"],                       // 배포할 파일/폴더
   "publishConfig": {
     "access": "public"                     // 공개 패키지
@@ -89,7 +89,7 @@ npm run build
 ls -la dist/
 ```
 
-**예상 결과**: `dist/cdn_test1.js` 파일이 생성되어야 합니다.
+**예상 결과**: `dist/${프로젝트명}.js` 파일이 생성되어야 합니다.
 
 ### 3. .gitignore와 .npmignore 확인
 
@@ -142,7 +142,7 @@ npm publish
 배포 후 1~2분 내에 다음 URL에서 패키지를 확인할 수 있습니다:
 
 ```
-https://www.npmjs.com/package/cdn-test1
+https://www.npmjs.com/package/${프로젝트명}
 ```
 
 ### 2. CDN 링크 확인
@@ -150,8 +150,8 @@ https://www.npmjs.com/package/cdn-test1
 unpkg CDN을 통해 배포된 파일에 접근할 수 있습니다:
 
 ```
-https://unpkg.com/cdn-test1@latest/dist/cdn_test1.js
-https://unpkg.com/cdn-test1@0.1.0/dist/cdn_test1.js
+https://unpkg.com/${프로젝트명}@latest/dist/${프로젝트명}.js
+https://unpkg.com/${프로젝트명}@0.1.0/dist/${프로젝트명}.js
 ```
 
 ### 3. 설치 테스트
@@ -160,10 +160,10 @@ https://unpkg.com/cdn-test1@0.1.0/dist/cdn_test1.js
 
 ```bash
 # 새 프로젝트에서 설치
-npm install cdn-test1
+npm install ${프로젝트명}
 
 # 또는 전역 설치
-npm install -g cdn-test1
+npm install -g ${프로젝트명}
 ```
 
 ### 4. HTML에서 CDN 사용 예시
@@ -175,9 +175,9 @@ npm install -g cdn-test1
   <title>CDN Test</title>
 </head>
 <body>
-  <h1>CDN Test1 로딩 테스트</h1>
+  <h1>${프로젝트명} 로딩 테스트</h1>
 
-  <script src="https://unpkg.com/cdn-test1@latest/dist/cdn_test1.js"></script>
+  <script src="https://unpkg.com/${프로젝트명}@latest/dist/${프로젝트명}.js"></script>
   <script>
     // 전역 변수 cdnTest1 사용
     console.log('cdnTest1:', cdnTest1);
@@ -279,7 +279,7 @@ npm login
 
 ```
 npm ERR! code E409
-npm ERR! 409 Conflict - PUT https://registry.npmjs.org/cdn-test1
+npm ERR! 409 Conflict - PUT https://registry.npmjs.org/${프로젝트명}
 ```
 
 **해결방법**:
@@ -345,7 +345,7 @@ npm publish --otp=123456
 - [ ] npm 로그인 완료 (`npm whoami`)
 - [ ] `package.json` 버전 확인 및 업데이트
 - [ ] 빌드 테스트 완료 (`npm run build`)
-- [ ] `dist/cdn_test1.js` 파일 생성 확인
+- [ ] `dist/${프로젝트명}.js` 파일 생성 확인
 - [ ] Git 커밋 및 푸시 완료
 - [ ] README.md 업데이트 (필요한 경우)
 - [ ] CHANGELOG 업데이트 (필요한 경우)
@@ -374,7 +374,7 @@ git push && git push --tags
 npm publish
 
 # 5. 배포 확인
-echo "Check: https://www.npmjs.com/package/cdn-test1"
+echo "Check: https://www.npmjs.com/package/${프로젝트명}"
 ```
 
 ---
