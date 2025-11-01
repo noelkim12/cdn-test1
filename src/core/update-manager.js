@@ -1,6 +1,7 @@
 import { PLUGIN_NAME, PLUGIN_VERSION } from "../constants.js";
 import { RisuAPI } from "./risu-api.js";
 import { showAlert } from "../ui/components/updateManager/alert-dialog.js";
+import { UPDATE_DIALOG_TAG } from "../ui/components/updateManager/update-dialog.js";
 import { parsePluginScript, scriptUpdater } from "./script-updater.js";
 /**
  * unpkg에서 최신 버전의 메타데이터를 파싱
@@ -127,7 +128,7 @@ function confirmUpdate(opts) {
   );
 
   // UpdateDialog Custom Element 생성
-  const dialog = document.createElement("update-dialog"); 
+  const dialog = document.createElement(UPDATE_DIALOG_TAG); 
 
   // 속성 설정
   if (name) dialog.setAttribute("name", name);

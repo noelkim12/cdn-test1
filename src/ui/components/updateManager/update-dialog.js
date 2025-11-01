@@ -4,8 +4,8 @@
  */
 
 import { updateDialogStyles } from "../../styles/index.js";
-
-const ELEMENT_TAG = "update-dialog";
+import { PLUGIN_NAME } from "../../../constants.js";
+const ELEMENT_TAG = `${PLUGIN_NAME}-update-dialog`;
 
 export class UpdateDialog extends HTMLElement {
   constructor() {

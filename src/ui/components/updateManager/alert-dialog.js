@@ -1,9 +1,12 @@
+import { updateDialogStyles } from "../../styles/index.js";
+import { PLUGIN_NAME } from "../../../constants.js";
+
 /**
  * AlertDialog Custom Element
  * 간단한 알림 메시지를 표시하는 다이얼로그 컴포넌트
  */
 
-const ELEMENT_TAG = "alert-dialog";
+const ELEMENT_TAG = `${PLUGIN_NAME}-alert-dialog`;
 
 export class AlertDialog extends HTMLElement {
   constructor() {
@@ -19,7 +22,7 @@ export class AlertDialog extends HTMLElement {
     this.render();
     this.attachEventListeners();
     // 포커스 설정
-    setTimeout(() => this.querySelector(".js-confirm")?.focus(), 0);
+    setTimeout(() => this.querySelector(`.${updateDialogStyles.udBtnPrimary}`)?.focus(), 0);
   }
 
   disconnectedCallback() {
@@ -39,14 +42,14 @@ export class AlertDialog extends HTMLElement {
   render() {
     this.setAttribute("role", "dialog");
     this.setAttribute("aria-modal", "true");
-    this.className = "cu-root";
+    this.className = updateDialogStyles.udRoot;
 
     this.innerHTML = `
-      <div class="cu-card cu-alert">
-        <div class="cu-alert-message">
+      <div class="${updateDialogStyles.udCard} ${updateDialogStyles.udAlert}">
+        <div class="${updateDialogStyles.udAlertMessage}">
           ${this.escapeHtml(this.message)}
         </div>
-        <div class="cu-actions">
+        <div class="${updateDialogStyles.udActions}">
           <button class="cu-btn primary js-confirm">${this.confirmText}</button>
         </div>
       </div>
@@ -54,7 +57,7 @@ export class AlertDialog extends HTMLElement {
   }
 
   attachEventListeners() {
-    const card = this.querySelector(".cu-card");
+    const card = this.querySelector(`.${updateDialogStyles.udCard}`);
 
     // 키보드 이벤트
     const onKey = (e) => {
@@ -64,7 +67,7 @@ export class AlertDialog extends HTMLElement {
     };
 
     // 확인 버튼 클릭
-    const confirmBtn = card.querySelector(".js-confirm");
+    const confirmBtn = card.querySelector(`.${updateDialogStyles.udBtnPrimary}`);
     if (confirmBtn) {
       confirmBtn.addEventListener("click", () => this.dispatchConfirm());
     }
