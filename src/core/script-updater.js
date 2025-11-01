@@ -35,7 +35,7 @@ export function parsePluginScript(scriptContent) {
       const provided = line.slice("//@display-name".length + 1).trim();
       if (provided === "") {
         throw new Error("Plugin display name must be longer than 0");
-      }
+      }  
       displayName = provided;
     }
 
@@ -96,19 +96,8 @@ export function scriptUpdater(parsed) {
     throw new Error("RisuAPI is not initialized. Please ensure the plugin is loaded.");
   }
 
-  const getDatabase = risuAPI.getDatabase;
-  const setDatabaseLite = risuAPI.setDatabaseLite;
-
-  if (!getDatabase) {
-    throw new Error("getDatabase is not available in RisuAPI");
-  }
-
-  if (!setDatabaseLite) {
-    throw new Error("setDatabaseLite is not available in RisuAPI");
-  }
-
   // 4. 기존 플러그인 찾기 및 백업
-  const db = getDatabase();
+  const db = risuAPI.getDatabase();
   const oldPluginIndex = db.plugins.findIndex((p) => p.name === PLUGIN_NAME);
   const backup = oldPluginIndex >= 0 ? { ...db.plugins[oldPluginIndex] } : null;
 
@@ -136,7 +125,7 @@ export function scriptUpdater(parsed) {
 
   // 8. 저장 및 오류 처리
   try {
-    setDatabaseLite(db);
+    risuAPI.setDatabaseLite(db);
     console.log("[UpdateManager] Database saved successfully");
     return { success: true };
   } catch (saveError) {
@@ -151,4 +140,27 @@ export function scriptUpdater(parsed) {
     }
     return { success: false, error: saveError };
   }
+}
+
+/**
+ * realArg 병합 (기존 값 보존 + 새 key 추가)
+ * @param {Object} oldRealArg - 기존 플러그인의 realArg
+ * @param {Object} newArguments - 새 플러그인의 arguments
+ * @returns {Object} 병합된 realArg
+ */
+function mergeRealArgs(oldRealArg, newArguments) {
+  const merged = {};
+
+  // 새 arguments를 기준으로 순회
+  for (const [key, type] of Object.entries(newArguments)) {
+    // 기존 값이 있으면 보존, 없으면 기본값
+    if (oldRealArg && key in oldRealArg) {
+      merged[key] = oldRealArg[key]; // 기존 사용자 입력 값 보존
+    } else {
+      // 새로 추가된 arg는 기본값
+      merged[key] = type === "int" ? 0 : "";
+    }
+  }
+
+  return merged;
 }

@@ -83,34 +83,11 @@ function compareVersions(v1, v2) {
 }
 
 /**
- * realArg 병합 (기존 값 보존 + 새 key 추가)
- * @param {Object} oldRealArg - 기존 플러그인의 realArg
- * @param {Object} newArguments - 새 플러그인의 arguments
- * @returns {Object} 병합된 realArg
- */
-function mergeRealArgs(oldRealArg, newArguments) {
-  const merged = {};
-
-  // 새 arguments를 기준으로 순회
-  for (const [key, type] of Object.entries(newArguments)) {
-    // 기존 값이 있으면 보존, 없으면 기본값
-    if (oldRealArg && key in oldRealArg) {
-      merged[key] = oldRealArg[key]; // 기존 사용자 입력 값 보존
-    } else {
-      // 새로 추가된 arg는 기본값
-      merged[key] = type === "int" ? 0 : "";
-    }
-  }
-
-  return merged;
-}
-
-/**
  * 플러그인 스크립트 업데이트
  * @param {Object} manifest - fetchLatestManifest()로 가져온 매니페스트
  * @returns {Promise<Object>} {success: boolean, error?: Error}
  */
-async function updatePluginScript(manifest) {
+async function updatePluginScript(manifest) { 
   try {
     // 1. unpkg에서 최신 스크립트 fetch
     console.log("[UpdateManager] Fetching latest script from unpkg:", manifest.url);
@@ -120,7 +97,7 @@ async function updatePluginScript(manifest) {
     console.log("[UpdateManager] Parsing plugin script...");
     const parsed = parsePluginScript(scriptContent);
 
-    return scriptUpdater(parsed);
+    return scriptUpdater(parsed); 
   } catch (error) {
     console.error("[UpdateManager] Plugin update failed:", error);
     return { success: false, error };

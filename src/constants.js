@@ -6,7 +6,7 @@ export const PLUGIN_NAME =
   typeof __PLUGIN_NAME__ !== 'undefined' ? __PLUGIN_NAME__ : `${프로젝트명}`;
 
 export const PLUGIN_VERSION =
-  typeof __PLUGIN_VERSION__ !== 'undefined' ? __PLUGIN_VERSION__ : "0.0.0-dev";
+  typeof __PLUGIN_VERSION__ !== 'undefined' ? __PLUGIN_VERSION__ : "0.0.1";
 
 export const PLUGIN_DESCRIPTION =
   typeof __PLUGIN_DESCRIPTION__ !== 'undefined' ? __PLUGIN_DESCRIPTION__ : `${프로젝트명} for RISU AI`;
