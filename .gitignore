@@ -5,6 +5,3 @@ node_modules
 
 # Auto-generated files (do not commit)
 src/core/plugin-config.js
-
-# Build output (auto-generated on publish)
-dist
