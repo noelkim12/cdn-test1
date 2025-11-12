@@ -132,5 +132,15 @@
         "text": "production test"
       }
     ]
+  },
+  "0.6.10": {
+    "released_at": "2025-11-12T18:47:49.245Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "fix",
+        "text": "test"
+      }
+    ]
   }
 }
