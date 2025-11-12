@@ -1,11 +1,11 @@
 //@name cdn-test1
-//@display-name cdn-test1_v0.6.10
-//@version 0.6.10
+//@display-name cdn-test1_v0.6.11
+//@version 0.6.11
 //@description Cdn Test1 for RISU AI
 //@arg test123 string
 //@arg watchTest21 int
 
-//@link https://unpkg.com/cdn-test1@0.6.10/dist/cdn-test1.js
+//@link https://unpkg.com/cdn-test1@0.6.11/dist/cdn-test1.js
 var cdnTest1;
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
@@ -161,10 +161,12 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   display: grid;
   place-items: center;
   background: rgba(0, 0, 0, 0.4);
+  padding: 16px;
 }
 
 .update-dialog-module__udCard--QaBAr {
-  width: min(520px, 92vw);
+  width: min(520px, 100%);
+  max-height: 90vh;
   border-radius: 16px;
   padding: 20px;
   background: var(--bg, #111);
@@ -172,6 +174,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   transform: scale(0.97);
   animation: update-dialog-module__udPop--wt5vi 0.16s ease-out forwards;
+  overflow-y: auto;
 }
 
 .update-dialog-module__udTitle--VQB_3 {
@@ -179,12 +182,16 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .update-dialog-module__udTitle--VQB_3 h3 {
   margin: 0;
   font-size: 18px;
   font-weight: 700;
+  word-break: break-word;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .update-dialog-module__udPill--pW87e {
@@ -193,23 +200,29 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   border-radius: 999px;
   background: #2a2a2a;
   color: #cfcfcf;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .update-dialog-module__udSub--Y03Tv {
   margin: 8px 0 12px;
   color: #9aa0a6;
   font: 13px/1.5 system-ui;
+  word-break: break-word;
 }
 
 .update-dialog-module__udList--HduVR {
   margin: 10px 0 16px;
   padding-left: 18px;
   max-height: 180px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .update-dialog-module__udList--HduVR li {
   margin: 6px 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .update-dialog-module__udFeat--JNLt9::marker {
@@ -232,6 +245,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   display: flex;
   gap: 8px;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .update-dialog-module__udBtn--EstXt {
@@ -240,6 +254,9 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  flex: 0 1 auto;
 }
 
 .update-dialog-module__udBtnPrimary--H3naJ {
@@ -248,8 +265,11 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
   background: #4f7cff;
   color: white;
+  white-space: nowrap;
+  flex: 0 1 auto;
 }
 
 .update-dialog-module__udBtnGhost--juD9P {
@@ -258,14 +278,86 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 14px;
   background: transparent;
   color: #cfcfcf;
+  white-space: nowrap;
+  flex: 0 1 auto;
 }
 
 .update-dialog-module__udBtn--EstXt:hover,
 .update-dialog-module__udBtnPrimary--H3naJ:hover,
 .update-dialog-module__udBtnGhost--juD9P:hover {
   filter: brightness(1.05);
+}
+
+/* 모바일 대응 */
+@media (max-width: 480px) {
+  .update-dialog-module__udCard--QaBAr {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .update-dialog-module__udTitle--VQB_3 {
+    gap: 8px;
+  }
+
+  .update-dialog-module__udTitle--VQB_3 h3 {
+    font-size: 16px;
+  }
+
+  .update-dialog-module__udPill--pW87e {
+    font-size: 11px;
+    padding: 0 6px;
+  }
+
+  .update-dialog-module__udSub--Y03Tv {
+    font-size: 12px;
+    margin: 6px 0 10px;
+  }
+
+  .update-dialog-module__udList--HduVR {
+    font-size: 14px;
+    max-height: 150px;
+    padding-left: 16px;
+  }
+
+  .update-dialog-module__udList--HduVR li {
+    margin: 5px 0;
+    line-height: 1.5;
+  }
+
+  /* 버튼 영역 - 3개일 때 세로 배치 */
+  .update-dialog-module__udActions--AuWA7 {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .update-dialog-module__udBtn--EstXt,
+  .update-dialog-module__udBtnPrimary--H3naJ,
+  .update-dialog-module__udBtnGhost--juD9P {
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 14px;
+  }
+}
+
+/* 중간 크기 화면 대응 (480px ~ 600px) */
+@media (min-width: 481px) and (max-width: 600px) {
+  .update-dialog-module__udCard--QaBAr {
+    padding: 18px;
+  }
+
+  .update-dialog-module__udActions--AuWA7 {
+    gap: 6px;
+  }
+
+  .update-dialog-module__udBtn--EstXt,
+  .update-dialog-module__udBtnPrimary--H3naJ,
+  .update-dialog-module__udBtnGhost--juD9P {
+    padding: 9px 11px;
+    font-size: 13px;
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -311,6 +403,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   line-height: 1.6;
   color: var(--fg, #eaeaea);
   white-space: pre-line;
+  word-break: break-word;
 }
 
 .update-dialog-module__udAlert--URrlp .update-dialog-module__udActions--AuWA7 {
@@ -323,9 +416,120 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/* UpdateDialog 컴포넌트 스타일
   min-width: 120px;
 }
 
+/* AlertDialog 모바일 대응 */
+@media (max-width: 480px) {
+  .update-dialog-module__udAlert--URrlp {
+    max-width: 100%;
+  }
+
+  .update-dialog-module__udAlertMessage--fUewu {
+    font-size: 15px;
+    margin: 12px 0 16px;
+  }
+
+  .update-dialog-module__udAlert--URrlp .update-dialog-module__udBtn--EstXt,
+  .update-dialog-module__udAlert--URrlp .update-dialog-module__udBtnPrimary--H3naJ,
+  .update-dialog-module__udAlert--URrlp .update-dialog-module__udBtnGhost--juD9P {
+    min-width: 100px;
+    padding: 11px 16px;
+  }
+}
+
 @media (prefers-color-scheme: light) {
   .update-dialog-module__udAlertMessage--fUewu {
     color: var(--fg, #111);
+  }
+}
+
+/* LoadingDialog 컴포넌트 스타일 */
+.update-dialog-module__udLoading--Arn7h {
+  max-width: 320px;
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.update-dialog-module__udLoadingSpinner--VazSE {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.update-dialog-module__udLoadingSvg--uGgOc {
+  width: 50px;
+  height: 50px;
+  animation: update-dialog-module__udRotate--V1GtI 1.4s linear infinite;
+}
+
+.update-dialog-module__udLoadingCircle--jLYch {
+  stroke: #4f7cff;
+  stroke-linecap: round;
+  animation: update-dialog-module__udDash--EaK4F 1.4s ease-in-out infinite;
+}
+
+.update-dialog-module__udLoadingMessage--lY1sH {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fg, #eaeaea);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* LoadingDialog 모바일 대응 */
+@media (max-width: 480px) {
+  .update-dialog-module__udLoading--Arn7h {
+    max-width: 100%;
+    padding: 28px 20px;
+  }
+
+  .update-dialog-module__udLoadingSpinner--VazSE {
+    margin-bottom: 16px;
+  }
+
+  .update-dialog-module__udLoadingSvg--uGgOc {
+    width: 44px;
+    height: 44px;
+  }
+
+  .update-dialog-module__udLoadingMessage--lY1sH {
+    font-size: 14px;
+  }
+}
+
+@keyframes update-dialog-module__udRotate--V1GtI {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes update-dialog-module__udDash--EaK4F {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .update-dialog-module__udLoadingMessage--lY1sH {
+    color: var(--fg, #111);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .update-dialog-module__udLoadingSvg--uGgOc {
+    animation: none;
+  }
+  .update-dialog-module__udLoadingCircle--jLYch {
+    animation: none;
+    stroke-dasharray: 90, 150;
   }
 }
 `, ""]);
@@ -347,7 +551,14 @@ ___CSS_LOADER_EXPORT___.locals = {
 	"udBtnPrimary": `update-dialog-module__udBtnPrimary--H3naJ`,
 	"udBtnGhost": `update-dialog-module__udBtnGhost--juD9P`,
 	"udAlert": `update-dialog-module__udAlert--URrlp`,
-	"udAlertMessage": `update-dialog-module__udAlertMessage--fUewu`
+	"udAlertMessage": `update-dialog-module__udAlertMessage--fUewu`,
+	"udLoading": `update-dialog-module__udLoading--Arn7h`,
+	"udLoadingSpinner": `update-dialog-module__udLoadingSpinner--VazSE`,
+	"udLoadingSvg": `update-dialog-module__udLoadingSvg--uGgOc`,
+	"udRotate": `update-dialog-module__udRotate--V1GtI`,
+	"udLoadingCircle": `update-dialog-module__udLoadingCircle--jLYch`,
+	"udDash": `update-dialog-module__udDash--EaK4F`,
+	"udLoadingMessage": `update-dialog-module__udLoadingMessage--lY1sH`
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -831,7 +1042,7 @@ const PLUGIN_NAME =
    true ? "cdn-test1" : 0;
 
 const PLUGIN_VERSION =
-   true ? "0.6.10" : 0;
+   true ? "0.6.11" : 0;
 
 const PLUGIN_DESCRIPTION =
   (/* unused pure expression or super */ null && ( true ? "Cdn Test1 for RISU AI" : 0));

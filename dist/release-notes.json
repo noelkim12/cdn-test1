@@ -142,5 +142,15 @@
         "text": "test"
       }
     ]
+  },
+  "0.6.11": {
+    "released_at": "2025-11-12T18:50:56.639Z",
+    "mandatory": false,
+    "notes": [
+      {
+        "type": "fix",
+        "text": "test2"
+      }
+    ]
   }
 }
