@@ -1,11 +1,11 @@
 //@name cdn-test1
-//@display-name cdn-test1_v0.6.11
-//@version 0.6.11
+//@display-name cdn-test1_v0.6.12
+//@version 0.6.12
 //@description Cdn Test1 for RISU AI
 //@arg test123 string
 //@arg watchTest21 int
 
-//@link https://unpkg.com/cdn-test1@0.6.11/dist/cdn-test1.js
+//@link https://unpkg.com/cdn-test1@0.6.12/dist/cdn-test1.js
 var cdnTest1;
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
@@ -1042,7 +1042,7 @@ const PLUGIN_NAME =
    true ? "cdn-test1" : 0;
 
 const PLUGIN_VERSION =
-   true ? "0.6.11" : 0;
+   true ? "0.6.12" : 0;
 
 const PLUGIN_DESCRIPTION =
   (/* unused pure expression or super */ null && ( true ? "Cdn Test1 for RISU AI" : 0));
@@ -1727,6 +1727,115 @@ function showAlert(message, confirmText = "확인") {
   });
 }
 
+;// ./src/ui/components/updateManager/loading-dialog.js
+
+
+
+/**
+ * LoadingDialog Custom Element
+ * 업데이트 처리 중 표시되는 로딩 다이얼로그 컴포넌트
+ */
+
+const loading_dialog_ELEMENT_TAG = `${constants/* PLUGIN_NAME */.AF}-loading-dialog`;
+
+class LoadingDialog extends HTMLElement {
+  constructor() {
+    super();
+    this._cleanup = null;
+  }
+
+  static get observedAttributes() {
+    return ["message", "duration"];
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  disconnectedCallback() {
+    if (this._cleanup) {
+      this._cleanup();
+    }
+  }
+
+  get message() {
+    return this.getAttribute("message") || "업데이트를 처리하고 있습니다...";
+  }
+
+  get duration() {
+    return parseInt(this.getAttribute("duration")) || 3000;
+  }
+
+  render() {
+    this.setAttribute("role", "dialog");
+    this.setAttribute("aria-modal", "true");
+    this.setAttribute("aria-busy", "true");
+    this.className = styles_update_dialog_module.udRoot;
+
+    this.innerHTML = `
+      <div class="${styles_update_dialog_module.udCard} ${styles_update_dialog_module.udLoading}" data-loading-card>
+        <div class="${styles_update_dialog_module.udLoadingSpinner}">
+          <svg class="${styles_update_dialog_module.udLoadingSvg}" viewBox="0 0 50 50">
+            <circle
+              class="${styles_update_dialog_module.udLoadingCircle}"
+              cx="25"
+              cy="25"
+              r="20"
+              fill="none"
+              stroke-width="4"
+            />
+          </svg>
+        </div>
+        <div class="${styles_update_dialog_module.udLoadingMessage}">
+          ${this.escapeHtml(this.message)}
+        </div>
+      </div>
+    `;
+  }
+
+  escapeHtml(s) {
+    return String(s).replace(
+      /[&<>"']/g,
+      (m) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        }[m])
+    );
+  }
+}
+
+// Custom Element 등록
+if (!customElements.get(loading_dialog_ELEMENT_TAG)) {
+  customElements.define(loading_dialog_ELEMENT_TAG, LoadingDialog);
+}
+
+const LOADING_DIALOG_TAG = loading_dialog_ELEMENT_TAG;
+
+/**
+ * LoadingDialog를 표시하고 지정된 시간 후 자동으로 닫음
+ * @param {string} message - 표시할 메시지
+ * @param {number} [duration=3000] - 표시 시간 (밀리초)
+ * @returns {Promise<void>}
+ */
+function showLoading(message = "업데이트를 처리하고 있습니다...", duration = 3000) {
+  return new Promise((resolve) => {
+    const dialog = document.createElement(LOADING_DIALOG_TAG);
+    dialog.setAttribute("message", message);
+    dialog.setAttribute("duration", String(duration));
+
+    document.body.appendChild(dialog);
+
+    setTimeout(() => {
+      dialog.remove();
+      resolve();
+    }, duration);
+  });
+}
+
 ;// ./src/ui/components/updateManager/update-dialog.js
 /**
  * UpdateDialog Custom Element
@@ -2102,6 +2211,7 @@ function mergeRealArgs(oldRealArg, newArguments) {
 
 
 
+
 /**
  * unpkg에서 최신 버전의 메타데이터를 파싱
  * @returns {Promise<Object|null>} manifest 객체 또는 null
@@ -2326,11 +2436,17 @@ function checkVersionUpdateNeeded(latestVersion, currentVersion, silent) {
  */
 async function executeUpdate(manifest, latestVersion) {
   console.log("[UpdateManager] Updating to version", latestVersion);
-  console.log("update test")  
+
+  // 업데이트 스크립트 실행
   const updateResult = await updatePluginScript(manifest);
 
-  if (updateResult.success) {  
+  if (updateResult.success) {
     console.log("[UpdateManager] Plugin script updated successfully");
+
+    // 3초간 로딩 다이얼로그 표시 (스크립트 적용 시간 확보)
+    await showLoading("업데이트를 적용하고 있습니다...", 4000);
+
+    // 업데이트 완료 알림 및 새로고침
     await showAlert("업데이트가 완료되었습니다.\n\n업데이트된 스크립트를 적용하기 위해\n페이지를 새로고침합니다.");
     window.location.reload();
     return { available: true, action: "updated", version: latestVersion };
@@ -2425,115 +2541,6 @@ async function checkForUpdates(options = {}) {
 }
 
 
-
-;// ./src/ui/components/updateManager/loading-dialog.js
-
-
-
-/**
- * LoadingDialog Custom Element
- * 업데이트 처리 중 표시되는 로딩 다이얼로그 컴포넌트
- */
-
-const loading_dialog_ELEMENT_TAG = `${constants/* PLUGIN_NAME */.AF}-loading-dialog`;
-
-class LoadingDialog extends HTMLElement {
-  constructor() {
-    super();
-    this._cleanup = null;
-  }
-
-  static get observedAttributes() {
-    return ["message", "duration"];
-  }
-
-  connectedCallback() {
-    this.render();
-  }
-
-  disconnectedCallback() {
-    if (this._cleanup) {
-      this._cleanup();
-    }
-  }
-
-  get message() {
-    return this.getAttribute("message") || "업데이트를 처리하고 있습니다...";
-  }
-
-  get duration() {
-    return parseInt(this.getAttribute("duration")) || 3000;
-  }
-
-  render() {
-    this.setAttribute("role", "dialog");
-    this.setAttribute("aria-modal", "true");
-    this.setAttribute("aria-busy", "true");
-    this.className = styles_update_dialog_module.udRoot;
-
-    this.innerHTML = `
-      <div class="${styles_update_dialog_module.udCard} ${styles_update_dialog_module.udLoading}" data-loading-card>
-        <div class="${styles_update_dialog_module.udLoadingSpinner}">
-          <svg class="${styles_update_dialog_module.udLoadingSvg}" viewBox="0 0 50 50">
-            <circle
-              class="${styles_update_dialog_module.udLoadingCircle}"
-              cx="25"
-              cy="25"
-              r="20"
-              fill="none"
-              stroke-width="4"
-            />
-          </svg>
-        </div>
-        <div class="${styles_update_dialog_module.udLoadingMessage}">
-          ${this.escapeHtml(this.message)}
-        </div>
-      </div>
-    `;
-  }
-
-  escapeHtml(s) {
-    return String(s).replace(
-      /[&<>"']/g,
-      (m) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        }[m])
-    );
-  }
-}
-
-// Custom Element 등록
-if (!customElements.get(loading_dialog_ELEMENT_TAG)) {
-  customElements.define(loading_dialog_ELEMENT_TAG, LoadingDialog);
-}
-
-const LOADING_DIALOG_TAG = (/* unused pure expression or super */ null && (loading_dialog_ELEMENT_TAG));
-
-/**
- * LoadingDialog를 표시하고 지정된 시간 후 자동으로 닫음
- * @param {string} message - 표시할 메시지
- * @param {number} [duration=3000] - 표시 시간 (밀리초)
- * @returns {Promise<void>}
- */
-function showLoading(message = "업데이트를 처리하고 있습니다...", duration = 3000) {
-  return new Promise((resolve) => {
-    const dialog = document.createElement(LOADING_DIALOG_TAG);
-    dialog.setAttribute("message", message);
-    dialog.setAttribute("duration", String(duration));
-
-    document.body.appendChild(dialog);
-
-    setTimeout(() => {
-      dialog.remove();
-      resolve();
-    }, duration);
-  });
-}
 
 ;// ./src/ui/components/index.js
 /**
